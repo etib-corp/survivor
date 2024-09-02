@@ -1,0 +1,41 @@
+name: Survior Features CI/CD
+
+on:
+  push:
+    branches:
+      - "!main"
+
+jobs:
+  Setup:
+  runs-on: ubuntu-latest
+
+  steps:
+  - uses: actions/checkout@v3
+  - name: Install basic build
+    run: |
+      sudo apt-get -y update
+      sudo apt-get -y install build-essential npm
+  - name: Install Tailwind CSS
+    run: |
+      npm install -D tailwindcss postcss autoprefixer
+  - name: Install Flowbite React
+    run: |
+      npm install flowbite flowbite-react
+
+  Build:
+    needs: [Setup]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the project
+        run: |
+          npm run build
+
+  Test:
+    needs: [Build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test the project
+        run: |
+          npm run test
