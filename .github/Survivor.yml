@@ -18,7 +18,7 @@ jobs:
     - name: Install basic build
       run: |
         sudo apt-get -y update
-        sudo apt-get -y install build-essential npm
+        sudo apt-get -y install build-essential npm php libapache2-mod-php php-cli php-cgi php-mysql php-pgsql
     - name: Install Tailwind CSS
       run: |
         npm install -D tailwindcss postcss autoprefixer
