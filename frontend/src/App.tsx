@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import Profiles from "./pages/Profiles";
 import Home from "./pages/Home";
+import Statistics from './pages/Statistics';
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>}></Route>
           <Route path="/Profiles" element={<Profiles/>}></Route>
-          {/* <Route path="/Statistics" element={</>}></Route> */}
+          <Route path="/Statistics" element={<Statistics/>}></Route>
         </Routes>
       </div>
     </main>
