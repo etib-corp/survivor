@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Profiles from "./pages/Profiles";
 import Home from "./pages/Home";
 
+
 function App() {
   // return (
   //   <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
