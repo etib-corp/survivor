@@ -2,12 +2,12 @@ import { BarChart } from "@mui/x-charts";
 
 import ETIBSideBar from "../components/ETIBSideBar";
 
-import { users } from "../data";
+import { coaches } from "../data";
 
 export default function Statistics () {
     return (
         <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
-            <ETIBSideBar properties={users} />
+            <ETIBSideBar properties={coaches} />
             <BarChart
                 series={[
                     { data: [35, 44, 24, 34] },
