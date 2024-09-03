@@ -20,8 +20,8 @@ export const users = [
 ];
 
 export const coaches = [
-    { id: 1, href: "#", icon: HiUser, content: "Coach 1", adress: "toto1", number: "0692111111", description: "description1", avatar: "kbo.png", meetings: [35, 20, 48, 12] },
-    { id: 2, href: "#", icon: HiUser, content: "Coach 2", adress: "toto2", number: "0692111112", description: "description2", avatar: "kbo.png", meetings: [51, 18, 12, 25] },
-    { id: 3, href: "#", icon: HiUser, content: "Coach 3", adress: "toto3", number: "0692111113", description: "description3", avatar: "kbo.png", meetings: [51, 24, 50, 51] },
-    { id: 4, href: "#", icon: HiUser, content: "Coach 4", adress: "toto4", number: "0692111114", description: "description4", avatar: "kbo.png", meetings: [84, 85, 65, 47] },
+    { id: 1, href: "#", content: "Coach 1", adress: "toto1", number: "0692111111", description: "description1", avatar: "kbo.png", meetings: [35, 20, 48, 12] },
+    { id: 2, href: "#", content: "Coach 2", adress: "toto2", number: "0692111112", description: "description2", avatar: "kbo.png", meetings: [51, 18, 12, 25] },
+    { id: 3, href: "#", content: "Coach 3", adress: "toto3", number: "0692111113", description: "description3", avatar: "kbo.png", meetings: [51, 24, 50, 51] },
+    { id: 4, href: "#", content: "Coach 4", adress: "toto4", number: "0692111114", description: "description4", avatar: "kbo.png", meetings: [84, 85, 65, 47] },
 ];
