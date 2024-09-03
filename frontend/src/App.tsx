@@ -4,6 +4,7 @@ import Profiles from "./pages/Profiles";
 import Home from "./pages/Home";
 import Statistics from './pages/Statistics';
 import Account from './pages/Coaches';
+import Customers from './pages/Customers';
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>}></Route>
           <Route path="/Account" element={<Account/>}></Route>
+          <Route path="/Customers" element={<Customers/>}></Route>
           <Route path="/Profiles" element={<Profiles/>}></Route>
           <Route path="/Statistics" element={<Statistics/>}></Route>
         </Routes>

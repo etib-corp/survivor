@@ -49,7 +49,7 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
                 <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md"/>
             }
         </Navbar.Link>
-        <Navbar.Link className="focus:text-blueT" href="#" active={properties.page == "customers"} onClick={() => { OnChangeView({ page: "customers" })}}>
+        <Navbar.Link className="focus:text-blueT" href="/Customers" active={properties.page == "customers"} onClick={() => { OnChangeView({ page: "customers" })}}>
             Customers
             {
                 properties.page == "customers" &&

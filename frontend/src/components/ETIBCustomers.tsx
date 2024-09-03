@@ -6,10 +6,11 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import { LuDownloadCloud } from "react-icons/lu";
 import { GoPlus } from "react-icons/go";
 import { VscEllipsis } from "react-icons/vsc";
+import { Mastercard, Visa, Paypal } from 'react-payment-logos/dist/flat';
 import { useState } from 'react';
 
 
-export default function ETIBCoaches () {
+export default function ETIBCustomers () {
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -22,10 +23,10 @@ export default function ETIBCoaches () {
             <div className="flex flex-row justify-between mt-8 ml-4 mr-4">
                 <div className="flex flex-col">
                     <h1 className="text-4xl font-bold py-1">
-                        Coaches List
+                        Customers List
                     </h1>
                     <p>
-                        You have total 78 coaches.
+                        You have total 932 customers.
                     </p>
                 </div>
                 <div className="mt-auto mb-auto">
@@ -171,7 +172,7 @@ export default function ETIBCoaches () {
               Phone
             </th>
             <th scope="col" className="px-6 py-3">
-              Number of customers
+              Payment methods
             </th>
             <th scope="col" className="px-6 py-3">
               Action
@@ -214,7 +215,7 @@ export default function ETIBCoaches () {
             </td>
             <td className="px-6 py-4">
               <div className="flex items-center">
-                12
+                <Mastercard style={{ height: 35 }} />
               </div>
             </td>
             <td className="px-6 py-4">
@@ -261,7 +262,7 @@ export default function ETIBCoaches () {
             </td>
             <td className="px-6 py-4">
               <div className="flex items-center">
-                6
+                <Visa style={{height: 30}} />
               </div>
             </td>
             <td className="px-6 py-4">
@@ -308,7 +309,7 @@ export default function ETIBCoaches () {
             </td>
             <td className="px-6 py-4">
               <div className="flex items-center">
-                4
+                <Paypal style={{ height: 30 }} />
               </div>
             </td>
             <td className="px-6 py-4">
@@ -355,7 +356,7 @@ export default function ETIBCoaches () {
             </td>
             <td className="px-6 py-4">
               <div className="flex items-center">
-                22
+                <Visa style={{ height: 35 }} />
               </div>
             </td>
             <td className="px-6 py-4">
