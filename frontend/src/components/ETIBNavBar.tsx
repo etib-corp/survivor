@@ -26,7 +26,7 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
                 Bonnie Green
             </span>
             <span className="block truncate text-sm font-medium">
-                name@flowbite.com
+                name@exemple.com
             </span>
           </Dropdown.Header>
           <Dropdown.Item>Settings</Dropdown.Item>
