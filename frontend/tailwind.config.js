@@ -4,7 +4,12 @@ const flowbite = require("flowbite-react/tailwind");
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", flowbite.content()],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'background': '#F5F6FA',
+        'blueT': '#2263B3',
+      },
+    },
   },
   plugins: [
     flowbite.plugin(),
