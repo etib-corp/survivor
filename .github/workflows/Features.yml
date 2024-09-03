@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "!main"
+      - "*"
 
 jobs:
   Setup:
@@ -17,11 +18,10 @@ jobs:
         sudo apt-get -y install build-essential npm
     - name: Install Tailwind CSS
       run: |
-        npm install -D tailwindcss postcss autoprefixer
+        cd frontend ; npm install -D tailwindcss postcss autoprefixer
     - name: Install Flowbite React
       run: |
-        npm install flowbite flowbite-react
-  
+        cd frontend ; npm install flowbite flowbite-react
   Build:
     needs: [Setup]
     runs-on: ubuntu-latest
@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build the project
         run: |
-          npm run build
+          cd frontend ; npm build
 
   Test:
     needs: [Build]
@@ -38,4 +38,4 @@ jobs:
       - uses: actions/checkout@v3
       - name: Test the project
         run: |
-          npm run test
+          cd frontend ; npm test
