@@ -2,12 +2,12 @@ import { BarChart } from "@mui/x-charts";
 
 import ETIBSideBar from "../components/ETIBSideBar";
 
-import { users } from "../data";
+import { coaches } from "../data";
 
-const profiles = [users];
+const profiles = [coaches];
 
 export default function Statistics () {
-    const meetings = users.map((user) => user.meetings);
+    const meetings = coaches.map((user) => user.meetings);
 
     let data = [];
 
