@@ -35,14 +35,14 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
         </Dropdown>
       </div>
       <Navbar.Collapse>
-        <Navbar.Link className="focus:text-blueT" href="#" active={properties.page == "dashboard"} onClick={() => { OnChangeView({ page: "dashboard" })}}>
+        <Navbar.Link className="focus:text-blueT" href="/" active={properties.page == "dashboard"} onClick={() => { OnChangeView({ page: "dashboard" })}}>
           Dashboard
           {
               properties.page == "dashboard" &&
                 <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md"/>
             }
         </Navbar.Link>
-        <Navbar.Link className="focus:text-blue" href="#" active={properties.page == "coaches"} onClick={() => { OnChangeView({ page: "coaches" })}}>
+        <Navbar.Link className="focus:text-blue" href="/Account" active={properties.page == "coaches"} onClick={() => { OnChangeView({ page: "coaches" })}}>
             Coaches
             {
                 properties.page == "coaches" &&

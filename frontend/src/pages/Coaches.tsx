@@ -1,5 +1,10 @@
+import ETIBCoaches from "../components/ETIBCoaches";
+import ETIBNavBar from "../components/ETIBNavBar";
+import { useState } from "react";
 
 function Account () {
+
+    const [props, setProps] = useState({ page: "coaches" });
 
     fetch('http://localhost:3000/api/', {
         method: 'GET',
@@ -12,8 +17,9 @@ function Account () {
     .catch(error => console.log('Error:', error))
 
     return (
-        <div>
-            <h1>Account</h1>
+        <div className="overflow-x-hidden">
+            <ETIBNavBar properties={props} OnChangeView={setProps}/>
+            <ETIBCoaches />
         </div>
     )
 }
