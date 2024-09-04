@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Statistics from './pages/Statistics';
 import Account from './pages/Coaches';
 import Customers from './pages/Customers';
+import Tips from './pages/Tips';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/Customers" element={<Customers/>}></Route>
           <Route path="/Profiles" element={<Profiles/>}></Route>
           <Route path="/Statistics" element={<Statistics/>}></Route>
+          <Route path="/Tips" element={<Tips/>}></Route>
         </Routes>
       </div>
     </main>
