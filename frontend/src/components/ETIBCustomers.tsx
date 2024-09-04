@@ -8,6 +8,9 @@ import { GoPlus } from "react-icons/go";
 import { VscEllipsis } from "react-icons/vsc";
 import { Mastercard, Visa, Paypal } from 'react-payment-logos/dist/flat';
 import { useState } from 'react';
+import { CiSearch } from "react-icons/ci";
+import { IoSettingsOutline } from "react-icons/io5";
+import { IoFilterOutline } from "react-icons/io5";
 
 
 export default function ETIBCustomers () {
@@ -31,11 +34,11 @@ export default function ETIBCustomers () {
                 </div>
                 <div className="mt-auto mb-auto">
                     <div className="flex flex-row space-x-4">
-                        <Button className="bg-transparent text-gray-700 border-gray-700">
+                        <Button className="bg-transparent text-gray-700 border-gray-700 focus:ring-2 focus:ring-gray-300 enabled:hover:bg-gray-100">
                             <LuDownloadCloud className="mr-2 h-5 w-5"/>
                             Export
                         </Button>
-                        <Button className="bg-blueT">
+                        <Button className="bg-blueT focus:ring-2 focus:ring-gray-300 enabled:hover:bg-blue-500">
                             <GoPlus className="h-5 w-5"/>
                         </Button>
                     </div>
@@ -43,12 +46,12 @@ export default function ETIBCustomers () {
             </div>
         <div className="relative w-[100%] px-4 pt-5">
             <div className="relative border shadow-md sm:rounded-md">
-                <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 dark:bg-gray-900">
+                <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 my-2">
             <div className="mt-3 ml-4 flex flex-row">
                 <button
                     id="dropdownActionButton"
                     onClick={toggleDropdown}
-                    className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                    className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-2 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5"
                     type="button"
                 >
                 <span className="sr-only">Action button</span>
@@ -69,23 +72,23 @@ export default function ETIBCustomers () {
                     />
                 </svg>
                 </button>
-                <Button className="ml-4 w-24">
+                <Button color="gray" className="ml-4 w-24 text-gray-300 focus:ring-gray-300 focus:ring-1 enabled:hover:text-gray-500 focus:text-gray-300">
                     Apply
                 </Button>
           {/* Dropdown menu */}
           {dropdownOpen && (
             <div
               id="dropdownAction"
-              className="absolute mt-10 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+              className="absolute mt-10 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44"
             >
               <ul
-                className="py-1 text-sm text-gray-700 dark:text-gray-200"
+                className="py-1 text-sm text-gray-700"
                 aria-labelledby="dropdownActionButton"
               >
                 <li>
                   <a
                     href="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="block px-4 py-2 hover:bg-gray-100"
                   >
                     Reward
                   </a>
@@ -93,7 +96,7 @@ export default function ETIBCustomers () {
                 <li>
                   <a
                     href="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="block px-4 py-2 hover:bg-gray-100"
                   >
                     Promote
                   </a>
@@ -101,7 +104,7 @@ export default function ETIBCustomers () {
                 <li>
                   <a
                     href="#"
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="block px-4 py-2 hover:bg-gray-100"
                   >
                     Activate account
                   </a>
@@ -110,7 +113,7 @@ export default function ETIBCustomers () {
               <div className="py-1">
                 <a
                   href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   Delete User
                 </a>
@@ -118,44 +121,33 @@ export default function ETIBCustomers () {
             </div>
           )}
         </div>
-        <label htmlFor="table-search" className="sr-only">
-          Search
-        </label>
-        <div className="relative">
-          <div className="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg
-              className="w-4 h-4 mt-4 text-gray-500 dark:text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
-            </svg>
+        <div className="pt-4 px-4 flex flex-row">
+          <div className="relative">
+            <input
+              id="table-search"
+              type="text"
+              className="w-48 text-sm text-gray-500 border-gray-300 focus:ring-gray-300 focus:ring-1 rounded-md pl-10"
+              placeholder="Search..."
+            />
+            <CiSearch className="absolute w-4 h-4 top-3 left-3 text-gray-500"/>
           </div>
-          <input
-            type="text"
-            id="table-search-users"
-            className="block mr-4 mt-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search for users"
-          />
+          <Button color="gray" className="ml-4 w-10 h-[2.4rem] text-gray-300 focus:ring-gray-300 focus:ring-1">
+            <IoFilterOutline className="h-4 w-5 text-gray-500"/>
+          </Button>
+          <Button color="gray" className="ml-4 w-10 h-[2.4rem] text-gray-300 focus:ring-gray-300 focus:ring-1">
+            <IoSettingsOutline className="h-4 w-5 text-gray-500"/>
+          </Button>
         </div>
       </div>
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 bg-gray-50">
           <tr>
             <th scope="col" className="p-4">
               <div className="flex items-center">
                 <input
                   id="checkbox-all-search"
                   type="checkbox"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                 />
                 <label htmlFor="checkbox-all-search" className="sr-only">
                   checkbox
@@ -180,13 +172,13 @@ export default function ETIBCustomers () {
           </tr>
         </thead>
         <tbody>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+          <tr className="bg-white border-b hover:bg-gray-50 ">
             <td className="w-4 p-4">
               <div className="flex items-center">
                 <input
                   id="checkbox-table-search-1"
                   type="checkbox"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                 />
                 <label htmlFor="checkbox-table-search-1" className="sr-only">
                   checkbox
@@ -195,7 +187,7 @@ export default function ETIBCustomers () {
             </td>
             <th
               scope="row"
-              className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+              className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap"
             >
               <img
                 className="w-10 h-10 rounded-full"
@@ -215,7 +207,7 @@ export default function ETIBCustomers () {
             </td>
             <td className="px-6 py-4">
               <div className="flex items-center">
-                <Mastercard style={{ height: 35 }} />
+                <Mastercard style={{ height: 25 }} />
               </div>
             </td>
             <td className="px-6 py-4">
@@ -227,13 +219,13 @@ export default function ETIBCustomers () {
               </a>
             </td>
           </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+          <tr className="bg-white border-b hover:bg-gray-50">
             <td className="w-4 p-4">
               <div className="flex items-center">
                 <input
                   id="checkbox-table-search-2"
                   type="checkbox"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                 />
                 <label htmlFor="checkbox-table-search-2" className="sr-only">
                   checkbox
@@ -242,7 +234,7 @@ export default function ETIBCustomers () {
             </td>
             <th
               scope="row"
-              className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
             >
               <img
                 className="w-10 h-10 rounded-full"
@@ -262,7 +254,7 @@ export default function ETIBCustomers () {
             </td>
             <td className="px-6 py-4">
               <div className="flex items-center">
-                <Visa style={{height: 30}} />
+                <Visa style={{ height: 25 }} />
               </div>
             </td>
             <td className="px-6 py-4">
@@ -274,13 +266,13 @@ export default function ETIBCustomers () {
               </a>
             </td>
           </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+          <tr className="bg-white border-b hover:bg-gray-50">
             <td className="w-4 p-4">
               <div className="flex items-center">
                 <input
                   id="checkbox-table-search-3"
                   type="checkbox"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                 />
                 <label htmlFor="checkbox-table-search-3" className="sr-only">
                   checkbox
@@ -289,7 +281,7 @@ export default function ETIBCustomers () {
             </td>
             <th
               scope="row"
-              className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
             >
               <img
                 className="w-10 h-10 rounded-full"
@@ -309,7 +301,7 @@ export default function ETIBCustomers () {
             </td>
             <td className="px-6 py-4">
               <div className="flex items-center">
-                <Paypal style={{ height: 30 }} />
+                <Paypal style={{ height: 25 }} />
               </div>
             </td>
             <td className="px-6 py-4">
@@ -321,13 +313,13 @@ export default function ETIBCustomers () {
               </a>
             </td>
           </tr>
-          <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+          <tr className="bg-white hover:bg-gray-50">
             <td className="w-4 p-4">
               <div className="flex items-center">
                 <input
                   id="checkbox-table-search-4"
                   type="checkbox"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                 />
                 <label htmlFor="checkbox-table-search-4" className="sr-only">
                   checkbox
@@ -336,7 +328,7 @@ export default function ETIBCustomers () {
             </td>
             <th
               scope="row"
-              className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              className="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
             >
               <img
                 className="w-10 h-10 rounded-full"
@@ -356,7 +348,7 @@ export default function ETIBCustomers () {
             </td>
             <td className="px-6 py-4">
               <div className="flex items-center">
-                <Visa style={{ height: 35 }} />
+                <Visa style={{ height: 25 }} />
               </div>
             </td>
             <td className="px-6 py-4">
