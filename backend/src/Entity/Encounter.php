@@ -12,13 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Encounter
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'encounters')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Client $client = null;
+    private ?Customer $customer = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
@@ -37,14 +36,21 @@ class Encounter
         return $this->id;
     }
 
-    public function getClient(): ?Client
+    public function setId(int $id): static
     {
-        return $this->client;
+        $this->id = $id;
+
+        return $this;
     }
 
-    public function setClient(?Client $client): static
+    public function getCustomer(): ?Customer
     {
-        $this->client = $client;
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): static
+    {
+        $this->customer = $customer;
 
         return $this;
     }

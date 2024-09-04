@@ -3,18 +3,17 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\ClientRepository;
+use App\Repository\CustomerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ClientRepository::class)]
+#[ORM\Entity(repositoryClass: CustomerRepository::class)]
 #[ApiResource]
-class Client
+class Customer
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -42,17 +41,31 @@ class Client
     /**
      * @var Collection<int, Encounter>
      */
-    #[ORM\OneToMany(targetEntity: Encounter::class, mappedBy: 'client', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Encounter::class, mappedBy: 'customer', orphanRemoval: true)]
     private Collection $encounters;
+
+    /**
+     * @var Collection<int, Payment>
+     */
+    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'customer', orphanRemoval: true)]
+    private Collection $payments;
 
     public function __construct()
     {
         $this->encounters = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -151,7 +164,7 @@ class Client
     {
         if (!$this->encounters->contains($encounter)) {
             $this->encounters->add($encounter);
-            $encounter->setClient($this);
+            $encounter->setCustomer($this);
         }
 
         return $this;
@@ -161,8 +174,38 @@ class Client
     {
         if ($this->encounters->removeElement($encounter)) {
             // set the owning side to null (unless already changed)
-            if ($encounter->getClient() === $this) {
-                $encounter->setClient(null);
+            if ($encounter->getCustomer() === $this) {
+                $encounter->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): static
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments->add($payment);
+            $payment->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): static
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getCustomer() === $this) {
+                $payment->setCustomer(null);
             }
         }
 

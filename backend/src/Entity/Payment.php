@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Payment
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -22,15 +21,26 @@ class Payment
     #[ORM\Column(length: 255)]
     private ?string $method = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $amount = null;
-
     #[ORM\Column(length: 1024)]
     private ?string $comment = null;
+
+    #[ORM\ManyToOne(inversedBy: 'payments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Customer $customer = null;
+
+    #[ORM\Column]
+    private ?float $amount = null;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -57,18 +67,6 @@ class Payment
         return $this;
     }
 
-    public function getAmount(): ?string
-    {
-        return $this->amount;
-    }
-
-    public function setAmount(string $amount): static
-    {
-        $this->amount = $amount;
-
-        return $this;
-    }
-
     public function getComment(): ?string
     {
         return $this->comment;
@@ -77,6 +75,30 @@ class Payment
     public function setComment(string $comment): static
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): static
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getAmount(): ?float
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(float $amount): static
+    {
+        $this->amount = $amount;
 
         return $this;
     }

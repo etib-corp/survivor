@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Clothe
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -21,6 +20,13 @@ class Clothe
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getType(): ?string
