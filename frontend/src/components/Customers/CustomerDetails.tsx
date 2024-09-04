@@ -17,7 +17,7 @@ const CustomerDetails: React.FC<{ properties: any }> = ({ properties }) => {
                     </h1>
                 </div>
                 <div className="mt-auto mb-auto">
-                    <Button className="bg-white text-gray-700 border-gray-700" href="/">
+                    <Button className="bg-white text-gray-700 border-gray-700" href="/Customers">
                         <HiArrowLeft className="mr-2 h-5 w-5"/>
                         Back
                     </Button>
