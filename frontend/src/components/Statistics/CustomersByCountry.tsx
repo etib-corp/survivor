@@ -66,15 +66,15 @@ export default function CustomersByCountry () {
     }
 
     return (
-        <div className="flex flex-col bg-white border mr-8 w-[55%] rounded-md">
-            <div className="flex flex-row justify-between px-4 mb-8">
+        <div className="flex flex-col bg-white border mx-[5%] md:mx-4 w-[90%] md:w-[55%] rounded-md">
+            <div className="grid grid-cols-1 md:flex md:flex-row justify-between px-4 mb-8">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold py-3">
                         Customers by Country
                     </h1>
                 </div>
                 <div className="mt-auto mb-auto">
-                    <div className="flex flex-row space-x-4">
+                    <div className="flex flex-row space-x-4 justify-center md:justify-normal">
                         <Dropdown
                         label=""
                         dismissOnClick={false}
@@ -92,7 +92,7 @@ export default function CustomersByCountry () {
                     </div>
                 </div>
             </div>
-            <div className="w-[30%] mx-auto">
+            <div className="w-[90%] md:w-[30%] mx-auto">
                 <ComposableMap>
                     <Geographies geography={geoUrl}>
                         {({ geographies }) =>

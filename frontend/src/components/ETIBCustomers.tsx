@@ -23,7 +23,7 @@ export default function ETIBCustomers () {
 
     return (
         <div className="flex flex-col">
-            <div className="flex flex-row justify-between mt-8 ml-4 mr-4">
+            <div className="grid grid-cols-1 md:flex md:flex-row justify-between md:mt-8 ml-4 mr-4">
                 <div className="flex flex-col">
                     <h1 className="text-4xl font-bold py-1">
                         Customers List
@@ -32,8 +32,8 @@ export default function ETIBCustomers () {
                         You have total 932 customers.
                     </p>
                 </div>
-                <div className="mt-auto mb-auto">
-                    <div className="flex flex-row space-x-4">
+                <div className="mt-3 md:mt-auto mb-auto">
+                    <div className="flex flex-row space-x-4 justify-center md:justify-normal">
                         <Button className="bg-transparent text-gray-700 border-gray-700 focus:ring-2 focus:ring-gray-300 enabled:hover:bg-gray-100">
                             <LuDownloadCloud className="mr-2 h-5 w-5"/>
                             Export

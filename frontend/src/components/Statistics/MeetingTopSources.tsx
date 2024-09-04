@@ -5,15 +5,15 @@ import { PieChart } from "@mui/x-charts";
 
 export default function MeetingTopSources () {
     return (
-        <div className="flex flex-col bg-white border w-[45%] rounded-md">
-            <div className="flex flex-row justify-between mx-4">
+        <div className="flex flex-col bg-white border mx-[5%] md:mx-4 w-[90%] md:w-[45%] rounded-md">
+            <div className="grid grid-cols-1 md:flex md:flex-row justify-between mx-4">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold py-3">
                         Meeting top sources
                     </h1>
                 </div>
                 <div className="mt-auto mb-auto">
-                    <div className="flex flex-row space-x-4">
+                    <div className="flex flex-row space-x-4 justify-center md:justify-normal">
                     <Dropdown
                     label=""
                     dismissOnClick={false}
@@ -31,7 +31,7 @@ export default function MeetingTopSources () {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center w-[40%] mx-auto">
+            <div className="flex justify-center w-[90%] md:w-[40%] mx-auto">
                 <PieChart
                     margin={{ bottom: 50, right: 75, left: 75 }}
                     series={[
