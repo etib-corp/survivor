@@ -5,7 +5,8 @@ import { Button, Card } from "flowbite-react";
 import { HiCalendar } from "react-icons/hi";
 
 import { ETIBProfile } from "../components/ETIBProfile";
-import { users } from "../data";
+import { payments, users } from "../data";
+import { PaymentHistory } from "../components/PaymentHistory";
 
 function Profiles() {
     const [userShown, setUserShown] = useState(0);
@@ -40,6 +41,7 @@ function Profiles() {
                                 </Timeline.Item>
                                 ))}
                             </Timeline>
+                            <PaymentHistory properties={payments} />
                         </div>}
                     <Button onClick={() => setUserShown(user.id)}>View Profile</Button>
                 </Card>

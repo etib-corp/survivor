@@ -1,6 +1,18 @@
 import { HiUser } from "react-icons/hi";
 
-const meetings = [
+export const payments = [
+    { date: "2021-10-01", amount: 100 },
+    { date: "2021-10-02", amount: 200 },
+    { date: "2021-10-03", amount: 300 },
+    { date: "2021-10-04", amount: 400 },
+    { date: "2021-10-05", amount: 500 },
+    { date: "2021-10-06", amount: 600 },
+    { date: "2021-10-07", amount: 700 },
+    { date: "2021-10-08", amount: 800 },
+    { date: "2021-10-09", amount: 900 },
+];
+
+export const meetings = [
     { date: "2021-10-01", time: "10:00", location: "Paris", description: "description1", rate: 5 },
     { date: "2021-10-02", time: "11:00", location: "Paris", description: "description2", rate: 4 },
     { date: "2021-10-03", time: "12:00", location: "Paris", description: "description3", rate: 5 },
