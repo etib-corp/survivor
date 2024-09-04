@@ -10,7 +10,7 @@ function Home () {
     const [props, setProps] = useState({ page: "dashboard" });
 
     return (
-        <div className="bg-background">
+        <div className="overflow-x-hidden">
             <ETIBNavBar properties={props} OnChangeView={setProps}/>
             <Statistics></Statistics>
             <div className="p-64 shadow-md"></div>
