@@ -12,7 +12,7 @@ import MeetingTopSources from "../components/Statistics/MeetingTopSources";
 export default function Statistics () {
     return (
         <div className="flex flex-col">
-            <div className="flex flex-row justify-between mt-8 px-4 mb-8">
+            <div className="grid grid-cols-1 md:flex md:flex-row justify-between md:mt-8 px-4 mb-8">
                 <div className="flex flex-col">
                     <h1 className="text-4xl font-bold py-3">
                         Dashboard
@@ -21,8 +21,8 @@ export default function Statistics () {
                         Welcome!
                     </p>
                 </div>
-                <div className="mt-auto mb-auto">
-                    <div className="flex flex-row space-x-4">
+                <div className="mt-3 md:mt-auto mb-auto">
+                    <div className="flex flex-row space-x-4 justify-center md:justify-normal">
                         <Dropdown
                         label=""
                         dismissOnClick={false}
@@ -45,13 +45,23 @@ export default function Statistics () {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-row justify-between mx-4 mb-4">
-                <CustomersOverview />
-                <Events />
+            <div className="hidden md:block">
+                <div className="flex flex-row justify-between mx-4 mb-4">
+                    <CustomersOverview />
+                    <Events />
+                </div>
+                <div className="flex flex-row justify-between mx-4">
+                    <CustomersByCountry />
+                    <MeetingTopSources />
+                </div>
             </div>
-            <div className="flex flex-row justify-between mx-4">
-                <CustomersByCountry />
-                <MeetingTopSources />
+            <div className="block md:hidden">
+                <div className="grid grid-cols-1 space-y-4">
+                    <CustomersOverview />
+                    <Events />
+                    <CustomersByCountry />
+                    <MeetingTopSources />
+                </div>
             </div>
         </div>
     );

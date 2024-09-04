@@ -5,7 +5,7 @@ import { BarChart } from "@mui/x-charts";
 
 export default function Events () {
     return (
-        <div className="flex flex-col bg-white border w-[45%] rounded-md">
+        <div className="flex flex-col bg-white border mx-[5%] md:mx-4 w-[90%] md:w-[45%] rounded-md">
             <div className="flex flex-row justify-between mx-4 mb-6">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold py-3">
@@ -21,9 +21,9 @@ export default function Events () {
                     </Tooltip>
                 </div>
             </div>
-            <div className="flex flex-row ml-4 mr-4 justify-between w-[70%]">
+            <div className="grid grid-cols-1 space-y-8 md:space-y-0 md:flex md:flex-row ml-4 mr-4 justify-between w-[70%]">
                 <div className="flex flex-col">
-                    <p className="mb-2">
+                    <p className="mb-2 text-2xl md:text-base">
                         Monthly
                     </p>
                     <p className="text-3xl mb-1">
@@ -35,7 +35,7 @@ export default function Events () {
                     </p>
                 </div>
                 <div className="flex flex-col">
-                    <p className="mb-2">
+                    <p className="mb-2 text-2xl md:text-base">
                         Weekly
                     </p>
                     <p className="text-3xl mb-1">
@@ -47,7 +47,7 @@ export default function Events () {
                     </p>
                 </div>
                 <div className="flex flex-col">
-                    <p className="mb-2">
+                    <p className="mb-2 text-2xl md:text-base">
                         Daily (Avg)
                     </p>
                     <p className="text-3xl mb-1">

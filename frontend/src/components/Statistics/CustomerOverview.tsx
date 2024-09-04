@@ -9,8 +9,8 @@ export default function CustomersOverview () {
     const [selected, setSelected] = useState("1M");
 
     return (
-        <div className="flex flex-col bg-white border mr-8 w-[55%] rounded-md">
-            <div className="flex flex-row justify-between mx-4 mb-6">
+        <div className="flex flex-col bg-white border mx-[5%] md:mx-4 w-[90%] md:w-[55%] rounded-md">
+            <div className="grid grid-cols-1 md:flex md:flex-row justify-between mx-4 mb-6">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold py-3">
                         Customers Overview
@@ -19,7 +19,7 @@ export default function CustomersOverview () {
                         When customers have joined in the time.
                     </p>
                 </div>
-                <div className="mt-auto mb-auto">
+                <div className="mt-4 md:mt-auto mb-auto flex justify-center md:justify-normal">
                     <ButtonGroup outline>
                         <Button className="bg-transparent text-gray-700 border-gray-700" disabled={selected === "7D"} onClick={() => setSelected("7D")}>
                             7D
@@ -33,9 +33,9 @@ export default function CustomersOverview () {
                     </ButtonGroup>
                 </div>
             </div>
-            <div className="flex flex-row ml-4 mr-4 justify-between w-[55%]">
+            <div className="grid grid-cols-1 space-y-8 md:space-y-0 md:flex md:flex-row ml-4 mr-4 justify-between w-[90%] md:w-[55%]">
                 <div className="flex flex-col">
-                    <p className="mb-2">
+                    <p className="mb-2 text-2xl md:text-base">
                         Customers
                     </p>
                     <p className="text-3xl mb-1">
@@ -47,7 +47,7 @@ export default function CustomersOverview () {
                     </p>
                 </div>
                 <div className="flex flex-col">
-                    <p className="mb-2">
+                    <p className="mb-2 text-2xl md:text-base">
                         Doing meetings
                     </p>
                     <p className="text-3xl mb-1">
@@ -59,7 +59,7 @@ export default function CustomersOverview () {
                     </p>
                 </div>
                 <div className="flex flex-col">
-                    <p className="mb-2">
+                    <p className="mb-2 text-2xl md:text-base">
                         Customers by coach
                     </p>
                     <p className="text-3xl mb-1">
