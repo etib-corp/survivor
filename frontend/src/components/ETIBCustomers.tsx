@@ -130,7 +130,7 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                   <input
                     id="table-search"
                     type="text"
-                    className="w-48 text-sm text-gray-500 border-gray-300 focus:ring-gray-300 focus:ring-1 rounded-md pl-10"
+                    className="w-48 text-sm text-gray-500 border-gray-300 focus:ring-gray-300 focus:ring-1 pl-10"
                     placeholder="Search..."
                   />
                   <CiSearch className="absolute w-4 h-4 top-3 left-3 text-gray-500" />
@@ -143,7 +143,7 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                 </Button>
               </div>
             </div>
-            <Table hoverable className="border rounded-md bg-transparent">
+            <Table hoverable className="bg-transparent">
               <Table.Head className="border bg-transparent">
                 <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
                   <Checkbox />

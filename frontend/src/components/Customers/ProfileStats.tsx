@@ -11,7 +11,6 @@ export const PaymentsMethod: React.FC<{ method: string }> = ({ method }) => {
     )
 }
 
-
 const PaymentsTable: React.FC<{ payments: any }> = ({ payments }) => {
     const lastPayments = payments.slice(-4).reverse();
 
@@ -51,7 +50,6 @@ const PaymentsTable: React.FC<{ payments: any }> = ({ payments }) => {
         </Table>
     )
 }
-
 
 const MeetingsTable: React.FC<{ meetings: any }> = ({ meetings }) => {
     const lastMeetings = meetings.slice(-5).reverse();
