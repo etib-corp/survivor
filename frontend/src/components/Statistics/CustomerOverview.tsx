@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { HiArrowDown, HiArrowUp } from "react-icons/hi";
 
-import { Button, ButtonGroup} from "flowbite-react";
+import { Button, ButtonGroup } from "flowbite-react";
 import { LineChart } from "@mui/x-charts";
 
 export default function CustomersOverview () {
