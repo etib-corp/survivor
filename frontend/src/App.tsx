@@ -1,15 +1,13 @@
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 
-
-import Profiles from "./pages/Profiles";
 import Home from "./pages/Home";
-import Statistics from './pages/Statistics';
 import Account from './pages/Coaches';
 import Customers from './pages/Customers';
 import Tips from './pages/Tips';
 import Compatibility from './pages/Compatibility';
 import Sign from './pages/Sign';
 import Wardrobe from './pages/Wardrobe';
+import Events from './pages/Events';
 
 import AuthProvider from './components/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes';
@@ -33,6 +31,7 @@ function App() {
               <Route path="/Sign" element={<Sign />}></Route>
               <Route path="/" element={<Sign />}></Route>
               <Route path="*" element={<Error />}></Route>
+              <Route path="/Events" element={<Events/>}></Route>
             </Routes>
           </AuthProvider>
         </Router>
