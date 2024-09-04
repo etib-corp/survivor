@@ -10,9 +10,10 @@ function Tips() {
     const [tips, setTips] = useState<Tip[]>([]);
 
     useEffect(() => {
-        TipService.getAll().then((response) => {
-            if (Array.isArray(response.data)) {
-                setTips(response.data);
+        TipService.getAll().then((response: any) => {
+            if (Array.isArray(response.data['hydra:member'])) {
+                setTips(response.data['hydra:member']);
+                console.log(response.data['hydra:member']);
             } else {
                 console.log("Expected an array of tips but got:", response.data);
             }
@@ -31,21 +32,12 @@ function Tips() {
                 </h1>
                 <div className="flex justify-center pt-10">
                     <Accordion className="w-full">
-                        <Accordion.Panel>
-                            <Accordion.Title className="font-bold bg-white">What is Flowbite?</Accordion.Title>
-                            <Accordion.Content>
-                                Flowbite is an open-source library of interactive components built on top of Tailwind CSS including buttons,
-                                dropdowns, modals, navbars, and more.
-                                Check out this guide to learn how to&nbsp;
-                                <a
-                                    href="https://flowbite.com/docs/getting-started/introduction/"
-                                    className="text-cyan-600 hover:underline dark:text-cyan-500"
-                                >
-                                    get started&nbsp;
-                                </a>
-                                and start developing websites even faster with components on top of Tailwind CSS.
-                            </Accordion.Content>
-                        </Accordion.Panel> 
+                        {tips.map((tip) => (
+                            <Accordion.Panel key={tip.id}>
+                                <Accordion.Title><p>{tip.title}</p></Accordion.Title>
+                                <Accordion.Content><p>{tip.tip}</p></Accordion.Content>
+                            </Accordion.Panel>
+                        ))}
                     </Accordion>
                 </div>
             </div>
