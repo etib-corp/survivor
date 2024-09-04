@@ -141,7 +141,7 @@ export default function ETIBCoaches () {
           </Button>
         </div>
       </div>
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+      <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs text-gray-700 bg-gray-50">
           <tr>
             <th scope="col" className="p-4">
