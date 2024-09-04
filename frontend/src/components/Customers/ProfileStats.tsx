@@ -1,12 +1,13 @@
 import { Rating, Table } from "flowbite-react";
-import { Mastercard, Paypal, Visa } from "react-payment-logos/dist/flat";
+import { CiBank } from "react-icons/ci";
+import { FaCreditCard, FaCcPaypal } from "react-icons/fa";
 
 export const PaymentsMethod: React.FC<{ method: string }> = ({ method }) => {
     return (
         <span>
-            {method === "Visa" && <Visa className="h-6 w-10 rounded-md" />}
-            {method === "MasterCard" && <Mastercard className="h-6 w-10 rounded-md" />}
-            {method === "Paypal" && <Paypal className="h-6 w-10 rounded-md" />}
+            {method === "Credit Card" && <FaCreditCard className="h-6 w-10 rounded-md" />}
+            {method === "Bank Transfer" && <CiBank className="h-6 w-10 rounded-md" />}
+            {method === "PayPal" && <FaCcPaypal className="h-6 w-10 rounded-md" />}
         </span>
     )
 }

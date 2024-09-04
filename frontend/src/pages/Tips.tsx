@@ -13,7 +13,6 @@ function Tips() {
         TipService.getAll().then((response: any) => {
             if (Array.isArray(response.data['hydra:member'])) {
                 setTips(response.data['hydra:member']);
-                console.log(response.data['hydra:member']);
             } else {
                 console.log("Expected an array of tips but got:", response.data);
             }

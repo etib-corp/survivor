@@ -1,0 +1,15 @@
+export default interface Customer {
+    id?: number | null,
+    email: string,
+    name: string,
+    surname: string,
+    birth_date: string,
+    gender: string,
+    description: string,
+    astrological_sign: string,
+    encounters: string[],
+    payments: string[],
+    phone_number: string,
+    address: string,
+    payment_method: string,
+}

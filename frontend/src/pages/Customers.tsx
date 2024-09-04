@@ -1,41 +1,50 @@
 import ETIBCustomers from "../components/ETIBCustomers";
 import ETIBNavBar from "../components/ETIBNavBar";
-import { useState } from "react";
-
-const customers = [
-    {
-        name: "John Doe",
-        email: "johndoe@gmail.com",
-        phone: "1234567890",
-        paymentMethods: "Visa",
-        avatar: "kbo.png",
-        meetings: [],
-        payments: [],
-    },
-    {
-        name: "Jane Doe",
-        email: "janedoe@gmail.com",
-        phone: "1234567890",
-        paymentMethods: "MasterCard",
-        avatar: "kbo.png",
-        meetings: [],
-        payments: [],
-    },
-]
+import { useEffect, useState } from "react";
+import CustomerService from "../services/CustomerService";
+import Customer from "../types/Customer";
+import Payment from "../types/Payment";
+import PaymentService from "../services/PaymentService";
 
 function Customers () {
-
     const [props, setProps] = useState({ page: "customers" });
-
-    fetch('http://localhost:3000/api/', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
+    const [customers, setCustomers] = useState<Customer[]>([]);
+    const [payments, setPayments] = useState<Payment[]>([]);
+    useEffect(() => {
+        CustomerService.getAll().then((response: any) => {
+            if (Array.isArray(response.data['hydra:member'])) {
+                setCustomers(response.data['hydra:member']);
+                console.log(response.data['hydra:member']);
+            } else {
+                console.log("Expected an array of customers but got:", response.data);
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
+    });
+    useEffect(() => {
+        PaymentService.getAll().then((response: any) => {
+            if (Array.isArray(response.data['hydra:member'])) {
+                setPayments(response.data['hydra:member']);
+                console.log(response.data['hydra:member']);
+            } else {
+                console.log("Expected an array of payments but got:", response.data);
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
+    });
+    for (let i = 0; i < customers.length; i++) {
+        for (let j = 0; j < payments.length; j++) {
+            console.log(payments[j].customer);
+            console.log(payments[j].customer.slice(15));
+            if (payments[j].customer.slice(15) === customers[i].id?.toString()) {
+                customers[i].payment_method = payments[j].method;
+            }
         }
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.log('Error:', error))
+    }
+
+
 
     return (
         <div className="overflow-x-hidden">

@@ -171,19 +171,19 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                       <Checkbox />
                     </Table.Cell>
                     <Table.Cell onClick={() => { setCurrentCustomer(customer) }} className="text-blueT font-semibold flex flex-row">
-                      <Avatar img={customer.avatar} className="mr-2" />
+                      <Avatar img={process.env.REACT_APP_API_URL + "/images/customers/" + customer.id + ".png"} className="mr-2" /> {/*/ IL FAUT FAIRE UN ROUTE /*/}
                       <span className="my-auto">
-                        {customer.name}
+                        {customer.name + " " + customer.surname}
                       </span>
                     </Table.Cell>
                     <Table.Cell>
                       {customer.email}
                     </Table.Cell>
                     <Table.Cell>
-                      {customer.phone}
+                      {customer.phone_number}
                     </Table.Cell>
                     <Table.Cell>
-                      <PaymentsMethod method={customer.paymentMethods} />
+                      <PaymentsMethod method={customer.payment_method} />
                     </Table.Cell>
                     <Table.Cell className="flex justify-end">
                       <Button className="bg-transparent text-gray-700">
