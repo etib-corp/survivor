@@ -170,7 +170,7 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                       <Checkbox />
                     </Table.Cell>
                     <Table.Cell onClick={() => { setCurrentCustomer(coaches) }} className="text-blueT font-semibold flex flex-row">
-                      <Avatar img={coaches.avatar} className="mr-2" />
+                      <Avatar img={process.env.REACT_APP_PICTURES_URL + "/employees/" + coaches.id + ".png"} className="mr-2" />
                       <span className="my-auto">
                         {coaches.name}
                       </span>
