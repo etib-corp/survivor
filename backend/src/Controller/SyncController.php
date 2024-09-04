@@ -17,6 +17,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Encoder\JsonDecode;
+
+use function PHPSTORM_META\type;
 
 #[Route('/api')]
 class SyncController extends AbstractController
@@ -28,19 +31,31 @@ class SyncController extends AbstractController
         $this->httpClient = $httpClient;
     }
 
-    private function sendRequest(string $url, string $bearer) : mixed
+    private function sendRequest(string $url, string $bearer, bool $decode = true) : mixed
     {
         $api_key = $_SERVER['API_KEY'];
         $base_url = $_SERVER['BASE_URL'];
         $response = $this->httpClient->request('GET', $base_url.$url, [
             'headers' => [
                 'X-Group-Authorization' => $api_key,
-                "Accept" => "application/json",
+                "Accept" => "image/png",
                 "Authorization" => "Bearer ".$bearer
             ]
         ]);
-        $data = json_decode($response->getContent(), true);
-        return $data;
+
+        if ($response->getStatusCode() != 200) {
+            $json = [
+                'detail' => json_decode($response->getContent(false), true)['detail'],
+                'status' => $response->getStatusCode()
+            ];
+            return $json;
+        }
+
+        if ($decode) {
+            return json_decode($response->getContent(), true);
+        } else {
+            return $response->getContent();
+        }
     }
 
     #[Route('/sync/all', name: 'app_sync_all')]
@@ -62,7 +77,7 @@ class SyncController extends AbstractController
         $customers = $entityManager->getRepository(Customer::class)->findAll();
 
         foreach ($customers as $customer) {
-            $clotheResponse = $this->sendRequest('/api/customers/'.$customer->getId().'/clothes', '*');
+            $clotheResponse = $this->sendRequest('/api/customers/'.$customer->getId().'/clothes', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo');
             foreach ($clotheResponse as $clothe) {
                 $clotheEntity = null;
                 $alreadySyncedClothe = $entityManager->getRepository(Clothe::class)->findOneBy(['id' => $clothe['id']]);
@@ -73,8 +88,10 @@ class SyncController extends AbstractController
                     $clotheEntity = new Clothe();
                     $clotheEntity->setId($clothe['id']);
                     $clotheEntity->setType($clothe['type']);
+                    $this->syncImage('/api/clothes/'.$clothe['id'].'/image', 'images/clothes', $clotheEntity->getId().'.png');
                 } else {
                     $clotheEntity->setType($clothe['type']);
+                    $this->syncImage('/api/clothes/'.$clothe['id'].'/image', 'images/clothes', $clotheEntity->getId().'.png');
                 }
                 $entityManager->persist($clotheEntity);
             }
@@ -86,7 +103,7 @@ class SyncController extends AbstractController
     #[Route('/sync/customers', name: 'app_customer_sync')]
     public function syncCustomers(EntityManagerInterface $entityManager): JsonResponse
     {
-        $customers = $this->sendRequest('/api/customers', '*');
+        $customers = $this->sendRequest('/api/customers', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo');
 
         $alreadySyncedCustomers = $entityManager->getRepository(Customer::class)->findAll();
         foreach ($customers as $customer) {
@@ -96,7 +113,7 @@ class SyncController extends AbstractController
                     $customerEntity = $alreadySyncedCustomer;
                 }
             }
-            $customerResponse = $this->sendRequest('/api/customers/'.$customer['id'], '*');
+            $customerResponse = $this->sendRequest('/api/customers/'.$customer['id'], 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo');
             $birthDate = new \DateTime($customerResponse['birth_date']);
             if ($customerEntity === null) {
                 $customerEntity = new Customer();
@@ -108,6 +125,9 @@ class SyncController extends AbstractController
                 $customerEntity->setGender($customerResponse['gender']);
                 $customerEntity->setDescription($customerResponse['description']);
                 $customerEntity->setAstrologicalSign($customerResponse['astrological_sign']);
+                $customerEntity->setPhoneNumber($customerResponse['phone_number']);
+                $customerEntity->setAddress($customerResponse['address']);
+                $this->syncImage('/api/customers/'.$customer['id'].'/image', 'images/customers', $customerEntity->getId().'.png');
             } else {
                 $customerEntity->setName($customerResponse['name']);
                 $customerEntity->setEmail($customerResponse['email']);
@@ -116,6 +136,10 @@ class SyncController extends AbstractController
                 $customerEntity->setGender($customerResponse['gender']);
                 $customerEntity->setDescription($customerResponse['description']);
                 $customerEntity->setAstrologicalSign($customerResponse['astrological_sign']);
+                $customerEntity->setPhoneNumber($customerResponse['phone_number']);
+                $customerEntity->setAddress($customerResponse['address']);
+                $this->syncImage('/api/customers/'.$customer['id'].'/image', 'images/customers', $customerEntity->getId().'.png');
+
             }
             $entityManager->persist($customerEntity);
         }
@@ -123,10 +147,48 @@ class SyncController extends AbstractController
         return new JsonResponse(['message' => 'Customers synced'], Response::HTTP_OK);
     }
 
+    #[Route('/sync/customers/{id}', name: 'app_customer_sync_by_id')]
+    public function syncCustomersByID(EntityManagerInterface $entityManager, string $id): JsonResponse
+    {
+        $customer = $this->sendRequest('/api/customers/'.$id, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo');
+
+        $customerEntity = $entityManager->getRepository(Customer::class)->findOneBy(['id' => $id]);
+        $birthDate = new \DateTime($customer['birth_date']);
+        if ($customerEntity === null) {
+            $customerEntity = new Customer();
+            $customerEntity->setId($customer['id']);
+            $customerEntity->setName($customer['name']);
+            $customerEntity->setEmail($customer['email']);
+            $customerEntity->setSurname($customer['surname']);
+            $customerEntity->setBirthDate($birthDate);
+            $customerEntity->setGender($customer['gender']);
+            $customerEntity->setDescription($customer['description']);
+            $customerEntity->setAstrologicalSign($customer['astrological_sign']);
+            $customerEntity->setPhoneNumber($customer['phone_number']);
+            $customerEntity->setAddress($customer['address']);
+            $this->syncImage('/api/customers/'.$customer['id'].'/image', 'images/customers', $customerEntity->getId().'.png');
+        } else {
+            $customerEntity->setName($customer['name']);
+            $customerEntity->setEmail($customer['email']);
+            $customerEntity->setSurname($customer['surname']);
+            $customerEntity->setBirthDate($birthDate);
+            $customerEntity->setGender($customer['gender']);
+            $customerEntity->setDescription($customer['description']);
+            $customerEntity->setAstrologicalSign($customer['astrological_sign']);
+            $customerEntity->setPhoneNumber($customer['phone_number']);
+            $customerEntity->setAddress($customer['address']);
+            $this->syncImage('/api/customers/'.$customer['id'].'/image', 'images/customers', $customerEntity->getId().'.png');
+
+        }
+        $entityManager->persist($customerEntity);
+        $entityManager->flush();
+        return new JsonResponse(['message' => 'Customer '.$id.' synced'], Response::HTTP_OK);
+    }
+
     #[Route('/sync/employees', name: 'app_employee_sync')]
     public function syncEmployees(EntityManagerInterface $entityManager): JsonResponse
     {
-        $employees = $this->sendRequest('/api/employees', '*');
+        $employees = $this->sendRequest('/api/employees', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo');
 
         $alreadySyncedEmployees = $entityManager->getRepository(Employee::class)->findAll();
         foreach ($employees as $employee) {
@@ -136,7 +198,7 @@ class SyncController extends AbstractController
                     $employeeEntity = $alreadySyncedEmployee;
                 }
             }
-            $employeeResponse = $this->sendRequest('/api/employees/'.$employee['id'], '*');
+            $employeeResponse = $this->sendRequest('/api/employees/'.$employee['id'], 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo');
             $birthDate = new \DateTime($employeeResponse['birth_date']);
             if ($employeeEntity === null) {
                 $employeeEntity = new Employee();
@@ -147,6 +209,7 @@ class SyncController extends AbstractController
                 $employeeEntity->setBirthDate($birthDate);
                 $employeeEntity->setGender($employeeResponse['gender']);
                 $employeeEntity->setWork($employeeResponse['work']);
+                $this->syncImage('/api/employees/'.$employee['id'].'/image', 'images/employees', $employeeEntity->getId().'.png');
             } else {
                 $employeeEntity->setName($employeeResponse['name']);
                 $employeeEntity->setEmail($employeeResponse['email']);
@@ -154,6 +217,7 @@ class SyncController extends AbstractController
                 $employeeEntity->setBirthDate($birthDate);
                 $employeeEntity->setGender($employeeResponse['gender']);
                 $employeeEntity->setWork($employeeResponse['work']);
+                $this->syncImage('/api/employees/'.$employee['id'].'/image', 'images/employees', $employeeEntity->getId().'.png');
             }
             $entityManager->persist($employeeEntity);
         }
@@ -167,7 +231,7 @@ class SyncController extends AbstractController
         $customers = $entityManager->getRepository(Customer::class)->findAll();
 
         foreach ($customers as $customer) {
-            $paymentResponse = $this->sendRequest('/api/customers/'.$customer->getId().'/payments_history', '*');
+            $paymentResponse = $this->sendRequest('/api/customers/'.$customer->getId().'/payments_history', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo');
             // return new JsonResponse($paymentResponse, Response::HTTP_OK);
             foreach ($paymentResponse as $payment) {
                 $paymentEntity = null;
@@ -201,7 +265,7 @@ class SyncController extends AbstractController
     #[Route('/sync/encounters', name: 'app_encounter_sync')]
     public function syncEncounters(EntityManagerInterface $entityManager): JsonResponse
     {
-        $encounters = $this->sendRequest('/api/encounters', '*');
+        $encounters = $this->sendRequest('/api/encounters', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo');
 
         $alreadySyncedEncounters = $entityManager->getRepository(Encounter::class)->findAll();
         foreach ($encounters as $encounter) {
@@ -211,7 +275,7 @@ class SyncController extends AbstractController
                     $encounterEntity = $alreadySyncedEncounter;
                 }
             }
-            $encounterResponse = $this->sendRequest('/api/encounters/'.$encounter['id'], '*');
+            $encounterResponse = $this->sendRequest('/api/encounters/'.$encounter['id'], 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo');
             $customer = $entityManager->getRepository(Customer::class)->findOneBy(['id' => $encounterResponse['customer_id']]);
             $date = new \DateTime($encounterResponse['date']);
             if ($encounterEntity === null) {
@@ -238,7 +302,7 @@ class SyncController extends AbstractController
     #[Route('/sync/tips', name: 'app_tip_sync')]
     public function syncTips(EntityManagerInterface $entityManager): JsonResponse
     {
-        $tips = $this->sendRequest('/api/tips', '*');
+        $tips = $this->sendRequest('/api/tips', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo');
 
         $alreadySyncedTips = $entityManager->getRepository(Tip::class)->findAll();
         foreach ($tips as $tip) {
@@ -266,7 +330,7 @@ class SyncController extends AbstractController
     #[Route('/sync/events', name: 'app_event_sync')]
     public function syncEvents(EntityManagerInterface $entityManager): JsonResponse
     {
-        $events = $this->sendRequest('/api/events', '*');
+        $events = $this->sendRequest('/api/events', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo');
 
         $alreadySyncedEvents = $entityManager->getRepository(Event::class)->findAll();
         foreach ($events as $event) {
@@ -276,7 +340,7 @@ class SyncController extends AbstractController
                     $eventEntity = $alreadySyncedEvent;
                 }
             }
-            $eventResponse = $this->sendRequest('/api/events/'.$event['id'], '*');
+            $eventResponse = $this->sendRequest('/api/events/'.$event['id'], 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo');
             $employee = $entityManager->getRepository(Employee::class)->findOneBy(['id' => $eventResponse['employee_id']]);
             $date = new \DateTime($eventResponse['date']);
             if ($eventEntity === null) {
@@ -307,4 +371,24 @@ class SyncController extends AbstractController
         return new JsonResponse(['message' => 'Events synced'], Response::HTTP_OK);
     }
 
+    #[Route('/sync/image', name: 'app_image_sync')]
+    public function synctest(EntityManagerInterface $entityManager): Response
+    {
+        $response = $this->syncImage('/api/customers/1/image', 'images', 'google.png');
+        return new JsonResponse(['message' => 'Image synced'], Response::HTTP_OK);
+    }
+
+    public function syncImage(string $url, string $path, string $name)
+    {
+        $response = $this->sendRequest($url, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJqZWFubmUubWFydGluQHNvdWwtY29ubmVjdGlvbi5mciIsIm5hbWUiOiJKZWFubmUiLCJzdXJuYW1lIjoiTWFydGluIiwiZXhwIjoxNzI3MTcxODc3fQ._9DcsZH74N8bov9wfm6eaAOAbc9FrkvgNTrwdWuXWuo', false);
+        if (gettype($response) == "array" && $response["status"] == 404) {
+            copy($path.'/default_pp.png', $path.'/'.$name);
+            return;
+        }
+        if (!file_exists($path))
+            mkdir($path, 0777, true);
+        $file = fopen($path.'/'.$name, 'wb');
+        fwrite($file, $response);
+        fclose($file);
+    }
 }

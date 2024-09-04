@@ -50,6 +50,12 @@ class Customer
     #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'customer', orphanRemoval: true)]
     private Collection $payments;
 
+    #[ORM\Column(length: 255)]
+    private ?string $phone_number = null;
+
+    #[ORM\Column(length: 1024)]
+    private ?string $address = null;
+
     public function __construct()
     {
         $this->encounters = new ArrayCollection();
@@ -208,6 +214,30 @@ class Customer
                 $payment->setCustomer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phone_number;
+    }
+
+    public function setPhoneNumber(string $phone_number): static
+    {
+        $this->phone_number = $phone_number;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): static
+    {
+        $this->address = $address;
 
         return $this;
     }
