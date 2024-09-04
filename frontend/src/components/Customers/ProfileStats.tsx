@@ -1,7 +1,7 @@
 import { Rating, Table } from "flowbite-react";
 import { Mastercard, Paypal, Visa } from "react-payment-logos/dist/flat";
 
-const PaymentsMethod: React.FC<{ method: string }> = ({ method }) => {
+export const PaymentsMethod: React.FC<{ method: string }> = ({ method }) => {
     return (
         <span>
             {method === "Visa" && <Visa className="h-6 w-10 rounded-md" />}

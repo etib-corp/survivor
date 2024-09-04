@@ -8,7 +8,9 @@ const ProfileSide: React.FC<{ properties: any }> = ({ properties }) => {
             <div className="flex flex-col bg-white border py-8">
                 <Avatar size="lg" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded/>
                 <div className="flex flex-col p-4 mx-auto text-center">
-                    <h1 className="text-2xl font-bold">{properties.name}</h1>
+                    <h1 className="text-2xl font-bold">
+                        {properties.name}
+                    </h1>
                 </div>
             </div>
             <div className="flex flex-col bg-white border py-8">
