@@ -56,7 +56,7 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
                 <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md"/>
             }
         </Navbar.Link>
-        <Navbar.Link className="focus:text-blueT" href="#" active={properties.page === "tips"} onClick={() => { OnChangeView({ page: "tips" })}}>
+        <Navbar.Link className="focus:text-blueT" href="/Tips" active={properties.page === "tips"} onClick={() => { OnChangeView({ page: "tips" })}}>
             Tips
             {
                 properties.page === "tips" &&
