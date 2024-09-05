@@ -1,5 +1,4 @@
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
-import { ChatBubble } from "@mui/icons-material";
 import { RiMessage2Line } from "react-icons/ri";
 
 const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => void }> = ({ properties, OnChangeView }) => {
