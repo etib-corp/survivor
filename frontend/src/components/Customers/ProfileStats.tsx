@@ -97,19 +97,20 @@ const MeetingsTable: React.FC<{ meetings: any }> = ({ meetings }) => {
 }
 
 const ProfileStats: React.FC<{ properties: any }> = ({ properties }) => {
+    console.log(properties);
     return (
         <div className="flex flex-col bg-white border w-[75%] rounded-md py-4 px-4 h-[75%]">
             <div className="flex flex-col space-y-4">
                 <h1 className="font-semibold">
                     Recent Meetings
                 </h1>
-                <MeetingsTable meetings={properties.meetings}/>
+                <MeetingsTable meetings={[]}/>
             </div>
             <div className="flex flex-col space-y-4 mt-4">
                 <h1 className="font-semibold">
                     Payments history
                 </h1>
-                <PaymentsTable payments={properties.payments}/>
+                <PaymentsTable payments={[]}/>
             </div>
         </div>
     )
