@@ -7,6 +7,7 @@ import Statistics from './pages/Statistics';
 import Account from './pages/Coaches';
 import Customers from './pages/Customers';
 import Tips from './pages/Tips';
+import Compatibility from './pages/Compatibility';
 import Sign from './pages/Sign';
 import Wardrobe from './pages/Wardrobe';
 
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/Customers" element={<Customers />}></Route>
                 <Route path="/Tips" element={<Tips />}></Route>
                 <Route path="/Wardrobe" element={<Wardrobe/>}></Route>
+                <Route path="/Compatibility" element={<Compatibility/>}></Route>
               </Route>
               <Route path="/Sign" element={<Sign />}></Route>
               <Route path="/" element={<Sign />}></Route>
