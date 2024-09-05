@@ -1,6 +1,28 @@
+import { useEffect, useState } from "react";
+
 import { Button, Carousel } from "flowbite-react";
 
+import Clothe from "../../types/Clothe";
+import ClotheService from "../../services/ClotheService";
+
 export default function ETIBWardrobe() {
+    const [clothes, setClothes] = useState<Clothe[]>([]);
+    useEffect(() => {
+        ClotheService.getAll().then((response: any) => {
+            if (Array.isArray(response.data['hydra:member'])) {
+                setClothes(response.data['hydra:member']);
+            } else {
+                console.log("Expected an array of clothes but got:", response.data);
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
+    }, []);
+
+    const hats = clothes.filter((clothe) => clothe.type === "hat/cap");
+    const topClothes = clothes.filter((clothe) => clothe.type === "top");
+    const bottomClothes = clothes.filter((clothe) => clothe.type === "bottom");
+    const shoes = clothes.filter((clothe) => clothe.type === "shoes");
     return (
         <div className="flex flex-col space-y-56">
             <div className="grid grid-cols-1 md:flex md:flex-row justify-between md:mt-8 ml-4 mr-4">
@@ -26,16 +48,15 @@ export default function ETIBWardrobe() {
                                 Hats
                             </h1>
                             <p>
-                                You have total 5 hats.
+                                You have total {hats.length} hats.
                             </p>
                         </div>
                         <div className="h-32 w-32 sm:h-56 sm:w-56">
                             <Carousel slide={false}>
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-1.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-3.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-4.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-5.svg" alt="..." />
+                                {hats.map((hat) => (
+                                    <img src={process.env.REACT_APP_PICTURES_URL + "/clothes/" + hat.id + ".png"} alt="hat" />
+                                )
+                                )}
                             </Carousel>
                         </div>
                     </div>
@@ -45,16 +66,15 @@ export default function ETIBWardrobe() {
                                 Top clothes
                             </h1>
                             <p>
-                                You have total 5 top clothes.
+                                You have total {topClothes.length} top clothes.
                             </p>
                         </div>
                         <div className="h-32 w-32 sm:h-56 sm:w-56">
                             <Carousel slide={false}>
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-1.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-3.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-4.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-5.svg" alt="..." />
+                                {topClothes.map((top) => (
+                                    <img src={process.env.REACT_APP_PICTURES_URL + "/clothes/" + top.id + ".png"} alt="top" />
+                                )
+                                )}
                             </Carousel>
                         </div>
                     </div>
@@ -64,16 +84,15 @@ export default function ETIBWardrobe() {
                                 Bottom clothes
                             </h1>
                             <p>
-                                You have total 5 bottom clothes.
+                                You have total {bottomClothes.length} bottom clothes.
                             </p>
                         </div>
                         <div className="h-32 w-32 sm:h-56 sm:w-56">
                             <Carousel slide={false}>
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-1.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-3.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-4.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-5.svg" alt="..." />
+                                {bottomClothes.map((bottom) => (
+                                    <img src={process.env.REACT_APP_PICTURES_URL + "/clothes/" + bottom.id + ".png"} alt="bottom" />
+                                )
+                                )}
                             </Carousel>
                         </div>
                     </div>
@@ -83,16 +102,15 @@ export default function ETIBWardrobe() {
                                 Shoes
                             </h1>
                             <p>
-                                You have total 5 shoes.
+                                You have total {shoes.length} shoes.
                             </p>
                         </div>
                         <div className="h-32 w-32 sm:h-56 sm:w-56">
                             <Carousel slide={false}>
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-1.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-3.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-4.svg" alt="..." />
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-5.svg" alt="..." />
+                                {shoes.map((shoe) => (
+                                    <img src={process.env.REACT_APP_PICTURES_URL + "/clothes/" + shoe.id + ".png"} alt="shoe" />
+                                )
+                                )}
                             </Carousel>
                         </div>
                     </div>
