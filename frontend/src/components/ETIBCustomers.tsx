@@ -171,7 +171,7 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                       <Checkbox />
                     </Table.Cell>
                     <Table.Cell onClick={() => { setCurrentCustomer(customer) }} className="text-blueT font-semibold flex flex-row">
-                      <Avatar img={process.env.REACT_APP_API_URL + "/images/customers/" + customer.id + ".png"} className="mr-2" /> {/*/ IL FAUT FAIRE UN ROUTE /*/}
+                      <Avatar img={process.env.REACT_APP_PICTURES_URL + "/customers/" + customer.id + ".png"} className="mr-2" /> {/*/ IL FAUT FAIRE UN ROUTE /*/}
                       <span className="my-auto">
                         {customer.name + " " + customer.surname}
                       </span>

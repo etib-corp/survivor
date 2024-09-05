@@ -8,10 +8,10 @@ import Account from './pages/Coaches';
 import Customers from './pages/Customers';
 import Tips from './pages/Tips';
 import Sign from './pages/Sign';
+import Wardrobe from './pages/Wardrobe';
 
 import AuthProvider from './components/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes';
-
 
 function App() {
   return (
@@ -25,6 +25,7 @@ function App() {
                 <Route path="/Coaches" element={<Account />}></Route>
                 <Route path="/Customers" element={<Customers />}></Route>
                 <Route path="/Tips" element={<Tips />}></Route>
+                <Route path="/Wardrobe" element={<Wardrobe/>}></Route>
               </Route>
               <Route path="/Sign" element={<Sign />}></Route>
               <Route path="/" element={<Sign />}></Route>

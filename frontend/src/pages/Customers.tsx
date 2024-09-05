@@ -21,7 +21,7 @@ function Customers () {
         }).catch((e) => {
             console.log(e);
         });
-    });
+    }, []);
     useEffect(() => {
         PaymentService.getAll().then((response: any) => {
             if (Array.isArray(response.data['hydra:member'])) {
@@ -33,11 +33,9 @@ function Customers () {
         }).catch((e) => {
             console.log(e);
         });
-    });
+    }, []);
     for (let i = 0; i < customers.length; i++) {
         for (let j = 0; j < payments.length; j++) {
-            console.log(payments[j].customer);
-            console.log(payments[j].customer.slice(15));
             if (payments[j].customer.slice(15) === customers[i].id?.toString()) {
                 customers[i].payment_method = payments[j].method;
             }

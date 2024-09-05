@@ -9,8 +9,6 @@ function Account () {
 
     useEffect(() => {
         let data: any = [];
-
-        console.log("Fetching data from API ",process.env.REACT_APP_API_URL);
         EmployeeService.getAll().then((response: any) => {
             if (Array.isArray(response.data['hydra:member'])) {
                 data = response.data['hydra:member'];
