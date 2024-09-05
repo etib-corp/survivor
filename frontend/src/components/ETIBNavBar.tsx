@@ -49,49 +49,49 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
         </Dropdown>
       </div>
       <Navbar.Collapse>
-        <Navbar.Link className="focus:text-blue" href="/Home" active={properties.page === "dashboard"} onClick={() => { OnChangeView({ page: "dashboard" }) }}>
+        <Navbar.Link className="focus:text-blue" active={properties.page === "dashboard"} onClick={() => { navigate("/Home"); OnChangeView({ page: "dashboard" }) }}>
           Dashboard
           {
             properties.page === "dashboard" &&
             <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
           }
         </Navbar.Link>
-        <Navbar.Link className="focus:text-blue" href="/Coaches" active={properties.page === "coaches"} onClick={() => { OnChangeView({ page: "coaches" }) }}>
+        <Navbar.Link className="focus:text-blue" active={properties.page === "coaches"} onClick={() => { navigate("/Coaches"); OnChangeView({ page: "coaches" }) }}>
           Coaches
           {
             properties.page === "coaches" &&
             <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
           }
         </Navbar.Link>
-        <Navbar.Link className="focus:text-blueT" href="/Customers" active={properties.page === "customers"} onClick={() => { OnChangeView({ page: "customers" }) }}>
+        <Navbar.Link className="focus:text-blueT" active={properties.page === "customers"} onClick={() => { navigate("/Customers"); OnChangeView({ page: "customers" }) }}>
           Customers
           {
             properties.page === "customers" &&
             <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
           }
         </Navbar.Link>
-        <Navbar.Link className="focus:text-blueT" href="/Tips" active={properties.page === "tips"} onClick={() => { OnChangeView({ page: "tips" }) }}>
+        <Navbar.Link className="focus:text-blueT" active={properties.page === "tips"} onClick={() => { navigate("/Tips"); OnChangeView({ page: "tips" }) }}>
           Tips
           {
             properties.page === "tips" &&
             <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
           }
         </Navbar.Link>
-        <Navbar.Link className="focus:text-blueT" href="#" active={properties.page === "events"} onClick={() => { OnChangeView({ page: "events" }) }}>
+        <Navbar.Link className="focus:text-blueT" active={properties.page === "events"} onClick={() => { navigate("/Events"); OnChangeView({ page: "events" }) }}>
           Events
           {
             properties.page === "events" &&
             <div className="sm:visible invisiblerelative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
           }
         </Navbar.Link>
-        <Navbar.Link className="focus:text-blueT" href="/Wardrobe" active={properties.page === "wardrobe"} onClick={() => { OnChangeView({ page: "wardrobe" })}}>
+        <Navbar.Link className="focus:text-blueT" active={properties.page === "wardrobe"} onClick={() => { navigate("/Wardrobe"); OnChangeView({ page: "wardrobe" })}}>
             Wardrobe
             {
                 properties.page === "wardrobe" &&
                 <div className="sm:visible invisiblerelative h-[3px] bg-blueT top-[1.15rem] top rounded-md"/>
             }
         </Navbar.Link>
-        <Navbar.Link className="focus:text-blueT" href="/Compatibility" active={properties.page === "compatibility"} onClick={() => { OnChangeView({ page: "compatibility" })}}>
+        <Navbar.Link className="focus:text-blueT" active={properties.page === "compatibility"} onClick={() => { navigate("/Compatibility"); OnChangeView({ page: "compatibility" })}}>
             Compatibility
             {
                 properties.page === "events" &&
