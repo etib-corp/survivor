@@ -22,7 +22,7 @@ const ProfileSide: React.FC<{ properties: any }> = ({ properties }) => {
             <div className="flex flex-row bg-white border py-8 justify-between px-8">
                 <div className="flex flex-col text-center w-[30%]">
                     <h1 className="text-2xl font-bold">
-                        {properties.encounters}
+                        {properties.encounters.length}
                     </h1>
                     <p className="text-gray-500">
                         Total Encounters
