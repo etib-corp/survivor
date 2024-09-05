@@ -6,6 +6,7 @@ import Statistics from './pages/Statistics';
 import Account from './pages/Coaches';
 import Customers from './pages/Customers';
 import Tips from './pages/Tips';
+import Wardrobe from './pages/Wardrobe';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/Profiles" element={<Profiles/>}></Route>
           <Route path="/Statistics" element={<Statistics/>}></Route>
           <Route path="/Tips" element={<Tips/>}></Route>
+          <Route path="/Wardrobe" element={<Wardrobe/>}></Route>
         </Routes>
       </div>
     </main>
