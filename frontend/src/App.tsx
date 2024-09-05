@@ -13,6 +13,7 @@ import Wardrobe from './pages/Wardrobe';
 
 import AuthProvider from './components/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes';
+import Error from './pages/404Error';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
               </Route>
               <Route path="/Sign" element={<Sign />}></Route>
               <Route path="/" element={<Sign />}></Route>
+              <Route path="*" element={<Error />}></Route>
             </Routes>
           </AuthProvider>
         </Router>
