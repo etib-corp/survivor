@@ -115,8 +115,8 @@ function Home () {
     return (
         <div className="overflow-x-hidden">
             <ETIBNavBar properties={props} OnChangeView={setProps}/>
-            <CustomerDetails properties={customerDetails}/>
-            <div className="p-64 shadow-md"></div>
+            {/* <CustomerDetails properties={customerDetails}/> */}
+            {/* <div className="p-64 shadow-md"></div> */}
         </div>
     );
 }

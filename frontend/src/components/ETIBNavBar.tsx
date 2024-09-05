@@ -1,5 +1,4 @@
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
-import { ChatBubble } from "@mui/icons-material";
 import { RiMessage2Line } from "react-icons/ri";
 
 const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => void }> = ({ properties, OnChangeView }) => {
@@ -67,6 +66,13 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
             Events
             {
                 properties.page === "events" &&
+                <div className="sm:visible invisiblerelative h-[3px] bg-blueT top-[1.15rem] top rounded-md"/>
+            }
+        </Navbar.Link>
+        <Navbar.Link className="focus:text-blueT" href="/Wardrobe" active={properties.page === "wardrobe"} onClick={() => { OnChangeView({ page: "wardrobe" })}}>
+            Wardrobe
+            {
+                properties.page === "wardrobe" &&
                 <div className="sm:visible invisiblerelative h-[3px] bg-blueT top-[1.15rem] top rounded-md"/>
             }
         </Navbar.Link>
