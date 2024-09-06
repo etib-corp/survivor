@@ -25,7 +25,7 @@ function App() {
               <Route element={<PrivateRoutes />}>
                 <Route path="/Home" element={<Home />}></Route>
                 <Route path="/Coaches" element={<Account />}></Route>
-                <Route path="/Customers" element={<Customers />}></Route>
+                {/* <Route path="/Customers" element={<Customers />}></Route> */}
                 <Route path="/Tips" element={<Tips />}></Route>
                 <Route path="/Wardrobe" element={<Wardrobe/>}></Route>
                 <Route path="/Compatibility" element={<Compatibility/>}></Route>
@@ -33,6 +33,7 @@ function App() {
               <Route path="/Sign" element={<Sign />}></Route>
               <Route path="/" element={<Sign />}></Route>
               <Route path="*" element={<Error />}></Route>
+              <Route path="/Customers" element={<Customers />}></Route>
             </Routes>
           </AuthProvider>
         </Router>

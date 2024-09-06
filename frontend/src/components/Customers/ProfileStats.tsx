@@ -1,6 +1,13 @@
+import { useState, useEffect } from "react";
+
 import { Rating, Table } from "flowbite-react";
+
 import { CiBank } from "react-icons/ci";
 import { FaCreditCard, FaCcPaypal } from "react-icons/fa";
+
+import EncounterService from "../../services/EncounterService";
+import PaymentService from "../../services/PaymentService";
+import Encounter from "../../types/Encounter";
 
 export const PaymentsMethod: React.FC<{ method: string }> = ({ method }) => {
     return (
@@ -35,7 +42,7 @@ const PaymentsTable: React.FC<{ payments: any }> = ({ payments }) => {
                 {lastPayments.map((payment: any) => (
                     <Table.Row className="border">
                         <Table.Cell className="text-blueT font-semibold">
-                            {payment.date}
+                            {payment.date.split("T")[0]}
                         </Table.Cell>
                         <Table.Cell>
                             <PaymentsMethod method={payment.method} />
@@ -75,7 +82,7 @@ const MeetingsTable: React.FC<{ meetings: any }> = ({ meetings }) => {
                 {lastMeetings.map((meeting: any) => (
                     <Table.Row className="border">
                         <Table.Cell className="text-blueT font-semibold">
-                            {meeting.date}
+                            {meeting.date.split("T")[0]}
                         </Table.Cell>
                         <Table.Cell>
                             <Rating>
@@ -85,7 +92,7 @@ const MeetingsTable: React.FC<{ meetings: any }> = ({ meetings }) => {
                             </Rating>
                         </Table.Cell>
                         <Table.Cell>
-                            {meeting.report}
+                            {meeting.comment}
                         </Table.Cell>
                         <Table.Cell>
                             {meeting.source}
@@ -97,20 +104,60 @@ const MeetingsTable: React.FC<{ meetings: any }> = ({ meetings }) => {
 }
 
 const ProfileStats: React.FC<{ properties: any }> = ({ properties }) => {
-    console.log(properties);
+    const [meetings, setMeetings] = useState<any>([]);
+    const [payments, setPayments] = useState<any>([]);
+
+    useEffect(() => {
+        function fetchMeetings() {
+            return Promise.all(properties.encounters.map((meeting: string) => {
+                const id = parseInt(meeting.split("/").pop() as string);
+                return EncounterService.get(id);
+            }));
+        }
+
+        function fetchPayments() {
+            return Promise.all(properties.payments.map((payment: string) => {
+                const id = parseInt(payment.split("/").pop() as string);
+                return PaymentService.get(id);
+            }));
+        }
+
+        fetchMeetings().then((responses) => {
+            let tmpMeetings = new Array();
+
+            responses.map((response) => {
+                tmpMeetings.push(response.data);
+            });
+
+            setMeetings(tmpMeetings);
+        });
+
+        fetchPayments().then((responses) => {
+            let tmpPayments = new Array();
+
+            responses.map((response) => {
+                tmpPayments.push(response.data);
+            });
+
+            setPayments(tmpPayments);
+        });
+
+
+    }, []);
+
     return (
         <div className="flex flex-col bg-white border w-[75%] rounded-md py-4 px-4 h-[75%]">
             <div className="flex flex-col space-y-4">
                 <h1 className="font-semibold">
                     Recent Meetings
                 </h1>
-                <MeetingsTable meetings={[]}/>
+                <MeetingsTable meetings={meetings}/>
             </div>
             <div className="flex flex-col space-y-4 mt-4">
                 <h1 className="font-semibold">
                     Payments history
                 </h1>
-                <PaymentsTable payments={[]}/>
+                <PaymentsTable payments={payments}/>
             </div>
         </div>
     )
