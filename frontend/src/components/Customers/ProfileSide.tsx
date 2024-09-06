@@ -27,7 +27,6 @@ const ProfileSide: React.FC<{ properties: any }> = ({ properties }) => {
             setPositives(count);
         });
     }, []);
-    console.log(properties);
     return (
         <div className="flex flex-col bg-white border mr-8 w-[25%] rounded-md">
             <div className="flex flex-col bg-white border py-8">
