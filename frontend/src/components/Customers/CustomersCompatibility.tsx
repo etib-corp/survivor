@@ -34,9 +34,12 @@ const CustomersCompatibility: React.FC<{ properties: any }> = ({ properties }) =
 
     return (
         <div className="flex flex-col items-center justify-center my-10 md:my-0 md:h-[100vh]">
+            <div className="underline decoration-blueT underline-offset-8 sm:text-2xl text-sm pb-[11%]">
+                Check Customers compatibility
+            </div>
             <div className="grid gap-x-5 md:gap-x-0 grid-cols-2 md:grid-cols-7 pb-[10vh] gap-y-10">
                 <div className="flex justify-center items-center md:col-start-3 md:col-end-4">
-                    <Dropdown className="overflow-auto h-[30%]" onChange={handleSearch1} label={inputSearch1 !== "" ? inputSearch1 : "Select a customer"}>
+                    <Dropdown color="light" className="overflow-auto h-[30%]" onChange={handleSearch1} label={inputSearch1 !== "" ? inputSearch1 : "Select a customer"}>
                         {properties.map((customer: any) => (
                             <Dropdown.Item className="text-sm" onClick={() => {
                                 setInputSearch1(customer.name);
@@ -48,7 +51,7 @@ const CustomersCompatibility: React.FC<{ properties: any }> = ({ properties }) =
                     </Dropdown>
                 </div>
                 <div className="flex justify-center items-center md:col-start-4 md:cols-end-5">
-                    <Dropdown className="overflow-auto h-[30%]" onChange={handleSearch2} label={inputSearch2 !== "" ? inputSearch2 : "Select a customer"}>
+                    <Dropdown color="light" className="overflow-auto h-[30%]" onChange={handleSearch2} label={inputSearch2 !== "" ? inputSearch2 : "Select a customer"}>
                         {properties.map((customer: any) => (
                             <Dropdown.Item className="text-sm" onClick={() => {
                                 setInputSearch2(customer.name)

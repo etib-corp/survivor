@@ -14,7 +14,6 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
     navigate("/");
   };
 
-
   return (
     <Navbar fluid rounded className="shadow-sm">
       <Navbar.Toggle />
@@ -41,8 +40,8 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
               name@exemple.com
             </span>
           </Dropdown.Header>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Divider />
+          {/* <Dropdown.Item>Settings</Dropdown.Item> */}
+          {/* <Dropdown.Divider /> */}
           <Dropdown.Item onClick={handleSignOut}>
             Sign out
           </Dropdown.Item>
@@ -81,21 +80,21 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
           Events
           {
             properties.page === "events" &&
-            <div className="sm:visible invisiblerelative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
+            <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
           }
         </Navbar.Link>
         <Navbar.Link className="focus:text-blueT" active={properties.page === "wardrobe"} onClick={() => { navigate("/Wardrobe"); OnChangeView({ page: "wardrobe" })}}>
             Wardrobe
             {
                 properties.page === "wardrobe" &&
-                <div className="sm:visible invisiblerelative h-[3px] bg-blueT top-[1.15rem] top rounded-md"/>
+                <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md"/>
             }
         </Navbar.Link>
         <Navbar.Link className="focus:text-blueT" active={properties.page === "compatibility"} onClick={() => { navigate("/Compatibility"); OnChangeView({ page: "compatibility" })}}>
             Compatibility
             {
-                properties.page === "events" &&
-                <div className="sm:visible invisiblerelative h-[3px] bg-blueT top-[1.15rem] top rounded-md"/>
+                properties.page === "compatibility" &&
+                <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md"/>
             }
         </Navbar.Link>
       </Navbar.Collapse>
