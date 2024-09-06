@@ -7,7 +7,7 @@ const getAll = () => {
 };
 
 const get = (id: number) => {
-    return http.get<Event>(`/events/${id}`);
+    return http.get<Event>(`/events/${id}?order[date]=desc`);
 };
 
 const EventService = {
