@@ -1,28 +1,41 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
+
 
 import Profiles from "./pages/Profiles";
 import Home from "./pages/Home";
 import Statistics from './pages/Statistics';
+import Account from './pages/Coaches';
+import Customers from './pages/Customers';
+import Tips from './pages/Tips';
+import Compatibility from './pages/Compatibility';
+import Sign from './pages/Sign';
+import Wardrobe from './pages/Wardrobe';
 
+import AuthProvider from './components/AuthContext';
+import PrivateRoutes from './utils/PrivateRoutes';
+import Error from './pages/404Error';
 
 function App() {
-  // return (
-  //   <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
-  //     <h1 className="text-2xl dark:text-white">
-  //       Flowbite React + Create React App
-  //     </h1>
-  //     <DarkThemeToggle />
-  //     <Profiles />
-  //   </main>
-  // );
   return (
     <main>
       <div>
-        <Routes>
-          <Route path="/" element={<Home/>}></Route>
-          <Route path="/Profiles" element={<Profiles/>}></Route>
-          <Route path="/Statistics" element={<Statistics/>}></Route>
-        </Routes>
+        <Router>
+          <AuthProvider>
+            <Routes>
+              <Route element={<PrivateRoutes />}>
+                <Route path="/Home" element={<Home />}></Route>
+                <Route path="/Coaches" element={<Account />}></Route>
+                <Route path="/Customers" element={<Customers />}></Route>
+                <Route path="/Tips" element={<Tips />}></Route>
+                <Route path="/Wardrobe" element={<Wardrobe/>}></Route>
+                <Route path="/Compatibility" element={<Compatibility/>}></Route>
+              </Route>
+              <Route path="/Sign" element={<Sign />}></Route>
+              <Route path="/" element={<Sign />}></Route>
+              <Route path="*" element={<Error />}></Route>
+            </Routes>
+          </AuthProvider>
+        </Router>
       </div>
     </main>
   );
