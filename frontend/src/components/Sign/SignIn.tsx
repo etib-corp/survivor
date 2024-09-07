@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Label, TextInput } from "flowbite-react";
 
 import { useAuth } from "../AuthContext";
+import axios from "axios";
 
 export function SignIn() {
     const { login } = useAuth();
@@ -12,8 +13,18 @@ export function SignIn() {
         event.preventDefault();
         const email = event.target.email2.value;
         const password = event.target.password2.value;
-        login("dummyToken");
-        navigate("/Home");
+
+        if (email === "" || password === "") {
+            return;
+        }
+
+        axios.post(process.env.REACT_APP_API_URL + "/login", { email, password }).then((response) => {
+            login(response.data.token);
+            document.cookie = "token=" + response.data.token;
+            navigate("/Home");
+        }).catch((e) => {
+            alert("Invalid email or password");
+        });
     }
 
     return (

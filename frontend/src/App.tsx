@@ -28,12 +28,11 @@ function App() {
                 <Route path="/Customers" element={<Customers />}></Route>
                 <Route path="/Tips" element={<Tips />}></Route>
                 <Route path="/Wardrobe" element={<Wardrobe/>}></Route>
-                {/* <Route path="/Compatibility" element={<Compatibility/>}></Route> */}
+                <Route path="/Compatibility" element={<Compatibility/>}></Route>
               </Route>
               <Route path="/Sign" element={<Sign />}></Route>
               <Route path="/" element={<Sign />}></Route>
               <Route path="*" element={<Error />}></Route>
-              <Route path="/Compatibility" element={<Compatibility/>}></Route>
             </Routes>
           </AuthProvider>
         </Router>

@@ -169,10 +169,10 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                     <Table.Cell>
                       <Checkbox />
                     </Table.Cell>
-                    <Table.Cell onClick={() => { setCurrentCustomer(coaches) }} className="text-blueT font-semibold flex flex-row">
+                    <Table.Cell className="text-blueT font-semibold flex flex-row">
                       <Avatar img={process.env.REACT_APP_PICTURES_URL + "/employees/" + coaches.id + ".png"} className="mr-2" />
                       <span className="my-auto">
-                        {coaches.name}
+                        {coaches.name + " " + coaches.surname}
                       </span>
                     </Table.Cell>
                     <Table.Cell>
