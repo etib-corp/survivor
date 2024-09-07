@@ -15,7 +15,6 @@ export default function Compatibility() {
         CustomerService.getAll().then((response: any) => {
             if (Array.isArray(response.data['hydra:member'])) {
                 setCustomers(response.data['hydra:member']);
-                console.log(response.data['hydra:member']);
             } else {
                 console.log("Expected an array of customers but got:", response.data);
             }
