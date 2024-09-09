@@ -1,18 +1,12 @@
 import React from 'react';
 import { Avatar, Button, Checkbox, Table } from "flowbite-react";
-import { HiOutlineCalendar, HiChevronRight } from "react-icons/hi";
-import { MdOutlineAnalytics } from "react-icons/md";
-import { FaRegCalendarAlt } from "react-icons/fa";
 import { LuDownloadCloud } from "react-icons/lu";
 import { GoPlus } from "react-icons/go";
 import { VscEllipsis } from "react-icons/vsc";
-import { Mastercard, Visa, Paypal } from 'react-payment-logos/dist/flat';
 import { useState } from 'react';
 import { CiSearch } from "react-icons/ci";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoFilterOutline } from "react-icons/io5";
-import { Tab } from '@mui/material';
-import { PaymentsMethod } from './Customers/ProfileStats';
 
 
 const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
@@ -169,10 +163,10 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                     <Table.Cell>
                       <Checkbox />
                     </Table.Cell>
-                    <Table.Cell onClick={() => { setCurrentCustomer(coaches) }} className="text-blueT font-semibold flex flex-row">
+                    <Table.Cell className="text-blueT font-semibold flex flex-row">
                       <Avatar img={process.env.REACT_APP_PICTURES_URL + "/employees/" + coaches.id + ".png"} className="mr-2" />
                       <span className="my-auto">
-                        {coaches.name}
+                        {coaches.name + " " + coaches.surname}
                       </span>
                     </Table.Cell>
                     <Table.Cell>
