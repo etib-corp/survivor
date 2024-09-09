@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
-const AuthContext = createContext({ login: (userToken: any) => {}, logout: () => {} });
+const AuthContext = createContext({ login: (userToken: any) => { }, logout: () => { } });
+
 
 const AuthProvider: React.FC<{ children: any }> = ({ children }) => {
     const [token, setToken] = useState<string | null>(null);
@@ -9,20 +10,25 @@ const AuthProvider: React.FC<{ children: any }> = ({ children }) => {
         const storedToken = localStorage.getItem("authToken");
         if (storedToken) {
             setToken(storedToken);
+        } else {
+            if (!document.location.href.includes("/Sign")) {
+                document.location.href = "/Sign";
+            }
         }
     }, []);
 
     const login = (userToken: string) => {
-        document.cookie = "token=" + userToken;
+        localStorage.setItem("authToken", userToken);
         localStorage.setItem("isAuthenticated", "true");
         setToken(userToken);
     };
 
     const logout = () => {
-        document.cookie = "";
-        localStorage.setItem("isAuthenticated", "false");
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("isAuthenticated");
         setToken(null);
     };
+
 
     return (
         <AuthContext.Provider value={{ login, logout }}>

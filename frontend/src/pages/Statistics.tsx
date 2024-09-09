@@ -25,7 +25,7 @@ export default function Statistics () {
                 console.log("Expected an array of customers but got:", response.data);
             }
         }).catch((e) => {
-            console.log(e);
+            document.location.reload();
         });
     }, []);
     return (

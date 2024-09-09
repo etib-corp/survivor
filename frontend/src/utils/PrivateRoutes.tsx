@@ -1,5 +1,4 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { useAuth } from "../components/AuthContext";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -11,8 +10,8 @@ const PrivateRoutes = () => {
                     "Authorization": "Bearer " + localStorage.getItem("authToken")
                 }
             }).catch((response) => {
-                if (response.response.status === 401) {
-                    localStorage.setItem("isAuthenticated", "false");
+                if (response.response.status === 401 && !document.location.href.includes("/Sign")) {
+                    document.location.href = "/Sign";
                 }
             });
         }
