@@ -1,18 +1,12 @@
 import React from 'react';
 import { Avatar, Button, Checkbox, Table } from "flowbite-react";
-import { HiOutlineCalendar, HiChevronRight } from "react-icons/hi";
-import { MdOutlineAnalytics } from "react-icons/md";
-import { FaRegCalendarAlt } from "react-icons/fa";
 import { LuDownloadCloud } from "react-icons/lu";
 import { GoPlus } from "react-icons/go";
 import { VscEllipsis } from "react-icons/vsc";
-import { Mastercard, Visa, Paypal } from 'react-payment-logos/dist/flat';
 import { useState } from 'react';
 import { CiSearch } from "react-icons/ci";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoFilterOutline } from "react-icons/io5";
-import { Tab } from '@mui/material';
-import { PaymentsMethod } from './Customers/ProfileStats';
 
 
 const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {

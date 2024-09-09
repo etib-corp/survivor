@@ -19,23 +19,23 @@ function App() {
   return (
     <main>
       <div>
-        <Router>
-          <AuthProvider>
+        <AuthProvider>
+          <Router>
             <Routes>
+              <Route path="/Sign" element={<Sign />}></Route>
+              <Route path="/" element={<Sign />}></Route>
+              <Route path="*" element={<Error />}></Route>
               <Route element={<PrivateRoutes />}>
                 <Route path="/Home" element={<Home />}></Route>
                 <Route path="/Coaches" element={<Account />}></Route>
                 <Route path="/Customers" element={<Customers />}></Route>
                 <Route path="/Tips" element={<Tips />}></Route>
-                <Route path="/Wardrobe" element={<Wardrobe/>}></Route>
-                <Route path="/Compatibility" element={<Compatibility/>}></Route>
+                <Route path="/Wardrobe" element={<Wardrobe />}></Route>
+                <Route path="/Compatibility" element={<Compatibility />}></Route>
               </Route>
-              <Route path="/Sign" element={<Sign />}></Route>
-              <Route path="/" element={<Sign />}></Route>
-              <Route path="*" element={<Error />}></Route>
             </Routes>
-          </AuthProvider>
-        </Router>
+          </Router>
+        </AuthProvider>
       </div>
     </main>
   );

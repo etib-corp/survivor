@@ -19,8 +19,9 @@ export function SignIn() {
         }
 
         axios.post(process.env.REACT_APP_API_URL + "/login", { email, password }).then((response) => {
-            login(response.data.token);
-            document.cookie = "token=" + response.data.token;
+            const token = response.data.token;
+            login(token);
+            localStorage.setItem("authToken", token); // Store the token in local storage
             navigate("/Home");
         }).catch((e) => {
             alert("Invalid email or password");
