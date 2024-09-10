@@ -1,9 +1,13 @@
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import ETIBCoaches from "../components/ETIBCoaches";
 import ETIBNavBar from "../components/ETIBNavBar";
-import { useEffect, useState } from "react";
+
 import EmployeeService from "../services/EmployeeService";
 
-function Account () {
+function Account() {
+    const navigate = useNavigate();
     const [employees, setEmployees] = useState([]);
     const [props, setProps] = useState({ page: "coaches" });
 
@@ -22,10 +26,28 @@ function Account () {
         });
 
     }, []);
+
+    const userInfo: any = localStorage.getItem("userData") || "";
+
+    useEffect(() => {
+        try {
+            const parsedUserInfo = JSON.parse(userInfo);
+
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            } if (parsedUserInfo.roles[0] === "ROLE_COACH") {
+                navigate("/Customers");
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
+    }, []);
+
+
     return (
         <div className="overflow-x-hidden">
-            <ETIBNavBar properties={props} OnChangeView={setProps}/>
-            <ETIBCoaches coaches={employees}/>
+            <ETIBNavBar properties={props} OnChangeView={setProps} />
+            <ETIBCoaches coaches={employees} />
         </div>
     )
 }

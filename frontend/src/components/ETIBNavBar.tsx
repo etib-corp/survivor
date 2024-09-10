@@ -4,7 +4,7 @@ import AuthContext, { useAuth } from "./AuthContext";
 
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
 import { RiMessage2Line } from "react-icons/ri";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { jwtDecode } from "jwt-decode";
 
@@ -15,6 +15,11 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
   let name = "";
   let email = "";
   let surname = "";
+  let role = {
+    path: "",
+    type: ""
+  };
+  let id = "";
 
   const userInfo: any = localStorage.getItem("userData") || "";
 
@@ -24,10 +29,31 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
       name = parsedUserInfo.name;
       email = parsedUserInfo.email;
       surname = parsedUserInfo.surname;
+      switch (parsedUserInfo.roles[0]) {
+        case "ROLE_ADMIN":
+          role.path = "/employees/";
+          role.type = "admin";
+          break;
+        case "ROLE_COACH":
+          role.path = "/employees/";
+          role.type = "coach";
+          break;
+        case "ROLE_CUSTOMER":
+          role.path = "/customers/";
+          role.type = "customer";
+          break;
+        default:
+          role.path = "kbo.png";
+          role.type = "unknown";
+          break;
+      }
+      id = parsedUserInfo.id;
     } catch (error) {
       console.error("Parsing error:", error);
     }
   }
+
+  const profilePicture = role.type !== "unknown" ? process.env.REACT_APP_PICTURES_URL + role.path + id + ".png" : "kbo.png";
 
   const handleSignOut = () => {
     logout();
@@ -37,7 +63,7 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
   return (
     <Navbar fluid rounded className="shadow-sm">
       <Navbar.Toggle />
-      <Navbar.Brand href="https://flowbite-react.com">
+      <Navbar.Brand>
         <span className="sm:text-lg text-sm self-center whitespace-nowrap dark:text-white">
           Soul Connection
         </span>
@@ -49,7 +75,7 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
           arrowIcon={false}
           inline
           label={
-            <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
+            <Avatar alt="User settings" img={profilePicture} rounded />
           }
         >
           <Dropdown.Header>
@@ -68,41 +94,56 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
         </Dropdown>
       </div>
       <Navbar.Collapse>
-        <Navbar.Link className="focus:text-blue" active={properties.page === "dashboard"} onClick={() => { navigate("/Home"); OnChangeView({ page: "dashboard" }) }}>
-          Dashboard
-          {
-            properties.page === "dashboard" &&
-            <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
-          }
-        </Navbar.Link>
-        <Navbar.Link className="focus:text-blue" active={properties.page === "coaches"} onClick={() => { navigate("/Coaches"); OnChangeView({ page: "coaches" }) }}>
-          Coaches
-          {
-            properties.page === "coaches" &&
-            <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
-          }
-        </Navbar.Link>
-        <Navbar.Link className="focus:text-blueT" active={properties.page === "customers"} onClick={() => { navigate("/Customers"); OnChangeView({ page: "customers" }) }}>
-          Customers
-          {
-            properties.page === "customers" &&
-            <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
-          }
-        </Navbar.Link>
-        <Navbar.Link className="focus:text-blueT" active={properties.page === "tips"} onClick={() => { navigate("/Tips"); OnChangeView({ page: "tips" }) }}>
-          Tips
-          {
-            properties.page === "tips" &&
-            <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
-          }
-        </Navbar.Link>
-        <Navbar.Link className="focus:text-blueT" active={properties.page === "events"} onClick={() => { navigate("/Events"); OnChangeView({ page: "events" }) }}>
-          Events
-          {
-            properties.page === "events" &&
-            <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
-          }
-        </Navbar.Link>
+        {
+          role.type === "admin" &&
+          <Navbar.Link className="focus:text-blue" active={properties.page === "dashboard"} onClick={() => { navigate("/Home"); OnChangeView({ page: "dashboard" }) }}>
+            Dashboard
+            {
+              properties.page === "dashboard" &&
+              <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
+            }
+          </Navbar.Link>
+        }
+        {
+          role.type === "admin" &&
+          <Navbar.Link className="focus:text-blue" active={properties.page === "coaches"} onClick={() => { navigate("/Coaches"); OnChangeView({ page: "coaches" }) }}>
+            Coaches
+            {
+              properties.page === "coaches" &&
+              <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
+            }
+          </Navbar.Link>
+        }
+        {
+          role.type !== "customer" &&
+          <Navbar.Link className="focus:text-blueT" active={properties.page === "customers"} onClick={() => { navigate("/Customers"); OnChangeView({ page: "customers" }) }}>
+            Customers
+            {
+              properties.page === "customers" &&
+              <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
+            }
+          </Navbar.Link>
+        }
+        {
+          role.type !== "customer" &&
+          <Navbar.Link className="focus:text-blueT" active={properties.page === "tips"} onClick={() => { navigate("/Tips"); OnChangeView({ page: "tips" }) }}>
+            Tips
+            {
+              properties.page === "tips" &&
+              <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
+            }
+          </Navbar.Link>
+        }
+        {
+          role.type !== "customer" &&
+          <Navbar.Link className="focus:text-blueT" active={properties.page === "events"} onClick={() => { navigate("/Events"); OnChangeView({ page: "events" }) }}>
+            Events
+            {
+              properties.page === "events" &&
+              <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
+            }
+          </Navbar.Link>
+        }
         <Navbar.Link className="focus:text-blueT" active={properties.page === "wardrobe"} onClick={() => { navigate("/Wardrobe"); OnChangeView({ page: "wardrobe" }) }}>
           Wardrobe
           {
@@ -110,13 +151,16 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
             <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
           }
         </Navbar.Link>
-        <Navbar.Link className="focus:text-blueT" active={properties.page === "compatibility"} onClick={() => { navigate("/Compatibility"); OnChangeView({ page: "compatibility" }) }}>
-          Compatibility
-          {
-            properties.page === "compatibility" &&
-            <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
-          }
-        </Navbar.Link>
+        {
+          role.type !== "customer" &&
+          <Navbar.Link className="focus:text-blueT" active={properties.page === "compatibility"} onClick={() => { navigate("/Compatibility"); OnChangeView({ page: "compatibility" }) }}>
+            Compatibility
+            {
+              properties.page === "compatibility" &&
+              <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
+            }
+          </Navbar.Link>
+        }
         <Navbar.Link className="focus:text-blueT" active={properties.page === "elearning"} onClick={() => { navigate("/Elearning"); OnChangeView({ page: "elearning" }) }}>
           E-learning
           {

@@ -1,13 +1,31 @@
-import React, { useEffect } from "react";
-import ETIBNavBar from "../components/ETIBNavBar";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Accordion } from "flowbite-react";
+
+import ETIBNavBar from "../components/ETIBNavBar";
+
 import Tip from "../types/Tip";
+
 import TipService from "../services/TipService";
 
 function Tips() {
+    const navigate = useNavigate();
     const [props, setProps] = useState({ page: "tips" });
     const [tips, setTips] = useState<Tip[]>([]);
+
+    const userInfo: any = localStorage.getItem("userData") || "";
+
+    useEffect(() => {
+        try {
+            const parsedUserInfo = JSON.parse(userInfo);
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
+    }, []);
 
     useEffect(() => {
         TipService.getAll().then((response: any) => {
@@ -20,7 +38,6 @@ function Tips() {
             console.log(e);
         });
     }, []);
-
 
     return (
         <div className="overflow-x-hidden">
