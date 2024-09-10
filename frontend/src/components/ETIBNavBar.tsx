@@ -97,6 +97,13 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
             <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
           }
         </Navbar.Link>
+        <Navbar.Link className="focus:text-blueT" active={properties.page === "quiz"} onClick={() => { navigate("/Quiz"); OnChangeView({ page: "quiz" }) }}>
+          Quiz
+          {
+            properties.page === "quiz" &&
+            <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
+          }
+        </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
   );

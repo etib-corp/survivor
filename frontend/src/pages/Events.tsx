@@ -1,10 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ETIBNavBar from "../components/ETIBNavBar";
 import { Button } from "flowbite-react";
 import { FiPlus } from "react-icons/fi";
+import ETIBCalendar from "../components/ETIBCalendar";
+import EventService from "../services/EventService";
 
 function Events() {
     const [props, setProps] = useState({ page: "events" });
+    const [events, setEvents] = useState<any>([]);
+
+    useEffect(() => {
+        EventService.getAll().then((response: any) => {
+            if (Array.isArray(response.data['hydra:member'])) {
+                setEvents(response.data['hydra:member']);
+            }
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
     return (
         <div className="overflow-x-hidden">
@@ -19,6 +32,7 @@ function Events() {
                     </Button>
                 </div>
             </div>
+            <ETIBCalendar events={events} />
         </div>
     )
 }
