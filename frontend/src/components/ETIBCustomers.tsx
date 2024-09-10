@@ -19,6 +19,8 @@ import CustomerDetails from './Customers/CustomerDetails';
 const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState(null);
+  const [inputSearch, setInputSearch] = useState("");
+
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -132,6 +134,8 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                     type="text"
                     className="w-48 text-sm text-gray-500 border-gray-300 focus:ring-gray-300 focus:ring-1 pl-10"
                     placeholder="Search..."
+                    value={inputSearch}
+                    onChange={(e) => setInputSearch(e.target.value)}
                   />
                   <CiSearch className="absolute w-4 h-4 top-3 left-3 text-gray-500" />
                 </div>
@@ -166,6 +170,7 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
               </Table.Head>
               <Table.Body className="border">
                 {customers.map((customer: any) => (
+                  ((customer.name + " " + customer.surname).toLowerCase().includes(inputSearch.toLowerCase()) || inputSearch === "") &&
                   <Table.Row className="border">
                     <Table.Cell>
                       <Checkbox />

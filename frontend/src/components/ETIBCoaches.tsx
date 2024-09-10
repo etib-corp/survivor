@@ -12,10 +12,11 @@ import { IoFilterOutline } from "react-icons/io5";
 const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState(null);
+  const [inputSearch, setInputSearch] = useState("");
+
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
-
   return (
     <div>
       {currentCustomer === null &&
@@ -125,6 +126,8 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                     type="text"
                     className="w-48 text-sm text-gray-500 border-gray-300 focus:ring-gray-300 focus:ring-1 pl-10"
                     placeholder="Search..."
+                    value={inputSearch}
+                    onChange={(e) => setInputSearch(e.target.value)}
                   />
                   <CiSearch className="absolute w-4 h-4 top-3 left-3 text-gray-500" />
                 </div>
@@ -159,6 +162,7 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
               </Table.Head>
               <Table.Body className="border">
                 {coaches.map((coaches: any) => (
+                  (coaches.name + " " + coaches.surname).toLowerCase().includes(inputSearch.toLowerCase()) &&
                   <Table.Row className="border">
                     <Table.Cell>
                       <Checkbox />
@@ -183,7 +187,8 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                         <VscEllipsis className="h-5 w-5" />
                       </Button>
                     </Table.Cell>
-                  </Table.Row>))}
+                  </Table.Row>
+                ))}
               </Table.Body>
             </Table>
           </div>
