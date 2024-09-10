@@ -67,14 +67,6 @@ const ProfileSide: React.FC<{ properties: any }> = ({ properties }) => {
                 </h2>
                 <div className="flex flex-col py-2">
                     <p className="text-gray-500">
-                        User ID:
-                    </p>
-                    <p className="">
-                        {properties.id}
-                    </p>
-                </div>
-                <div className="flex flex-col py-2">
-                    <p className="text-gray-500">
                         Email:
                     </p>
                     <p className="">

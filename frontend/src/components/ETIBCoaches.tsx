@@ -90,8 +90,8 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                         {coaches.name + " " + coaches.surname}
                       </span>
                     </Table.Cell>
-                    <Table.Cell>
-                      {coaches.email}
+                    <Table.Cell className="cursor-pointer">
+                      <a href={"mailto:" + coaches.email}>{coaches.email}</a>
                     </Table.Cell>
                     <Table.Cell>
                       {coaches.phone}
