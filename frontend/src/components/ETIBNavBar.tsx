@@ -1,13 +1,20 @@
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "./AuthContext";
+import AuthContext, { useAuth } from "./AuthContext";
 
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
 import { RiMessage2Line } from "react-icons/ri";
+import { useContext } from "react";
+
+import { jwtDecode } from "jwt-decode";
 
 const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => void }> = ({ properties, OnChangeView }) => {
   const navigate = useNavigate();
   const { logout } = useAuth();
+
+  const userToken = localStorage.getItem("authToken") || "";
+  const user: any = jwtDecode(userToken);
+
 
   const handleSignOut = () => {
     logout();
@@ -37,7 +44,7 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
               Bonnie Green
             </span>
             <span className="block truncate text-sm font-medium">
-              name@exemple.com
+              {user.username}
             </span>
           </Dropdown.Header>
           {/* <Dropdown.Item>Settings</Dropdown.Item> */}
@@ -94,6 +101,13 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
           Compatibility
           {
             properties.page === "compatibility" &&
+            <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
+          }
+        </Navbar.Link>
+        <Navbar.Link className="focus:text-blueT" active={properties.page === "elearning"} onClick={() => { navigate("/Elearning"); OnChangeView({ page: "elearning" }) }}>
+          E-learning
+          {
+            properties.page === "elearning" &&
             <div className="sm:visible invisible relative h-[3px] bg-blueT top-[1.15rem] top rounded-md" />
           }
         </Navbar.Link>
