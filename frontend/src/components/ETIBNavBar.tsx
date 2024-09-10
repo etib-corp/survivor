@@ -12,9 +12,22 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
   const navigate = useNavigate();
   const { logout } = useAuth();
 
-  const userToken = localStorage.getItem("authToken") || "";
-  const user: any = jwtDecode(userToken);
+  let name = "";
+  let email = "";
+  let surname = "";
 
+  const userInfo: any = localStorage.getItem("userData") || "";
+
+  if (userInfo) {
+    try {
+      const parsedUserInfo = JSON.parse(userInfo);
+      name = parsedUserInfo.name;
+      email = parsedUserInfo.email;
+      surname = parsedUserInfo.surname;
+    } catch (error) {
+      console.error("Parsing error:", error);
+    }
+  }
 
   const handleSignOut = () => {
     logout();
@@ -41,10 +54,10 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
         >
           <Dropdown.Header>
             <span className="block text-sm">
-              Bonnie Green
+              {name + " " + surname}
             </span>
             <span className="block truncate text-sm font-medium">
-              {user.username}
+              {email}
             </span>
           </Dropdown.Header>
           {/* <Dropdown.Item>Settings</Dropdown.Item> */}
