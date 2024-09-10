@@ -13,10 +13,19 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState(null);
   const [inputSearch, setInputSearch] = useState("");
+  const [sortMode, setSortMode] = useState("asc");
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+
+  function handleSortMode () {
+    if (sortMode === "asc") {
+      setSortMode("desc");
+    } else {
+      setSortMode("asc");
+    }
+  }
   return (
     <div>
       {currentCustomer === null &&
@@ -57,7 +66,7 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                   />
                   <CiSearch className="absolute w-4 h-4 top-3 left-3 text-gray-500" />
                 </div>
-                <Button color="gray" className="ml-4 w-10 h-[2.4rem] text-gray-300 focus:ring-gray-300 focus:ring-1">
+                <Button color="gray" className="ml-4 w-10 h-[2.4rem] text-gray-300 focus:ring-gray-300 focus:ring-1" onClick={handleSortMode}>
                   <IoFilterOutline className="h-4 w-5 text-gray-500" />
                 </Button>
               </div>
@@ -81,7 +90,15 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                 </Table.HeadCell>
               </Table.Head>
               <Table.Body className="border">
-                {coaches.map((coaches: any) => (
+                {coaches.sort((a: any, b: any) => {
+                  if (sortMode === "asc") {
+                    return a.name.localeCompare(b.name)
+                  }
+                  if (sortMode === "desc") {
+                    return b.name.localeCompare(a.name)
+                  }
+                  return 0;
+                }).map((coaches: any) => (
                   (coaches.name + " " + coaches.surname).toLowerCase().includes(inputSearch.toLowerCase()) &&
                   <Table.Row className="border">
                     <Table.Cell className="text-blueT font-semibold flex flex-row">
