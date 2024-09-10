@@ -69,8 +69,6 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
         </span>
       </Navbar.Brand>
       <div className="flex md:order-2 sm:space-x-5 space-x-4">
-        <RiMessage2Line size="40" />
-        <Avatar img="https://cdn-icons-png.flaticon.com/128/5373/5373324.png" rounded />
         <Dropdown
           arrowIcon={false}
           inline

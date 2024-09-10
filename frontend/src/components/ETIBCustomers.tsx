@@ -53,80 +53,6 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
         <div className="relative w-[100%] px-4 pt-5">
           <div className="relative border shadow-md sm:rounded-md">
             <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 my-2">
-              <div className="mt-3 ml-4 flex flex-row">
-                <button
-                  id="dropdownActionButton"
-                  onClick={toggleDropdown}
-                  className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-2 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5"
-                  type="button"
-                >
-                  <span className="sr-only">Action button</span>
-                  Bulk Action
-                  <svg
-                    className="w-2.5 h-2.5 ms-2.5"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M1 1l4 4 4-4"
-                    />
-                  </svg>
-                </button>
-                <Button color="gray" className="ml-4 w-24 text-gray-300 focus:ring-gray-300 focus:ring-1 enabled:hover:text-gray-500 focus:text-gray-300">
-                  Apply
-                </Button>
-                {/* Dropdown menu */}
-                {dropdownOpen && (
-                  <div
-                    id="dropdownAction"
-                    className="absolute mt-10 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44"
-                  >
-                    <ul
-                      className="py-1 text-sm text-gray-700"
-                      aria-labelledby="dropdownActionButton"
-                    >
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100"
-                        >
-                          Reward
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100"
-                        >
-                          Promote
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100"
-                        >
-                          Activate account
-                        </a>
-                      </li>
-                    </ul>
-                    <div className="py-1">
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        Delete User
-                      </a>
-                    </div>
-                  </div>
-                )}
-              </div>
               <div className="pt-4 px-4 flex flex-row">
                 <div className="relative">
                   <input
@@ -142,16 +68,10 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                 <Button color="gray" className="ml-4 w-10 h-[2.4rem] text-gray-300 focus:ring-gray-300 focus:ring-1">
                   <IoFilterOutline className="h-4 w-5 text-gray-500" />
                 </Button>
-                <Button color="gray" className="ml-4 w-10 h-[2.4rem] text-gray-300 focus:ring-gray-300 focus:ring-1">
-                  <IoSettingsOutline className="h-4 w-5 text-gray-500" />
-                </Button>
               </div>
             </div>
             <Table hoverable className="bg-transparent">
               <Table.Head className="border bg-transparent">
-                <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
-                  <Checkbox />
-                </Table.HeadCell>
                 <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
                   Customer
                 </Table.HeadCell>
@@ -164,17 +84,11 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                 <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
                   Payment Methods
                 </Table.HeadCell>
-                <Table.HeadCell className="bg-transparent text-right" style={{ textTransform: 'none' }}>
-                  Actions
-                </Table.HeadCell>
               </Table.Head>
               <Table.Body className="border">
                 {customers.map((customer: any) => (
                   ((customer.name + " " + customer.surname).toLowerCase().includes(inputSearch.toLowerCase()) || inputSearch === "") &&
                   <Table.Row className="border">
-                    <Table.Cell>
-                      <Checkbox />
-                    </Table.Cell>
                     <Table.Cell onClick={() => { setCurrentCustomer(customer) }} className="text-blueT font-semibold flex flex-row">
                       <Avatar img={process.env.REACT_APP_PICTURES_URL + "/customers/" + customer.id + ".png"} className="mr-2" /> {/*/ IL FAUT FAIRE UN ROUTE /*/}
                       <span className="my-auto">
@@ -189,11 +103,6 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                     </Table.Cell>
                     <Table.Cell>
                       <PaymentsMethod method={customer.payment_method} />
-                    </Table.Cell>
-                    <Table.Cell className="flex justify-end">
-                      <Button className="bg-transparent text-gray-700">
-                        <VscEllipsis className="h-5 w-5" />
-                      </Button>
                     </Table.Cell>
                   </Table.Row>))}
               </Table.Body>
