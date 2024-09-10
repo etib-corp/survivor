@@ -1,6 +1,7 @@
+import { useState } from "react";
+
 import ETIBCard from "../components/ETIBCard";
 import ETIBNavBar from "../components/ETIBNavBar";
-import { useState } from "react";
 
 function Elearning() {
   const [props, setProps] = useState({ page: "elearning" });

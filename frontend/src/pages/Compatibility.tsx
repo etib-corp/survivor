@@ -1,16 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { Dropdown } from "flowbite-react";
 import CustomersCompatibility from '../components/Customers/CustomersCompatibility';
-import Customer from '../types/Customer';
-import CustomerService from '../services/CustomerService';
 import ETIBNavBar from '../components/ETIBNavBar';
 
+import Customer from '../types/Customer';
+
+import CustomerService from '../services/CustomerService';
+
 export default function Compatibility() {
-
+    const navigate = useNavigate();
     const [properties, setProperties] = useState({ page: "compatibility" });
-
     const [customers, setCustomers] = useState<Customer[]>([]);
+
+    const userInfo: any = localStorage.getItem("userData") || "";
+
+    useEffect(() => {
+        try {
+            const parsedUserInfo = JSON.parse(userInfo);
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
+    }, []);
+
     useEffect(() => {
         CustomerService.getAll().then((response: any) => {
             if (Array.isArray(response.data['hydra:member'])) {
@@ -25,7 +40,7 @@ export default function Compatibility() {
 
     return (
         <div className="overflow-x-hidden">
-            <ETIBNavBar properties={properties} OnChangeView={setProperties}/>
+            <ETIBNavBar properties={properties} OnChangeView={setProperties} />
             <CustomersCompatibility properties={customers} />
         </div>
     )

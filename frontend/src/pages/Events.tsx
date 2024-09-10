@@ -1,10 +1,28 @@
-import { useState } from "react";
-import ETIBNavBar from "../components/ETIBNavBar";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Button } from "flowbite-react";
+
 import { FiPlus } from "react-icons/fi";
 
+import ETIBNavBar from "../components/ETIBNavBar";
+
 function Events() {
+    const navigate = useNavigate();
     const [props, setProps] = useState({ page: "events" });
+
+    const userInfo: any = localStorage.getItem("userData") || "";
+
+    useEffect(() => {
+        try {
+            const parsedUserInfo = JSON.parse(userInfo);
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
+    }, []);
 
     return (
         <div className="overflow-x-hidden">
