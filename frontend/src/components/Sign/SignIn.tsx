@@ -20,8 +20,11 @@ export function SignIn() {
 
         axios.post(process.env.REACT_APP_API_URL + "/login", { email, password }).then((response) => {
             const token = response.data.token;
+            const data = response.data.data;
             login(token);
-            localStorage.setItem("authToken", token); // Store the token in local storage
+            localStorage.setItem("authToken", token);// Store the token in local storage
+            localStorage.setItem("userData", JSON.stringify(data));// Store the user data in local storage
+            // console.log(data);
             navigate("/Home");
         }).catch((e) => {
             alert("Invalid email or password");
