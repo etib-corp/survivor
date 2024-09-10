@@ -21,6 +21,28 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
     setDropdownOpen(!dropdownOpen);
   };
 
+  const exportToCSV = () => {
+    const csvRows = [];
+    csvRows.push('"Customer","Email","Phone","Payment Methods"');
+    customers.forEach((customer: any) => {
+      const customerName = `"${customer.name} ${customer.surname}"`;
+      const email = `"${customer.email}"`;
+      const phone = `"${customer.phone_number}"`;
+      const paymentMethod = `"${customer.payment_method}"`;
+      csvRows.push([customerName, email, phone, paymentMethod].join(','));
+    });
+    const csvString = csvRows.join('\n');
+    const blob = new Blob([csvString], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'customers.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   function handleSortMode() {
     if (sortMode === "asc") {
       setSortMode("desc");
@@ -32,25 +54,25 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
   return (
     <div>
       {currentCustomer === null &&
-        <div className="flex flex-col">
-          <div className="grid grid-cols-1 md:flex md:flex-row justify-between md:mt-8 ml-4 mr-4">
-            <div className="flex flex-col">
-              <h1 className="text-4xl font-bold py-1">
-                Customers List
-              </h1>
-              <p>
-                You have total {customers.length} customers.
-              </p>
-            </div>
-            <div className="mt-3 md:mt-auto mb-auto">
-              <div className="flex flex-row space-x-4 justify-center md:justify-normal">
-                <Button className="bg-transparent text-gray-700 border-gray-700 focus:ring-2 focus:ring-gray-300 enabled:hover:bg-gray-100">
-                  <LuDownloadCloud className="mr-2 h-5 w-5" />
-                  Export
-                </Button>
-                <Button className="bg-blueT focus:ring-2 focus:ring-gray-300 enabled:hover:bg-blue-500">
-                  <GoPlus className="h-5 w-5" />
-                </Button>
+      <div className="flex flex-col">
+        <div className="grid grid-cols-1 md:flex md:flex-row justify-between md:mt-8 ml-4 mr-4">
+          <div className="flex flex-col">
+            <h1 className="text-4xl font-bold py-1">
+              Customers List
+            </h1>
+            <p>
+              You have total {customers.length} customers.
+            </p>
+          </div>
+          <div className="mt-3 md:mt-auto mb-auto">
+            <div className="flex flex-row space-x-4 justify-center md:justify-normal">
+              <Button className="bg-transparent text-gray-700 border-gray-700 focus:ring-2 focus:ring-gray-300 enabled:hover:bg-gray-100" onClick={exportToCSV}>
+                <LuDownloadCloud className="mr-2 h-5 w-5" />
+                Export
+              </Button>
+              <Button className="bg-blueT focus:ring-2 focus:ring-gray-300 enabled:hover:bg-blue-500">
+                <GoPlus className="h-5 w-5" />
+              </Button>
               </div>
             </div>
           </div>
