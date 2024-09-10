@@ -130,12 +130,12 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                     <Table.Row className="border">
                       <Table.Cell onClick={() => { setCurrentCustomer(customer) }} className="text-blueT font-semibold flex flex-row">
                         <Avatar img={process.env.REACT_APP_PICTURES_URL + "/customers/" + customer.id + ".png"} className="mr-2" /> {/*/ IL FAUT FAIRE UN ROUTE /*/}
-                        <span className="my-auto">
+                        <span className="my-auto cursor-pointer">
                           {customer.name + " " + customer.surname}
                         </span>
                       </Table.Cell>
-                      <Table.Cell>
-                        {customer.email}
+                      <Table.Cell className="cursor-pointer">
+                        <a href={"mailto:" + customer.email}>{customer.email}</a>
                       </Table.Cell>
                       <Table.Cell>
                         {customer.phone_number}
