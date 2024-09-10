@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { Button, TextInput, Label, ListGroup, ListGroupItem } from "flowbite-react";
+import { Button, TextInput, Label, ListGroup, ListGroupItem, Spinner } from "flowbite-react";
 
 import GaugeComponent from 'react-gauge-component';
 
-import { HiChevronDown } from "react-icons/hi";
+import { HiChevronDown, HiPlus } from "react-icons/hi";
+import { Icon } from "@mui/material";
 
-const CustomersCompatibility: React.FC<{ properties: any }> = ({ properties }) => {
+const CustomersCompatibility: React.FC<{ properties: any }> = ({ properties }) => { 
     const [inputSearch1, setInputSearch1] = useState("");
     const [inputSearch2, setInputSearch2] = useState("");
     const [inputValue1, setInputValue1] = useState("");
@@ -18,6 +19,10 @@ const CustomersCompatibility: React.FC<{ properties: any }> = ({ properties }) =
 
     const [field1, setField1] = useState(false);
     const [field2, setField2] = useState(false);
+
+    const [buttonText, setButtonText] = useState(<div>
+        <HiPlus/>
+    </div>);
 
     function handleSearch1(e: any) {
         setInputSearch1(e.target.value)
@@ -30,10 +35,22 @@ const CustomersCompatibility: React.FC<{ properties: any }> = ({ properties }) =
     function getCompatibility() {
         axios.get(process.env.REACT_APP_API_URL + '/compatibility/' + customerId1 + '/' + customerId2, {}).then((response) => {
             setCompatibility(response.data.compatibility);
+            setButtonText(<div>
+                <HiPlus/>
+            </div>);
         }, (error) => {
             console.log(error);
         });
     }
+
+    useEffect(() => {
+        if (inputValue1 && inputValue2) {
+            setButtonText(<div>
+                <Spinner size="lg" />
+            </div>);
+            setTimeout(getCompatibility, 2000);
+        }
+    }, [inputValue1, inputValue2]); 
 
     function getSign(sign: string) {
         switch (sign) {
@@ -65,12 +82,13 @@ const CustomersCompatibility: React.FC<{ properties: any }> = ({ properties }) =
                 return "";
         }
     }
+
     return (
         <div className="flex flex-col items-center justify-center my-10 md:my-0 md:h-[100vh]">
             <div className="underline decoration-blueT underline-offset-8 sm:text-2xl text-sm pb-[11%]">
                 Check Customers compatibility
             </div>
-            <div className="grid gap-x-5 md:gap-x-0 grid-cols-2 md:grid-cols-7 pb-[10vh] gap-y-10">
+            <div className="grid gap-x-5 md:gap-x-0 grid-cols-1 md:grid-cols-7 pb-[10vh] gap-y-10">
                 <div className="flex flex-col justify-center items-center md:col-start-3 md:col-end-4">
                     <Button color="light" onClick={() => { setField1(!field1) }}>
                         <Label>
@@ -101,7 +119,10 @@ const CustomersCompatibility: React.FC<{ properties: any }> = ({ properties }) =
                         </div>
                     }
                 </div>
-                <div className="flex justify-center items-center md:col-start-4 md:cols-end-5">
+                <div className="flex justify-center items-center md:col-start-4 md:col-end-5 text-xl">
+                    {buttonText}
+                </div>
+                <div className="flex justify-center items-center md:col-start-5 md:cols-end-6">
                     <div className="flex flex-col justify-center items-center md:col-start-3 md:col-end-4">
                         <Button color="light" onClick={() => { setField2(!field2) }}>
                             <Label>
@@ -133,14 +154,9 @@ const CustomersCompatibility: React.FC<{ properties: any }> = ({ properties }) =
                         }
                     </div>
                 </div>
-                <div className="flex justify-center md:justify-start items-center md:col-center-5 md:col-end-6 ml-1 order-first md:order-last col-span-2 md:col-span-1">
-                    <button className="bg-blueT hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md" onClick={getCompatibility}>
-                        Check compatibility
-                    </button>
-                </div>
             </div>
             <div className="flex items-center justify-center">
-                <div className="">
+                <div>
                     <GaugeComponent
                         value={compatibility}
                         type="radial"
