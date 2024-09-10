@@ -17,6 +17,27 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+
+  const exportToCSV = () => {
+    const csvRows = [];
+    csvRows.push('"Coaches","Email"');
+    coaches.forEach((coaches: any) => {
+      const coachesName = `"${coaches.name} ${coaches.surname}"`;
+      const email = `"${coaches.email}"`;
+      csvRows.push([coachesName, email].join(','));
+    });
+    const csvString = csvRows.join('\n');
+    const blob = new Blob([csvString], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'coaches.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   return (
     <div>
       {currentCustomer === null &&
@@ -32,7 +53,7 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
           </div>
           <div className="mt-3 md:mt-auto mb-auto">
             <div className="flex flex-row space-x-4 justify-center md:justify-normal">
-              <Button className="bg-transparent text-gray-700 border-gray-700 focus:ring-2 focus:ring-gray-300 enabled:hover:bg-gray-100">
+              <Button className="bg-transparent text-gray-700 border-gray-700 focus:ring-2 focus:ring-gray-300 enabled:hover:bg-gray-100" onClick={exportToCSV}>
                 <LuDownloadCloud className="mr-2 h-5 w-5" />
                 Export
               </Button>
