@@ -20,6 +20,7 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState(null);
   const [inputSearch, setInputSearch] = useState("");
+  const [sortMode, setSortMode] = useState("asc");
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -47,6 +48,14 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
     document.body.removeChild(a);
   };
 
+  function handleSortMode() {
+    if (sortMode === "asc") {
+      setSortMode("desc");
+    } else {
+      setSortMode("asc");
+    }
+  }
+
   return (
     <div>
       {currentCustomer === null &&
@@ -69,69 +78,77 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
               <Button className="bg-blueT focus:ring-2 focus:ring-gray-300 enabled:hover:bg-blue-500">
                 <GoPlus className="h-5 w-5" />
               </Button>
-            </div>
-          </div>
-        </div>
-        <div className="relative w-[100%] px-4 pt-5">
-          <div className="relative border shadow-md sm:rounded-md">
-            <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 my-2">
-              <div className="pt-4 px-4 flex flex-row">
-                <div className="relative">
-                  <input
-                    id="table-search"
-                    type="text"
-                    className="w-48 text-sm text-gray-500 border-gray-300 focus:ring-gray-300 focus:ring-1 pl-10"
-                    placeholder="Search..."
-                    value={inputSearch}
-                    onChange={(e) => setInputSearch(e.target.value)}
-                  />
-                  <CiSearch className="absolute w-4 h-4 top-3 left-3 text-gray-500" />
-                </div>
-                <Button color="gray" className="ml-4 w-10 h-[2.4rem] text-gray-300 focus:ring-gray-300 focus:ring-1">
-                  <IoFilterOutline className="h-4 w-5 text-gray-500" />
-                </Button>
               </div>
             </div>
-            <Table hoverable className="bg-transparent">
-              <Table.Head className="border bg-transparent">
-                <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
-                  Customer
-                </Table.HeadCell>
-                <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
-                  Email
-                </Table.HeadCell>
-                <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
-                  Phone
-                </Table.HeadCell>
-                <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
-                  Payment Methods
-                </Table.HeadCell>
-              </Table.Head>
-              <Table.Body className="border">
-                {customers.map((customer: any) => (
-                  ((customer.name + " " + customer.surname).toLowerCase().includes(inputSearch.toLowerCase()) || inputSearch === "") &&
-                  <Table.Row className="border">
-                    <Table.Cell onClick={() => { setCurrentCustomer(customer) }} className="text-blueT font-semibold flex flex-row">
-                      <Avatar img={process.env.REACT_APP_PICTURES_URL + "/customers/" + customer.id + ".png"} className="mr-2" /> {/*/ IL FAUT FAIRE UN ROUTE /*/}
-                      <span className="my-auto cursor-pointer">
-                        {customer.name + " " + customer.surname}
-                      </span>
-                    </Table.Cell>
-                    <Table.Cell className="cursor-pointer">
-                      <a href="mailto:{customer.email}">{customer.email}</a>
-                    </Table.Cell>
-                    <Table.Cell>
-                      {customer.phone_number}
-                    </Table.Cell>
-                    <Table.Cell>
-                      <PaymentsMethod method={customer.payment_method} />
-                    </Table.Cell>
-                  </Table.Row>))}
-              </Table.Body>
-            </Table>
           </div>
-        </div>
-      </div>}
+          <div className="relative w-[100%] px-4 pt-5">
+            <div className="relative border shadow-md sm:rounded-md">
+              <div className="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 my-2">
+                <div className="pt-4 px-4 flex flex-row">
+                  <div className="relative">
+                    <input
+                      id="table-search"
+                      type="text"
+                      className="w-48 text-sm text-gray-500 border-gray-300 focus:ring-gray-300 focus:ring-1 pl-10"
+                      placeholder="Search..."
+                      value={inputSearch}
+                      onChange={(e) => setInputSearch(e.target.value)}
+                    />
+                    <CiSearch className="absolute w-4 h-4 top-3 left-3 text-gray-500" />
+                  </div>
+                  <Button color="gray" className="ml-4 w-10 h-[2.4rem] text-gray-300 focus:ring-gray-300 focus:ring-1" onClick={handleSortMode}>
+                    <IoFilterOutline className="h-4 w-5 text-gray-500" />
+                  </Button>
+                </div>
+              </div>
+              <Table hoverable className="bg-transparent">
+                <Table.Head className="border bg-transparent">
+                  <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
+                    Customer
+                  </Table.HeadCell>
+                  <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
+                    Email
+                  </Table.HeadCell>
+                  <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
+                    Phone
+                  </Table.HeadCell>
+                  <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
+                    Payment Methods
+                  </Table.HeadCell>
+                </Table.Head>
+                <Table.Body className="border">
+                  {customers.sort((a: any, b: any) => {
+                    if (sortMode === "asc") {
+                      return a.name.localeCompare(b.name)
+                    }
+                    if (sortMode === "desc") {
+                      return b.name.localeCompare(a.name)
+                    }
+                    return 0;
+                  }).map((customer: any) => (
+                    ((customer.name + " " + customer.surname).toLowerCase().includes(inputSearch.toLowerCase()) || inputSearch === "") &&
+                    <Table.Row className="border">
+                      <Table.Cell onClick={() => { setCurrentCustomer(customer) }} className="text-blueT font-semibold flex flex-row">
+                        <Avatar img={process.env.REACT_APP_PICTURES_URL + "/customers/" + customer.id + ".png"} className="mr-2" /> {/*/ IL FAUT FAIRE UN ROUTE /*/}
+                        <span className="my-auto">
+                          {customer.name + " " + customer.surname}
+                        </span>
+                      </Table.Cell>
+                      <Table.Cell>
+                        {customer.email}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {customer.phone_number}
+                      </Table.Cell>
+                      <Table.Cell>
+                        <PaymentsMethod method={customer.payment_method} />
+                      </Table.Cell>
+                    </Table.Row>))}
+                </Table.Body>
+              </Table>
+            </div>
+          </div>
+        </div>}
       {currentCustomer !== null && <CustomerDetails properties={currentCustomer} />}
     </div>
   );
