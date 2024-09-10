@@ -26,4 +26,20 @@ class ClotheController extends AbstractController
         }
         return new JsonResponse(['clothes' => $clothesIds]);
     }
+
+    // Return the image of the clothe in base64
+    #[Route('/api/clothes/base64/{id}', name: 'app_clothe_show')]
+    public function show(int $id): JsonResponse
+    {
+        // $clotheImage = system('base64 -w 0 $(pwd)/images/clothes/'.$id.'.png');
+        $clotheImage = base64_encode(file_get_contents('images/clothes/'.$id.'.png'));
+        return new JsonResponse(['clothe' => $clotheImage], 200, [
+            'Content-Type' => '*/*',
+            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Methods' => '*',
+            'Access-Control-Allow-Headers' => '*',
+            'Access-Control-Max-Age' => '3600',
+            'Allow' => '*',
+        ]);
+    }
 }
