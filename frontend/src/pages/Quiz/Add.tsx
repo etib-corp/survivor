@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import ETIBNavBar from '../../components/ETIBNavBar';
 import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from "react-hook-form"
-import { Button, Radio } from 'flowbite-react';
+import { Button, Card, Radio, TextInput } from 'flowbite-react';
 import axios from 'axios';
 
 function QuizAdd() {
@@ -58,15 +58,15 @@ function QuizAdd() {
                         Back to Quiz
                     </button>
                 </div>
-                <form className="flex flex-col p-5 mx-[10vh]" onSubmit={handleSubmit(onSubmit)}>
-                    <input key={"QuizInput"} type="text" placeholder="Quiz Title" {...register("title", { required: true })} />
+                <form className="flex flex-col p-5 mx-[10vh] space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                    <TextInput key={"QuizInput"} type="text" placeholder="Quiz Title" {...register("title", { required: true })} />
                     {nbrQuestions.map((j, indexJ) => (
-                        <div>
-                            <input key={indexJ} type="text" placeholder="Question" {...register(`questions[${indexJ}].question`, { required: true })} />
+                        <Card className='bg-pink-800 border-pink-800'>
+                            <TextInput key={indexJ} type="text" placeholder="Question" {...register(`questions[${indexJ}].question`, { required: true })} />
                             <div>
                                 {nbrAnswers.map((i, index) => (
-                                    <>
-                                        <input key={i} type="text" placeholder={`Type your answer `} {...register(`questions[${indexJ}].answers[${index}].answer`, { required: true })} />
+                                    <div className='flex justify-between items-center space-y-4'>
+                                        <TextInput key={i} type="text" placeholder={`Type your answer `} {...register(`questions[${indexJ}].answers[${index}].answer`, { required: true })} />
                                         {errors.answers && <span>This field is required</span>}
                                         <Radio {...register(`questions[${indexJ}].answers[${index}].correct`)} name={`answer${j}`} value={"true"} onChange={(e: any) => {
                                             getValues().questions[indexJ].answers.forEach((answer: any) => {
@@ -75,12 +75,12 @@ function QuizAdd() {
                                             getValues().questions[indexJ].answers[index].correct = e.target.checked;
                                         }} />
                                         <Button disabled={nbrAnswers.length == 2} onClick={() => deleteAnswer(i, index, indexJ)}>Remove Answer</Button>
-                                        <Button disabled={nbrAnswers.length == 4} onClick={() => addAnswer()}>Add Answer</Button>
-                                    </>
+                                    </div>
                                 ))}
+                                <Button disabled={nbrAnswers.length == 4} onClick={() => addAnswer()}>Add Answer</Button>
                             </div>
                             <Button disabled={nbrQuestions.length == 1} onClick={() => deleteQuestion(indexJ)}> Remove Question</Button>
-                        </div>
+                        </Card>
                     ))}
                     <Button disabled={nbrQuestions.length == 20} onClick={() => {
                         setNbrQuestions([...nbrQuestions, nbrQuestions[nbrQuestions.length - 1] + 1]);

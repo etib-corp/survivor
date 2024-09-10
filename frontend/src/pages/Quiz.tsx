@@ -139,7 +139,6 @@ function Quiz() {
     }
 
     useEffect(() => {
-        console.log("hello");
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get('q');
         if (myParam !== null) {
