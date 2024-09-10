@@ -12,9 +12,6 @@ export default function Error() {
                 </h3>
                 <h1 className="text-4xl font-bold">404 Error</h1>
                 <p>Page not found.</p>
-                <Button className="ml-[50%] text-left mt-4" onClick={() => {navigate("/")}}>
-                    Back to login page
-                </Button>
             </span>
         </div>
     );
