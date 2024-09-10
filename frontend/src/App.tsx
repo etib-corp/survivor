@@ -13,6 +13,7 @@ import Quiz from './pages/Quiz';
 import AuthProvider from './components/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes';
 import Error from './pages/404Error';
+import QuizAdd from './pages/Quiz/Add';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/Compatibility" element={<Compatibility />}></Route>
                 <Route path="/Events" element={<Events />}></Route>
                 <Route path="/Quiz" element={<Quiz />}></Route>
+                <Route path="/Quiz/Add" element={<QuizAdd />}></Route>
               </Route>
             </Routes>
           </Router>

@@ -5,6 +5,7 @@ import { log } from "console";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "flowbite-react";
 import ETIBQuestion from "../components/ETIBQuestion";
+import { useNavigate } from "react-router-dom";
 
 function Quiz() {
     const [props, setProps] = useState({ page: "quiz" })
@@ -12,6 +13,7 @@ function Quiz() {
     const params = new URLSearchParams();
     const [searchParams, setSearchParams] = useSearchParams();
     const [quizItem, setQuizItem] = useState<any>(null);
+    const navigate = useNavigate();
     const quizzzz = [
         {
             'id': 1,
@@ -136,7 +138,6 @@ function Quiz() {
         ]
     }
 
-
     useEffect(() => {
         console.log("hello");
         const urlParams = new URLSearchParams(window.location.search);
@@ -151,9 +152,15 @@ function Quiz() {
             <ETIBNavBar properties={props} OnChangeView={setProps} />
             {quizItem === null ?
                 <div className="flex flex-col justify-center p-5 mx-[10vh]">
-                    <h1 className="text-4xl font-bold py-3">
-                        Quiz
-                    </h1>
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-4xl font-bold py-3">
+                            Quiz
+                        </h1>
+                        <Button className="float-end" onClick={() => {
+                            navigate('/Quiz/Add');
+                        }
+                        }>Add QUIZ</Button>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         {
                             quizzzz.map((quiz, index) => {
