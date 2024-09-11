@@ -49,12 +49,12 @@ export default function Statistics () {
                     </div>
                 </div>
             </div>
-            <div className="hidden md:block">
-                <div className="flex flex-row justify-between mx-4 mb-4">
+            <div className="hidden md:block ">
+                <div className="flex flex-row justify-between mb-4">
                     <CustomersOverview customers={customers} />
                     <Events />
                 </div>
-                <div className="flex flex-row justify-between mx-4">
+                <div className="flex flex-row justify-between">
                     <CustomersByCountry />
                     <MeetingTopSources />
                 </div>
