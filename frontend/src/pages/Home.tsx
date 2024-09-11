@@ -1,19 +1,32 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Button } from "flowbite-react";
-
-import Profiles from "./Profiles";
 import ETIBNavBar from "../components/ETIBNavBar";
 import Statistics from "./Statistics";
-import CustomerDetails from "../components/Customers/CustomerDetails";
-import { meetings } from "../data";
 
-function Home () {
+function Home() {
+    const navigate = useNavigate();
     const [props, setProps] = useState({ page: "dashboard" });
+
+    const userInfo: any = localStorage.getItem("userData") || "";
+
+    useEffect(() => {
+        try {
+            const parsedUserInfo = JSON.parse(userInfo);
+
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            } if (parsedUserInfo.roles[0] === "ROLE_COACH") {
+                navigate("/Customers");
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
+    }, []);
 
     return (
         <div className="overflow-x-hidden">
-            <ETIBNavBar properties={props} OnChangeView={setProps}/>
+            <ETIBNavBar properties={props} OnChangeView={setProps} />
             <Statistics />
         </div>
     );

@@ -6,6 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import { Button } from "flowbite-react";
 import ETIBQuestion from "../components/ETIBQuestion";
 import { useNavigate } from "react-router-dom";
+import QuizService from "../services/QuizService";
 
 function Quiz() {
     const [props, setProps] = useState({ page: "quiz" })
@@ -14,68 +15,29 @@ function Quiz() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [quizItem, setQuizItem] = useState<any>(null);
     const navigate = useNavigate();
-    const quizzzz = [
-        {
-            'id': 1,
-            'name': 'Quiz 1',
-            'difficulty': 'easy',
-            'img': 'https://via.placeholder.com/' + (width / 4)
-        },
-        {
-            'id': 2,
-            'name': 'Quiz 2',
-            'difficulty': 'easy',
-            'img': 'https://via.placeholder.com/' + (width / 4)
-        },
-        {
-            'id': 3,
-            'name': 'Quiz 3',
-            'difficulty': 'easy',
-            'img': 'https://via.placeholder.com/' + (width / 4)
-        },
-        {
-            'id': 4,
-            'name': 'Quiz 4',
-            'difficulty': 'easy',
-            'img': 'https://via.placeholder.com/' + (width / 4)
-        },
-        {
-            'id': 5,
-            'name': 'Quiz 5',
-            'difficulty': 'easy',
-            'img': 'https://via.placeholder.com/' + (width / 4)
-        },
-        {
-            'id': 6,
-            'name': 'Quiz 6',
-            'difficulty': 'easy',
-            'img': 'https://via.placeholder.com/' + (width / 4)
-        },
-        {
-            'id': 7,
-            'name': 'Quiz 7',
-            'difficulty': 'easy',
-            'img': 'https://via.placeholder.com/' + (width / 4)
-        },
-        {
-            'id': 8,
-            'name': 'Quiz 8',
-            'difficulty': 'easy',
-            'img': 'https://via.placeholder.com/' + (width / 4)
-        },
-        {
-            'id': 9,
-            'name': 'Quiz 9',
-            'difficulty': 'easy',
-            'img': 'https://via.placeholder.com/' + (width / 4)
-        },
-        {
-            'id': 10,
-            'name': 'Quiz 10',
-            'difficulty': 'easy',
-            'img': 'https://via.placeholder.com/' + (width / 4)
-        },
-    ];
+    const [privileges, setPrivileges] = useState<Boolean>(false);
+    const [quizzes, setQuizzes] = useState<any>([]);
+
+    useEffect(() => {
+        const userInfo: any = localStorage.getItem("userData") || "";
+        try {
+            const parsedUserInfo = JSON.parse(userInfo);
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            } else {
+                setPrivileges(true);
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
+
+        QuizService.getAll().then((response: any) => {
+            setQuizzes(response.data['hydra:member']);
+        }).catch((error) => {
+            console.log(error);
+        });
+
+    }, []);
 
     const quixxxx = {
         'id': 9,
@@ -142,9 +104,19 @@ function Quiz() {
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get('q');
         if (myParam !== null) {
-            setQuizItem(quizzzz[parseInt(myParam)]);
+            QuizService.get(parseInt(myParam)).then((response: any) => {
+                let data = response.data['hydra:member'];
+            });
         }
     }, [searchParams]);
+
+    function deleteQuiz(id: number) {
+        console.log(id);
+        QuizService.deleteID(id).then((response) => {
+            console.log(response);
+            window.location.reload();
+        });
+    }
 
     return (
         <div className="overflow-x-hidden h-screen bg-pink-500">
@@ -155,24 +127,30 @@ function Quiz() {
                         <h1 className="text-4xl font-bold py-3">
                             Quiz
                         </h1>
-                        <Button className="float-end" onClick={() => {
-                            navigate('/Quiz/Add');
+                        {privileges &&
+                            <Button className="float-end" onClick={() => {
+                                navigate('/Quiz/Add');
+                            }
+                            }>Add QUIZ</Button>
                         }
-                        }>Add QUIZ</Button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         {
-                            quizzzz.map((quiz, index) => {
+                            quizzes.map((quiz: any, index: number) => {
                                 return (
-                                    <div key={index} className="bg-white shadow-md rounded-lg p-4 cursor-pointer" onClick={() => {
-                                        params.delete('q');
-                                        params.append('q', index.toString());
-                                        window.location.href = '/Quiz?' + params.toString();
-                                    }}>
-                                        <img src={quiz.img} alt="quiz" className="w-full object-cover object-center" />
-                                        <div className="py-2">
-                                            <h1 className="text-xl font-bold">{quiz.name}</h1>
-                                            <p className="text-sm text-gray-500">{quiz.difficulty}</p>
+                                    <div key={index} className="bg-white shadow-md rounded-lg p-4">
+                                        <img src={`https://via.placeholder.com/' + ${width / 4}`} alt="quiz" className="w-full object-cover object-center" />
+                                        <div className="flex justify-between">
+                                            <div className="py-2 cursor-pointer" onClick={() => {
+                                                params.delete('q');
+                                                params.append('q', quiz.id.toString());
+                                                window.location.href = '/Quiz?' + params.toString();
+                                            }}>
+                                                <h1 className="text-xl font-bold">{quiz.title}</h1>
+                                            </div>
+                                            <Button className="bg-red-500 hover:bg-red-700 text-white font-bold h-10 text-sm rounded-md mt-5 z-1" onClick={() => deleteQuiz(quiz.id)}>
+                                                delete
+                                            </Button>
                                         </div>
                                     </div>
                                 )

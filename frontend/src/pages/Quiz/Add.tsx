@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from "react-hook-form"
 import { Button, Card, Radio, TextInput } from 'flowbite-react';
 import axios from 'axios';
+import { Table } from "flowbite-react";
 
 function QuizAdd() {
     const [props, setProps] = useState({ page: "quiz" });
@@ -49,7 +50,7 @@ function QuizAdd() {
     }
 
     return (
-        <div className="overflow-x-hidden h-screen bg-pink-500">
+        <div className="overflow-x-hidden">
             <ETIBNavBar properties={props} OnChangeView={setProps} />
             <div className="flex flex-col">
                 <div className="flex items-center justify-between p-5">
@@ -61,24 +62,39 @@ function QuizAdd() {
                 <form className="flex flex-col p-5 mx-[10vh] space-y-4" onSubmit={handleSubmit(onSubmit)}>
                     <TextInput key={"QuizInput"} type="text" placeholder="Quiz Title" {...register("title", { required: true })} />
                     {nbrQuestions.map((j, indexJ) => (
-                        <Card className='bg-pink-800 border-pink-800'>
+                        <Card>
                             <TextInput key={indexJ} type="text" placeholder="Question" {...register(`questions[${indexJ}].question`, { required: true })} />
-                            <div>
-                                {nbrAnswers.map((i, index) => (
-                                    <div className='flex justify-between items-center space-y-4'>
-                                        <TextInput key={i} type="text" placeholder={`Type your answer `} {...register(`questions[${indexJ}].answers[${index}].answer`, { required: true })} />
-                                        {errors.answers && <span>This field is required</span>}
-                                        <Radio {...register(`questions[${indexJ}].answers[${index}].correct`)} name={`answer${j}`} value={"true"} onChange={(e: any) => {
-                                            getValues().questions[indexJ].answers.forEach((answer: any) => {
-                                                answer.correct = false;
-                                            });
-                                            getValues().questions[indexJ].answers[index].correct = e.target.checked;
-                                        }} />
-                                        <Button disabled={nbrAnswers.length == 2} onClick={() => deleteAnswer(i, index, indexJ)}>Remove Answer</Button>
-                                    </div>
-                                ))}
-                                <Button disabled={nbrAnswers.length == 4} onClick={() => addAnswer()}>Add Answer</Button>
-                            </div>
+                            <Table striped>
+                                <Table.Head>
+                                    <Table.HeadCell>Answers</Table.HeadCell>
+                                    <Table.HeadCell className=''>Select Correct Answer</Table.HeadCell>
+                                    <Table.HeadCell className='text-right'>
+                                        Remove
+                                    </Table.HeadCell>
+                                </Table.Head>
+                                <Table.Body>
+                                    {nbrAnswers.map((i, index) => (
+                                        <Table.Row>
+                                            <Table.Cell className=''>
+                                                <TextInput key={i} type="text" placeholder={`Type your answer `} {...register(`questions[${indexJ}].answers[${index}].answer`, { required: true })} />
+                                                {errors.answers && <span>This field is required</span>}
+                                            </Table.Cell>
+                                            <Table.Cell className=''>
+                                                <Radio className='bg-red-900' {...register(`questions[${indexJ}].answers[${index}].correct`)} name={`answer${j}`} value={"true"} onChange={(e: any) => {
+                                                    getValues().questions[indexJ].answers.forEach((answer: any) => {
+                                                        answer.correct = false;
+                                                    });
+                                                    getValues().questions[indexJ].answers[index].correct = e.target.checked;
+                                                }} />
+                                            </Table.Cell>
+                                            <Table.Cell className='flex justify-end'>
+                                                <Button disabled={nbrAnswers.length == 2} onClick={() => deleteAnswer(i, index, indexJ)}>Remove Answer</Button>
+                                            </Table.Cell>
+                                        </Table.Row>
+                                    ))}
+                                    <Button disabled={nbrAnswers.length == 4} onClick={() => addAnswer()}>Add Answer</Button>
+                                </Table.Body>
+                            </Table>
                             <Button disabled={nbrQuestions.length == 1} onClick={() => deleteQuestion(indexJ)}> Remove Question</Button>
                         </Card>
                     ))}

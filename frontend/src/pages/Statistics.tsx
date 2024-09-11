@@ -41,21 +41,6 @@ export default function Statistics () {
                 </div>
                 <div className="mt-3 md:mt-auto mb-auto">
                     <div className="flex flex-row space-x-4 justify-center md:justify-normal">
-                        <Dropdown
-                        label=""
-                        dismissOnClick={false}
-                        renderTrigger={() =>
-                            <Button className="bg-transparent text-gray-700 border-gray-700 rounded-md">
-                                <FaRegCalendarAlt className="mr-2 h-5 w-5"/>
-                                30 Days
-                                <HiChevronDown className="ml-2 h-5 w-5"/>
-                            </Button>
-                        }>
-                            <Dropdown.Item>Dashboard</Dropdown.Item>
-                            <Dropdown.Item>Settings</Dropdown.Item>
-                            <Dropdown.Item>Earnings</Dropdown.Item>
-                            <Dropdown.Item>Sign out</Dropdown.Item>
-                        </Dropdown>
                         <Button className="bg-blueT">
                             <MdOutlineAnalytics className="mr-2 h-5 w-5"/>
                             Reports

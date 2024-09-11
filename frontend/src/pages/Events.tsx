@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import ETIBNavBar from "../components/ETIBNavBar";
 import { Button } from "flowbite-react";
+
 import { FiPlus } from "react-icons/fi";
 import ETIBCalendar from "../components/ETIBCalendar";
 import EventService from "../services/EventService";
+import { useNavigate } from "react-router-dom";
 
 function Events() {
+    const navigate = useNavigate();
     const [props, setProps] = useState({ page: "events" });
     const [events, setEvents] = useState<any>([]);
 
@@ -17,6 +20,19 @@ function Events() {
         }).catch((error) => {
             console.log(error);
         });
+    }, []);
+
+    const userInfo: any = localStorage.getItem("userData") || "";
+
+    useEffect(() => {
+        try {
+            const parsedUserInfo = JSON.parse(userInfo);
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
     }, []);
 
     return (

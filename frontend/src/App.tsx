@@ -9,6 +9,7 @@ import Sign from './pages/Sign';
 import Wardrobe from './pages/Wardrobe';
 import Events from './pages/Events';
 import Quiz from './pages/Quiz';
+import Elearning from './pages/Elearning';
 
 import AuthProvider from './components/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes';
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/Events" element={<Events />}></Route>
                 <Route path="/Quiz" element={<Quiz />}></Route>
                 <Route path="/Quiz/Add" element={<QuizAdd />}></Route>
+                <Route path="/Elearning" element={<Elearning />}></Route>
               </Route>
             </Routes>
           </Router>
