@@ -6,6 +6,8 @@ import ETIBNavBar from "../components/ETIBNavBar";
 
 import EmployeeService from "../services/EmployeeService";
 
+import CryptoJS from "crypto-js";
+
 function Account() {
     const navigate = useNavigate();
     const [employees, setEmployees] = useState([]);
@@ -30,7 +32,10 @@ function Account() {
 
     useEffect(() => {
         try {
-            const parsedUserInfo = JSON.parse(userInfo);
+            const secretKey = 'etib';
+            const bytes = CryptoJS.AES.decrypt(userInfo, secretKey);
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
 
             if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
                 navigate("/Wardrobe");

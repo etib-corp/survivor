@@ -9,6 +9,8 @@ import Tip from "../types/Tip";
 
 import TipService from "../services/TipService";
 
+import CryptoJS from "crypto-js";
+
 function Tips() {
     const navigate = useNavigate();
     const [props, setProps] = useState({ page: "tips" });
@@ -18,7 +20,11 @@ function Tips() {
 
     useEffect(() => {
         try {
-            const parsedUserInfo = JSON.parse(userInfo);
+            const secretKey = 'etib';
+            const bytes = CryptoJS.AES.decrypt(userInfo, secretKey);
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
+
             if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
                 navigate("/Wardrobe");
             }

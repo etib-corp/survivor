@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
-import ETIBNavBar from "../components/ETIBNavBar";
+import { useNavigate } from "react-router-dom";
+
 import { Button } from "flowbite-react";
 
 import { FiPlus } from "react-icons/fi";
+
+import ETIBNavBar from "../components/ETIBNavBar";
 import ETIBCalendar from "../components/ETIBCalendar";
+
 import EventService from "../services/EventService";
-import { useNavigate } from "react-router-dom";
+
 import { buttonTheme } from "../themes";
+
+import CryptoJS from "crypto-js";
 
 function Events() {
     const navigate = useNavigate();
@@ -27,7 +33,11 @@ function Events() {
 
     useEffect(() => {
         try {
-            const parsedUserInfo = JSON.parse(userInfo);
+            const secretKey = 'etib';
+            const bytes = CryptoJS.AES.decrypt(userInfo, secretKey);
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
+
             if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
                 navigate("/Wardrobe");
             }

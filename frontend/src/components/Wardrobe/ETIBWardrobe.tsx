@@ -1,13 +1,14 @@
+import axios from "axios";
+
 import { useEffect, useState } from "react";
 
-import { HiChevronDoubleRight, HiChevronDown } from "react-icons/hi";
+import { HiChevronDoubleRight } from "react-icons/hi";
 
-import { Avatar, Button, Carousel, Label } from "flowbite-react";
+import { Avatar, Button, Label } from "flowbite-react";
 
 import Clothe from "../../types/Clothe";
 import ClotheService from "../../services/ClotheService";
-import axios from "axios";
-import { get } from "http";
+
 import { buttonOutlineTheme, buttonTheme } from "../../themes";
 
 function getClotheInBase64(clothe: Clothe | null) {

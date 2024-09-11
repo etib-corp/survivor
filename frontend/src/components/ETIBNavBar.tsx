@@ -5,6 +5,8 @@ import { useAuth } from "./AuthContext";
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
 import { navBarTheme } from "../themes";
 
+import CryptoJS from "crypto-js";
+
 const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => void }> = ({ properties, OnChangeView }) => {
   const navigate = useNavigate();
   const { logout } = useAuth();
@@ -20,9 +22,16 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
 
   const userInfo: any = localStorage.getItem("userData") || "";
 
+
+
   if (userInfo) {
     try {
-      const parsedUserInfo = JSON.parse(userInfo);
+      const secretKey = 'etib';
+
+      const bytes = CryptoJS.AES.decrypt(userInfo, secretKey);
+      const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+
+      const parsedUserInfo = JSON.parse(decryptedUserInfo);
       name = parsedUserInfo.name;
       email = parsedUserInfo.email;
       surname = parsedUserInfo.surname;

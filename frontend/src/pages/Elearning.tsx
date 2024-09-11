@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { FaRegTrashAlt } from "react-icons/fa";
+import { HiPlus } from "react-icons/hi";
+
 import ETIBCard from "../components/ETIBCard";
 import ETIBNavBar from "../components/ETIBNavBar";
+
+import { Button } from "flowbite-react";
+
 import QuizService from "../services/QuizService";
 import VideoService from "../services/VideoService";
+
 import Quiz from "../types/Quiz";
 import Video from "../types/Video";
-import { useNavigate } from "react-router-dom";
-import { Button } from "flowbite-react";
-import { FaRegTrashAlt } from "react-icons/fa";
+
 import { buttonTheme } from "../themes";
-import { HiPlus } from "react-icons/hi";
+
+import CryptoJS from "crypto-js";
 
 function Elearning() {
     const [props, setProps] = useState({ page: "elearning" });
@@ -29,11 +37,14 @@ function Elearning() {
             console.log(e);
         });
         const userInfo: any = localStorage.getItem("userData") || "";
+
         try {
-            const parsedUserInfo = JSON.parse(userInfo);
-            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
-                navigate("/Wardrobe");
-            } else {
+            const secretKey = 'etib';
+            const bytes = CryptoJS.AES.decrypt(userInfo, secretKey);
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
+
+            if (parsedUserInfo.roles[0] !== "ROLE_CUSTOMER") {
                 setPrivileges(true);
             }
         } catch (error) {

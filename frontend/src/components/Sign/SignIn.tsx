@@ -1,20 +1,16 @@
+import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 
 import { Button, Label, TextInput } from "flowbite-react";
 
 import { useAuth } from "../AuthContext";
-import axios from "axios";
-import { pink } from "@mui/material/colors";
+
+import CryptoJS from "crypto-js";
 
 export function SignIn() {
     const { login } = useAuth();
     const navigate = useNavigate();
-
-    const theme = {
-        colors: {
-            pink: "focus:ring-4 focus:ring-gray-700",
-        },
-    };
 
     function handleSubmit(event: any) {
         event.preventDefault();
@@ -28,10 +24,14 @@ export function SignIn() {
         axios.post(process.env.REACT_APP_API_URL + "/login", { email, password }).then((response) => {
             const token = response.data.token;
             const data = response.data.data;
+
+            const jsonString = JSON.stringify(data);
+            const secretKey = 'etib';
+            const encryptedData = CryptoJS.AES.encrypt(jsonString, secretKey).toString();
+
             login(token);
             localStorage.setItem("authToken", token);
-            localStorage.setItem("userData", JSON.stringify(data));
-            console.log(data);
+            localStorage.setItem("userData", encryptedData);
             navigate("/Home");
         }).catch((e) => {
             alert("Invalid email or password");
@@ -50,7 +50,7 @@ export function SignIn() {
                 <div className="mb-2 block">
                     <Label htmlFor="password2" value="Your password" />
                 </div>
-                <TextInput id="password2" type="password" required shadow className="focus:ring-1 focus:ring-gray-700"/>
+                <TextInput id="password2" type="password" required shadow className="focus:ring-1 focus:ring-gray-700" />
             </div>
             <div>
             </div>
