@@ -8,7 +8,7 @@ import axios from 'axios';
 import { Table, FileInput } from "flowbite-react";
 
 function QuizAdd() {
-    const [props, setProps] = useState({ page: "quiz" });
+    const [props, setProps] = useState({ page: "elearning" });
     const [nbrAnswers, setNbrAnswers] = useState([1, 2]);
     const [nbrQuestions, setNbrQuestions] = useState([1]);
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ function QuizAdd() {
             data.image = base64data;
             axios.post(`${process.env.REACT_APP_API_URL}/questions/new`, data);
             reset();
-            navigate('/Quiz');
+            navigate('/Elearning');
         }
         reader.readAsDataURL(data.image[0]);
     }
@@ -63,7 +63,7 @@ function QuizAdd() {
                 <div className="flex items-center justify-between p-5">
                     <h1 className="text-4xl font-bold">Add Quiz</h1>
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" onClick={() => navigate('/Elearning')}>
-                        Back to Quiz
+                        Back to Elearning
                     </button>
                 </div>
                 <form className="flex flex-col p-5 mx-[10vh] space-y-4" onSubmit={handleSubmit(onSubmit)}>
