@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import { Accordion, Button, ButtonGroup } from "flowbite-react";
+import { Accordion, Avatar, Button, ButtonGroup, TextInput } from "flowbite-react";
 
 import ETIBNavBar from "../components/ETIBNavBar";
 
@@ -11,6 +11,8 @@ import Tip from "../types/Tip";
 import TipService from "../services/TipService";
 
 import CryptoJS from "crypto-js";
+import { buttonOutlineTheme, buttonTheme, textInputTheme } from "../themes";
+import { HiPencil, HiPlus, HiTrash } from "react-icons/hi";
 
 function Tips() {
     const navigate = useNavigate();
@@ -92,83 +94,106 @@ function Tips() {
     return (
         <div className="overflow-x-hidden">
             <ETIBNavBar properties={props} OnChangeView={setProps} />
-            <div className="flex flex-col p-5">
-                <h1 className="text-5xl py-1">
-                    Tips for Coaches
-                </h1>
-                {
-                    id != -1 ? (
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="flex flex-row justify-between items-center">
-                                <input type="text" className="w-1/2 border border-gray-400 p-1" placeholder="Title" defaultValue={parsedTips[id]?.title[language]} {...register("title", { required: true })} />
-                                <input type="text" className="w-1/2 border border-gray-400 p-1" placeholder="Tip" defaultValue={parsedTips[id]?.tip[language]} {...register("tip", { required: true })} />
-                                <select className="w-1/2 border border-gray-400 p-1" defaultValue={translate()} {...register("language", { required: true })} >
-                                    <option value="FR">French</option>
-                                    <option value="EN">English</option>
-                                    <option value="ES">Spanish</option>
-                                    <option value="ZH">Chinese</option>
-                                </select>
-                            </div>
-                            <div className="flex items-end justify-end">
+            <div className="flex flex-col">
+                <div className="grid grid-cols-1 md:flex md:flex-row md:mt-8 ml-4 mr-4">
+                    <div className="flex flex-col space-y-4 w-full">
+                        <h1 className="text-4xl font-bold py-1">
+                            Tips for Coaches
+                        </h1>
+                        <div className="flex justify-between w-full">
+                            <div className="flex">
                                 <ButtonGroup outline>
-                                    <Button className="border border-gray-400" type="submit" >Save</Button>
-                                    <Button className="border border-gray-400" onClick={() => setId(-1)}>Cancel</Button>
+                                    <Button theme={buttonOutlineTheme} color="default" disabled={language === 0} onClick={() => setLanguage(0)}>
+                                        <Avatar size="xs" img="/fr.png" />
+                                    </Button>
+                                    <Button theme={buttonOutlineTheme} color="default" disabled={language === 1} onClick={() => setLanguage(1)}>
+                                        <Avatar size="xs" img="/en.png" />
+                                    </Button>
+                                    <Button theme={buttonOutlineTheme} color="default" disabled={language === 2} onClick={() => setLanguage(2)}>
+                                        <Avatar size="xs" img="/es.png" />
+                                    </Button>
+                                    <Button theme={buttonOutlineTheme} color="default" disabled={language === 3} onClick={() => setLanguage(3)}>
+                                        <Avatar size="xs" img="/cn.png" />
+                                    </Button>
                                 </ButtonGroup>
                             </div>
-                        </form>
-                    ) : (
-                        <div className="flex flex-row items-end justify-end">
-                            <Button className="border border-gray-400" onClick={() => setId(-2)}>Add Tip</Button>
+                            {
+                                id != -1 ? (
+                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                        <div className="flex space-x-4 justify-start">
+                                            <TextInput theme={textInputTheme} type="text" className="w-1/2" placeholder="Title" defaultValue={parsedTips[id]?.title[language]} {...register("title", { required: true })} />
+                                            <TextInput theme={textInputTheme} type="text" className="w-1/2" placeholder="Tip" defaultValue={parsedTips[id]?.tip[language]} {...register("tip", { required: true })} />
+                                            <select
+                                                className="w-1/2 border rounded-md p-2 border-gray-400 enabled:focus:border-pinkT enabled:focus:ring-pinkT text-gray-500 bg-gray-100"
+                                                defaultValue={translate()} {...register("language", { required: true })} >
+                                                <option value="FR">
+                                                    French
+                                                </option>
+                                                <option value="EN">
+                                                    English
+                                                </option>
+                                                <option value="ES">
+                                                    Spanish
+                                                </option>
+                                                <option value="ZH">
+                                                    Chinese
+                                                </option>
+                                            </select>
+                                            <ButtonGroup outline>
+                                                <Button theme={buttonTheme} color="default" className="border border-gray-400" type="submit" >
+                                                    Save
+                                                </Button>
+                                                <Button theme={buttonOutlineTheme} color="default" className="border border-gray-400" onClick={() => setId(-1)}>
+                                                    Cancel
+                                                </Button>
+                                            </ButtonGroup>
+                                        </div>
+                                    </form>
+                                ) : (
+                                    <div className="flex flex-row">
+                                        <Button theme={buttonTheme} className="py-1" color="default" onClick={() => setId(-2)}>
+                                            <HiPlus className="h-5 w-5 mr-5" />
+                                            Add Tip
+                                        </Button>
+                                    </div>
+                                )
+                            }
                         </div>
-                    )
-                }
-                <div className="flex items-start justify-start">
-                    <ButtonGroup outline>
-                        <Button className="bg-white border border-gray-400" disabled={language === 0} onClick={() => setLanguage(0)}>
-                            <img width={25} height={25} src="/fr.png"></img>
-                        </Button>
-                        <Button className="bg-white border border-gray-400" disabled={language === 1} onClick={() => setLanguage(1)}>
-                            <img width={25} height={25} src="/en.png"></img>
-                        </Button>
-                        <Button className="bg-white border border-gray-400" disabled={language === 2} onClick={() => setLanguage(2)}>
-                            <img width={25} height={25} src="/es.png"></img>
-                        </Button>
-                        <Button className="bg-white border border-gray-400" disabled={language === 3} onClick={() => setLanguage(3)}>
-                            <img width={25} height={25} src="/cn.png"></img>
-                        </Button>
-                    </ButtonGroup>
+                    </div>
                 </div>
-                <div className="flex justify-center pt-10">
-                    <Accordion className="w-full">
-                        {parsedTips.map((tip, index) => (
-                            <Accordion.Panel key={tip.id}>
-                                <Accordion.Title className="flex flex-row justify-between items-center">
-                                    <p>
-                                        {tip.title[language]}
-                                    </p>
-                                    <div className="flex items-start justify-start">
+            </div>
+            <div className="flex justify-center my-10 mx-4">
+                <Accordion className="w-full">
+                    {parsedTips.map((tip, index) => (
+                        <Accordion.Panel key={tip.id}>
+                            <Accordion.Title >
+                                <div className="flex flex-row space-x-4 my-auto">
+                                    <div className="">
                                         <ButtonGroup>
-                                            <Button className="bg-pinkT" onClick={() => setId(tip.id)}>
-                                                Edit
+                                            <Button theme={buttonTheme} color="default" onClick={() => setId(tip.id)}>
+                                                <HiPencil className="h-5 w-5" />
                                             </Button>
-                                            <Button className="bg-pinkT" onClick={() => {
+                                            <Button theme={buttonOutlineTheme} color="default" onClick={() => {
                                                 TipService.deleteID(tip.id)
                                                 window.location.reload()
                                             }}>
-                                                Delete
+                                                <HiTrash className="h-5 w-5" />
                                             </Button>
                                         </ButtonGroup>
                                     </div>
-                                </Accordion.Title>
-                                <Accordion.Content>
-                                    <p>{tip.tip[language]}</p>
-                                </Accordion.Content>
-                            </Accordion.Panel>
-                        ))}
-                    </Accordion>
-                </div>
+                                    <p className="flex my-auto">
+                                        {tip.title[language]}
+                                    </p>
+                                </div>
+                            </Accordion.Title>
+                            <Accordion.Content>
+                                <p>{tip.tip[language]}</p>
+                            </Accordion.Content>
+                        </Accordion.Panel>
+                    ))}
+                </Accordion>
             </div>
-        </div >
+        </div>
     );
 }
 
