@@ -13,6 +13,7 @@ import MeetingTopSources from "../components/Statistics/MeetingTopSources";
 
 import CustomerService from "../services/CustomerService";
 import Customer from "../types/Customer";
+import { buttonTheme } from "../themes";
 
 export default function Statistics () {
     const [customers, setCustomers] = useState<Customer[]>([]);
@@ -41,7 +42,7 @@ export default function Statistics () {
                 </div>
                 <div className="mt-3 md:mt-auto mb-auto">
                     <div className="flex flex-row space-x-4 justify-center md:justify-normal">
-                        <Button className="bg-pinkT">
+                        <Button theme={buttonTheme} color="default">
                             <MdOutlineAnalytics className="mr-2 h-5 w-5"/>
                             Reports
                         </Button>

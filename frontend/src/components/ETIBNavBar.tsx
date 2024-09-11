@@ -3,14 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
 import { Navbar, Dropdown, Avatar } from "flowbite-react";
-
-const theme = {
-  link: {
-    active: {
-      on: "text-pinkT"
-    }
-  }
-};
+import { navBarTheme } from "../themes";
 
 const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => void }> = ({ properties, OnChangeView }) => {
   const navigate = useNavigate();
@@ -65,7 +58,7 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
   };
 
   return (
-    <Navbar fluid rounded className="shadow-sm" theme={theme}>
+    <Navbar fluid rounded className="shadow-sm" theme={navBarTheme}>
       <Navbar.Toggle />
       <Navbar.Brand>
         <span className="sm:text-lg text-sm self-center whitespace-nowrap dark:text-white">

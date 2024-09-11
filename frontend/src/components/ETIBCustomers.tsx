@@ -13,6 +13,7 @@ import { HiAnnotation, HiPhone, HiUser } from 'react-icons/hi';
 import { Slider } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import axios from 'axios';
+import { buttonOutlineTheme, buttonTheme, dateTheme, tableTheme, textInputTheme } from '../themes';
 
 const marks = [
   {
@@ -30,17 +31,17 @@ const marks = [
 ];
 
 const astrologicalSigns = [
-  "Aries", 
-  "Taurus", 
-  "Gemini", 
-  "Cancer", 
-  "Leo", 
-  "Virgo", 
-  "Libra", 
-  "Scorpio", 
-  "Sagittarius", 
-  "Capricorn", 
-  "Aquarius", 
+  "Aries",
+  "Taurus",
+  "Gemini",
+  "Cancer",
+  "Leo",
+  "Virgo",
+  "Libra",
+  "Scorpio",
+  "Sagittarius",
+  "Capricorn",
+  "Aquarius",
   "Pisces"
 ];
 
@@ -119,8 +120,8 @@ const CustomersForm: React.FC<({ callback: () => void })> = ({ callback }) => {
   };
 
   return (
-    <div className='flex flex-col mx-4 border rounded-md mt-4 space-y-4'>
-      <div className='border p-4 rounded-md'>
+    <div className='flex flex-col mx-4 border rounded-md mt-4 space-y-4 bg-pinkB'>
+      <div className='border p-4 rounded-md bg-pinkB'>
         <Breadcrumb>
           <Breadcrumb.Item icon={HiUser} onClick={() => setProgress(0)} href='#'>
             Personal
@@ -146,13 +147,13 @@ const CustomersForm: React.FC<({ callback: () => void })> = ({ callback }) => {
                 <Label htmlFor='name'>
                   Name
                 </Label>
-                <TextInput id='name' type='text' placeholder="Kevin" {...register("name", { required: true })} />
+                <TextInput theme={textInputTheme} id='name' type='text' placeholder="Kevin" {...register("name", { required: true })} />
               </div>
               <div className='flex flex-col w-[50%]'>
                 <Label htmlFor='surname'>
                   Surname
                 </Label>
-                <TextInput id='surname' type="text" placeholder="Cazal" {...register("surname", { required: true })} />
+                <TextInput theme={textInputTheme} id='surname' type="text" placeholder="Cazal" {...register("surname", { required: true })} />
               </div>
             </div>
             <div className='flex w-full space-x-8'>
@@ -162,6 +163,7 @@ const CustomersForm: React.FC<({ callback: () => void })> = ({ callback }) => {
                 </Label>
                 <Datepicker
                   id='birth'
+                  theme={dateTheme}
                   onSelectedDateChanged={handleDateChange}
                 />
               </div>
@@ -186,41 +188,41 @@ const CustomersForm: React.FC<({ callback: () => void })> = ({ callback }) => {
             </div>
             <div className='flex w-full space-x-8'>
               <div className="flex flex-col w-1/2">
-                  <Label htmlFor='astrological_sign'>
-                    Astrological Sign
-                  </Label>
-                  <select
-                    id='astrological_sign'
-                    {...register("astrological_sign", { required: true })}
-                    onChange={(e) => setAstrologicalSign(e.target.value)}
-                    className='w-full p-2 border rounded-md border-gray-300 focus:ring-1 focus:ring-gray-300'
-                  >
-                    {astrologicalSigns.map((sign) => (
-                      <option key={sign} value={sign}>
-                        {sign}
-                      </option>
-                    ))}
-                  </select>
+                <Label htmlFor='astrological_sign'>
+                  Astrological Sign
+                </Label>
+                <select
+                  id='astrological_sign'
+                  {...register("astrological_sign", { required: true })}
+                  onChange={(e) => setAstrologicalSign(e.target.value)}
+                  className='w-full p-2 border rounded-md border-gray-300 focus:border-pinkT focus:ring-pinkT'
+                >
+                  {astrologicalSigns.map((sign) => (
+                    <option key={sign} value={sign} className='enabled:hover:bg-pinkB enabled:focus:bg-pinkT'>
+                      {sign}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className='flex flex-col w-[50%]'>
                 <Label htmlFor='address'>
                   Address
                 </Label>
-                <TextInput id='address' type='text' placeholder="..." {...register("address", { required: true })} />
+                <TextInput theme={textInputTheme} id='address' type='text' placeholder="..." {...register("address", { required: true })} />
               </div>
             </div>
             <div className="flex w-full">
               <div className="flex flex-col w-[20%]">
-                  <Label htmlFor='phone_number'>
-                    Phone Number
-                  </Label>
-                  <TextInput id='phone_number' type='text' placeholder="06..." {...register("phone_number", { required: true })} />
-                </div>
-                <span className='flex w-1/2 justify-end pt-5 ml-auto'>
-                  <Button className="bg-pinkT enabled:hover:bg-gray-300" onClick={() => setProgress(1)}>
-                    Next
-                  </Button>
-                </span>
+                <Label htmlFor='phone_number'>
+                  Phone Number
+                </Label>
+                <TextInput theme={textInputTheme} id='phone_number' type='text' placeholder="06..." {...register("phone_number", { required: true })} />
+              </div>
+              <span className='flex w-1/2 justify-end pt-5 ml-auto'>
+                <Button theme={buttonTheme} color="default" onClick={() => setProgress(1)}>
+                  Next
+                </Button>
+              </span>
             </div>
           </div>
         }
@@ -230,10 +232,10 @@ const CustomersForm: React.FC<({ callback: () => void })> = ({ callback }) => {
             <div className='flex w-full space-x-8'>
               <div className='flex flex-col w-[50%]'>
                 <Label>Email</Label>
-                <TextInput type='email' placeholder="kevin.cazal@cazalkevin.re" {...register("email", { required: true })} />
+                <TextInput theme={textInputTheme} type='email' placeholder="kevin.cazal@cazalkevin.re" {...register("email", { required: true })} />
               </div>
               <span className='flex w-1/2 justify-end my-auto ml-auto'>
-                <Button className='' onClick={() => setProgress(2)}>
+                <Button theme={buttonTheme} color="default" onClick={() => setProgress(2)}>
                   Next
                 </Button>
               </span>
@@ -246,10 +248,10 @@ const CustomersForm: React.FC<({ callback: () => void })> = ({ callback }) => {
             <div className='flex w-full space-x-8'>
               <div className='flex flex-col w-[50%]'>
                 <Label>Password</Label>
-                <TextInput type='password' placeholder="H4ck3rZ" {...register("password", { required: true })} />
+                <TextInput theme={textInputTheme} type='password' placeholder="H4ck3rZ" {...register("password", { required: true })} />
               </div>
               <span className='flex w-1/2 justify-end my-auto ml-auto'>
-                <Button className='' type='submit'>
+                <Button theme={buttonTheme} color="default" type='submit'>
                   Submit
                 </Button>
               </span>
@@ -305,25 +307,25 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
   return (
     <div>
       {currentCustomer === null &&
-      <div className="flex flex-col">
-        <div className="grid grid-cols-1 md:flex md:flex-row justify-between md:mt-8 ml-4 mr-4">
-          <div className="flex flex-col">
-            <h1 className="text-4xl font-bold py-1">
-              Customers List
-            </h1>
-            <p>
-              You have total {customers.length} customers.
-            </p>
-          </div>
-          <div className="mt-3 md:mt-auto mb-auto">
-            <div className="flex flex-row space-x-4 justify-center md:justify-normal">
-              <Button className="bg-transparent text-gray-700 border-gray-700 focus:ring-2 focus:ring-gray-300 enabled:hover:bg-gray-100" onClick={exportToCSV}>
-                <LuDownloadCloud className="mr-2 h-5 w-5" />
-                Export
-              </Button>
-              <Button className="bg-blueT focus:ring-2 focus:ring-gray-300 enabled:hover:bg-blue-500" onClick={() => (setAddCus(!addCus))}>
-                <GoPlus className="h-5 w-5" />
-              </Button>
+        <div className="flex flex-col">
+          <div className="grid grid-cols-1 md:flex md:flex-row justify-between md:mt-8 ml-4 mr-4">
+            <div className="flex flex-col">
+              <h1 className="text-4xl font-bold py-1">
+                Customers List
+              </h1>
+              <p>
+                You have total {customers.length} customers.
+              </p>
+            </div>
+            <div className="mt-3 md:mt-auto mb-auto">
+              <div className="flex flex-row space-x-4 justify-center md:justify-normal">
+                <Button theme={buttonOutlineTheme} color="default" onClick={exportToCSV}>
+                  <LuDownloadCloud className="mr-2 h-5 w-5" />
+                  Export
+                </Button>
+                <Button theme={buttonTheme} color="default" onClick={() => (setAddCus(!addCus))}>
+                  <GoPlus className="h-5 w-5" />
+                </Button>
               </div>
             </div>
           </div>
@@ -339,7 +341,7 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                     <input
                       id="table-search"
                       type="text"
-                      className="w-48 text-sm text-gray-500 border-gray-300 focus:ring-gray-300 focus:ring-1 pl-10"
+                      className="w-48 text-sm text-gray-500 enabled:border-gray-300 enabled:focus:ring-pinkT focus:ring-1 pl-10"
                       placeholder="Search..."
                       value={inputSearch}
                       onChange={(e) => setInputSearch(e.target.value)}
@@ -351,7 +353,7 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                   </Button>
                 </div>
               </div>
-              <Table hoverable className="bg-transparent">
+              <Table hoverable className="bg-transparent" theme={tableTheme}>
                 <Table.Head className="border bg-transparent">
                   <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
                     Customer
@@ -380,7 +382,7 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                     <Table.Row className="border">
                       <Table.Cell onClick={() => { setCurrentCustomer(customer) }} className="text-blueT font-semibold flex flex-row">
                         <Avatar img={process.env.REACT_APP_PICTURES_URL + "/customers/" + customer.id + ".png"} className="mr-2" /> {/*/ IL FAUT FAIRE UN ROUTE /*/}
-                        <span className="my-auto cursor-pointer">
+                        <span className="my-auto cursor-pointer text-pinkT">
                           {customer.name + " " + customer.surname}
                         </span>
                       </Table.Cell>
