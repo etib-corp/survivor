@@ -27,9 +27,12 @@ export default function MeetingTopSources() {
                     data.push(encounter.source);
                 }
             });
+
             const wordCount: { [key: string]: number } = {};
+            let maxValue = 0;
 
             data.forEach(word => {
+                maxValue = wordCount[word] > maxValue ? wordCount[word] : maxValue;
                 if (wordCount[word]) {
                     wordCount[word]++;
                 } else {
@@ -41,7 +44,7 @@ export default function MeetingTopSources() {
                 id: index,
                 value: wordCount[word],
                 label: word,
-                color: `rgba(254, 176, 174, ${wordCount[word] / 3})`
+                color: `rgba(254, 176, 174, ${wordCount[word] / (maxValue)})`
             }));
             setSerie(sources);
         });
