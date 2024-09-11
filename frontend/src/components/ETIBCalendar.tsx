@@ -11,7 +11,7 @@ const ETIBCalendar: React.FC<({ events: any })> = ({ events }) => {
 	const [selectedDate, setSelectedDate] = useState(new Date());
 	selectedDate.setDate(1);
 	return (
-		<div className="lg:flex lg:h-full lg:flex-col p-5 m-5 border border-gray-300 rounded-md">
+		<div className="lg:flex lg:h-full lg:flex-col p-5 m-5 border border-gray-300 rounded-md bg-pinkB">
 			<header className="flex items-center justify-between border-b border-gray-200 py-4 lg:flex-none">
 				<div className="flex items-center space-x-5">
 					<h1 className="text-base font-bold leading-6 text-gray-900">
