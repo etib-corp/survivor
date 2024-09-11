@@ -49,7 +49,7 @@ export default function CustomersByCountry() {
     }, [customers]);
 
     return (
-        <div className="flex flex-col bg-white border mx-[5%] md:mx-4 w-[90%] md:w-[55%] rounded-md">
+        <div className="flex flex-col bg-pinkB border mx-[5%] md:mx-4 w-[90%] md:w-[55%] rounded-md">
             <div className="grid grid-cols-1 md:flex md:flex-row justify-between px-4 mb-8">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold py-3">

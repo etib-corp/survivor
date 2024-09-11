@@ -22,8 +22,8 @@ export function SignIn() {
             const token = response.data.token;
             const data = response.data.data;
             login(token);
-            localStorage.setItem("authToken", token);// Store the token in local storage
-            localStorage.setItem("userData", JSON.stringify(data));// Store the user data in local storage
+            localStorage.setItem("authToken", token);
+            localStorage.setItem("userData", JSON.stringify(data));
             console.log(data);
             navigate("/Home");
         }).catch((e) => {
