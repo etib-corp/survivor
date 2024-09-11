@@ -69,4 +69,34 @@ class QuestionController extends AbstractController
         $em->flush();
         return new JsonResponse(['status' => 'ok']);
     }
+
+    #[Route('/api/quiz/{id}', methods: ['GET'])]
+    public function getAllQuizById(string $id, EntityManagerInterface $em): JsonResponse
+    {
+        $quiz = $em->getRepository(Quiz::class)->find($id);
+        if (!$quiz) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Quiz not found'], 404);
+        }
+        $quizData = [
+            'id' => $quiz->getId(),
+            'title' => $quiz->getTitle(),
+            'questions' => [],
+        ];
+        foreach ($quiz->getQuestions() as $question) {
+            $questionData = [
+                'id' => $question->getId(),
+                'question' => $question->getQuestion(),
+                'answers' => [],
+            ];
+            foreach ($question->getAnswers() as $answer) {
+                $questionData['answers'][] = [
+                    'id' => $answer->getId(),
+                    'answer' => $answer->getAnswer(),
+                    'correct' => $answer->isCorrect(),
+                ];
+            }
+            $quizData['questions'][] = $questionData;
+        }
+        return new JsonResponse($quizData);
+    }
 }
