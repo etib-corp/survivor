@@ -29,9 +29,11 @@ function Elearning() {
         const userInfo: any = localStorage.getItem("userData") || "";
         try {
             const parsedUserInfo = JSON.parse(userInfo);
-            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+            console.log(["ROLE_ADMIN", "ROLE_COACH", "ROLE_CUSTOMER"].includes(parsedUserInfo.roles[0]));
+            if (!["ROLE_ADMIN", "ROLE_COACH", "ROLE_CUSTOMER"].includes(parsedUserInfo.roles[0])) {
                 navigate("/Wardrobe");
-            } else {
+            }
+            if (["ROLE_ADMIN", "ROLE_COACH"].includes(parsedUserInfo.roles[0])) {
                 setPrivileges(true);
             }
         } catch (error) {
@@ -82,9 +84,12 @@ function Elearning() {
                             <ETIBCard key={video.id} title={video.title} subtitle={video.description} path={video.url} buttonTitle="Watch video" content={
                                 <>
                                 <div className="flex w-full justify-end mb-1">
-                                    <Button className="" onClick={() => {deleteID(video.id, VideoService)}}>
-                                        <FaRegTrashAlt />
-                                    </Button>
+                                    {
+                                        privileges &&
+                                        <Button className="" onClick={() => {deleteID(video.id, VideoService)}}>
+                                            <FaRegTrashAlt />
+                                        </Button>
+                                    }
                                 </div>
                                 <iframe width={"100%"} height={"100%"} src={video.url} className="border-4 border-gray-300 rounded-md" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                                 </>
@@ -107,9 +112,12 @@ function Elearning() {
                             <ETIBCard key={quiz.id} title={quiz.title} path={"/Quiz?q=" + quiz.id} subtitle="Try this quiz to show your skills." buttonTitle="Cilck to test" content={
                                 <>
                                 <div className="flex w-full justify-end mb-1">
-                                    <Button className="" onClick={() => {deleteID(quiz.id as number, QuizService)}}>
-                                        <FaRegTrashAlt />
-                                    </Button>
+                                    {
+                                        privileges &&
+                                        <Button className="" onClick={() => {deleteID(quiz.id as number, QuizService)}}>
+                                            <FaRegTrashAlt />
+                                        </Button>
+                                    }
                                 </div>
                                 <img src={process.env.REACT_APP_PICTURES_URL +"/" + quiz.image} alt={quiz.title} className="w-full rounded-lg" />
                                 </>
