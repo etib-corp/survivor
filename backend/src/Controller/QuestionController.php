@@ -18,7 +18,7 @@ class QuestionController extends AbstractController
     #[Route('/api/questions/new', methods: ['POST'])]
     public function newQuestion(EntityManagerInterface $em, Request $request): JsonResponse
     {
-        $quizData = json_decode($request->getContent(), true);
+        $quizData = json_decode($request->getContent(false), true);
 
         if (!isset($quizData['title'])) {
             return new JsonResponse(['status' => 'error', 'message' => 'Title is missing for the quiz'], 400);
@@ -28,31 +28,30 @@ class QuestionController extends AbstractController
         }
         $quiz = new Quiz();
         $quiz->setTitle($quizData['title']);
-        if (!file_exists('images/quizzes')) {
-            mkdir('images/quizzes', 0777, true);
-        }
-        $image = $quizData['image'];
-        $file = fopen('images/quizzes/'.$quiz->getId().'.png', 'wb');
-        fwrite($file, $image);
-        fclose($file);
+        $quiz->setImage('null for now');
         foreach ($quizData['questions'] as $questionIndex => $questionData) {
             if (!isset($questionData['question'])) {
+                $em->remove($quiz);
                 return new JsonResponse(['status' => 'error', 'message' => 'Question is missing in the question '.$questionIndex], 400);
             }
 
             if (!isset($questionData['answers'])) {
+                $em->remove($quiz);
                 return new JsonResponse(['status' => 'error', 'message' => 'Answers are missing in the question '.$questionIndex], 400);
             }
 
             if (!is_array($questionData['answers'])) {
+                $em->remove($quiz);
                 return new JsonResponse(['status' => 'error', 'message' => 'Answers should be an array in the question '.$questionIndex], 400);
             }
 
             if (count($questionData['answers']) < 2) {
+                $em->remove($quiz);
                 return new JsonResponse(['status' => 'error', 'message' => 'At least 2 answers are required in the question '.$questionIndex], 400);
             }
 
             if (count($questionData['answers']) > 4) {
+                $em->remove($quiz);
                 return new JsonResponse(['status' => 'error', 'message' => 'Maximum of 4 answers allowed in the question '.$questionIndex], 400);
             }
             foreach ($questionData['answers'] as $answerIndex => $answerData) {
@@ -77,7 +76,20 @@ class QuestionController extends AbstractController
         }
         $em->persist($quiz);
         $em->flush();
-        return new JsonResponse(['status' => 'ok']);
+        if (!file_exists('images/quizzes')) {
+            mkdir('images/quizzes', 0777, true);
+        }
+        $image = $quizData['image'];
+        $file = fopen('images/quizzes/'.$quiz->getId().'.png', 'wb');
+        fwrite($file, base64_decode($image));
+        fclose($file);
+        $quiz->setImage('quizzes/'.$quiz->getId().'.png');
+        $em->persist($quiz);
+        $em->flush();
+        return new JsonResponse(['status' => 'ok'], 201, [
+            'Access-Control-Allow-Origin' => '*',
+            'Allow' => '*',
+        ]);
     }
 
     #[Route('/api/quiz/{id}', methods: ['GET'])]
@@ -90,7 +102,7 @@ class QuestionController extends AbstractController
         $quizData = [
             'id' => $quiz->getId(),
             'title' => $quiz->getTitle(),
-            'image' => base64_encode(file_get_contents('images/quizzes/'.$quiz->getId().'.png')),
+            'image' => base64_encode($quiz->getImage()),
             'questions' => [],
         ];
         foreach ($quiz->getQuestions() as $question) {
