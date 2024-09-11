@@ -39,7 +39,7 @@ function Customers() {
         }).catch((e) => {
             console.log(e);
         });
-    }, []);
+    }, [customers]);
 
     useEffect(() => {
         PaymentService.getAll().then((response: any) => {
