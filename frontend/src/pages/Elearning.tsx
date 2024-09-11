@@ -6,11 +6,15 @@ import QuizService from "../services/QuizService";
 import VideoService from "../services/VideoService";
 import Quiz from "../types/Quiz";
 import Video from "../types/Video";
+import { useNavigate } from "react-router-dom";
+import { Button } from "flowbite-react";
 
 function Elearning() {
     const [props, setProps] = useState({ page: "elearning" });
     const [quizzes, setQuizzes] = useState<Quiz[]>([]);
     const [videos, setVideos] = useState<Video[]>([]);
+    const [privileges, setPrivileges] = useState<Boolean>(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         QuizService.getAll().then((response: any) => {
@@ -22,6 +26,17 @@ function Elearning() {
         }).catch((e) => {
             console.log(e);
         });
+        const userInfo: any = localStorage.getItem("userData") || "";
+        try {
+            const parsedUserInfo = JSON.parse(userInfo);
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            } else {
+                setPrivileges(true);
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
     }, []);
 
     useEffect(() => {
@@ -55,7 +70,15 @@ function Elearning() {
                         ))
                     }
                 </div>
-                <h1 className="text-3xl">Quizzes</h1>
+                <div className="">
+                    <h1 className="text-3xl">Quizzes</h1>
+                    {privileges &&
+                            <Button className="float-end" onClick={() => {
+                                navigate('/Quiz/Add');
+                            }
+                            }>Add QUIZ</Button>
+                    }
+                </div>
                 <div className="grid grid-cols-1 mt-12 sm:grid-cols-2 md:grid-cols-4 md:mt-0 gap-10">
                     {
                         quizzes.map((quiz) => (

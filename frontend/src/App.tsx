@@ -8,11 +8,13 @@ import Compatibility from './pages/Compatibility';
 import Sign from './pages/Sign';
 import Wardrobe from './pages/Wardrobe';
 import Events from './pages/Events';
+import Quiz from './pages/Quiz';
 import Elearning from './pages/Elearning';
 
 import AuthProvider from './components/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes';
 import Error from './pages/404Error';
+import QuizAdd from './pages/Quiz/Add';
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
                 <Route path="/Wardrobe" element={<Wardrobe />}></Route>
                 <Route path="/Compatibility" element={<Compatibility />}></Route>
                 <Route path="/Events" element={<Events />}></Route>
+                <Route path="/Quiz" element={<Quiz />}></Route>
+                <Route path="/Quiz/Add" element={<QuizAdd />}></Route>
                 <Route path="/Elearning" element={<Elearning />}></Route>
               </Route>
             </Routes>

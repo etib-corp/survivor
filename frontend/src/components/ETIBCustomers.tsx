@@ -1,17 +1,12 @@
-import React from 'react';
-import { Avatar, Button, Checkbox, Table } from "flowbite-react";
-import { HiOutlineCalendar, HiChevronRight } from "react-icons/hi";
-import { MdOutlineAnalytics } from "react-icons/md";
-import { FaRegCalendarAlt } from "react-icons/fa";
+import React, { useState } from 'react';
+
+import { Avatar, Button, Table } from "flowbite-react";
+
 import { LuDownloadCloud } from "react-icons/lu";
 import { GoPlus } from "react-icons/go";
-import { VscEllipsis } from "react-icons/vsc";
-import { Mastercard, Visa, Paypal } from 'react-payment-logos/dist/flat';
-import { useState } from 'react';
 import { CiSearch } from "react-icons/ci";
-import { IoSettingsOutline } from "react-icons/io5";
 import { IoFilterOutline } from "react-icons/io5";
-import { Tab } from '@mui/material';
+
 import { PaymentsMethod } from './Customers/ProfileStats';
 import CustomerDetails from './Customers/CustomerDetails';
 
@@ -130,12 +125,12 @@ const ETIBCustomers: React.FC<{ customers: any }> = ({ customers }) => {
                     <Table.Row className="border">
                       <Table.Cell onClick={() => { setCurrentCustomer(customer) }} className="text-blueT font-semibold flex flex-row">
                         <Avatar img={process.env.REACT_APP_PICTURES_URL + "/customers/" + customer.id + ".png"} className="mr-2" /> {/*/ IL FAUT FAIRE UN ROUTE /*/}
-                        <span className="my-auto">
+                        <span className="my-auto cursor-pointer">
                           {customer.name + " " + customer.surname}
                         </span>
                       </Table.Cell>
-                      <Table.Cell>
-                        {customer.email}
+                      <Table.Cell className="cursor-pointer">
+                        <a href={"mailto:" + customer.email}>{customer.email}</a>
                       </Table.Cell>
                       <Table.Cell>
                         {customer.phone_number}
