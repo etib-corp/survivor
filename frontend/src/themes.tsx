@@ -159,7 +159,7 @@ export const buttonTheme = {
     "base": "group relative flex items-stretch justify-center p-0.5 text-center font-medium transition-[color,background-color,border-color,text-decoration-color,fill,stroke,box-shadow] focus:z-10 focus:outline-none",
     "fullSized": "w-full",
     "color": {
-        "default": "bg-pinkT focus:ring-2 focus:ring-gray-300 enabled:hover:bg-pinkB text-white",
+        "default": "bg-pinkT focus:ring-2 focus:ring-gray-300 enabled:hover:bg-pinkB text-white disabled:bg-gray-300",
         "dark": "border border-transparent bg-gray-800 text-white focus:ring-4 focus:ring-gray-300 enabled:hover:bg-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:focus:ring-gray-800 dark:enabled:hover:bg-gray-700",
         "failure": "border border-transparent bg-red-700 text-white focus:ring-4 focus:ring-red-300 enabled:hover:bg-red-800 dark:bg-red-600 dark:focus:ring-red-900 dark:enabled:hover:bg-red-700",
         "gray": ":ring-cyan-700 border border-gray-200 bg-white text-gray-900 focus:text-cyan-700 focus:ring-4 enabled:hover:bg-gray-100 enabled:hover:text-cyan-700 dark:border-gray-600 dark:bg-transparent dark:text-gray-400 dark:enabled:hover:bg-gray-700 dark:enabled:hover:text-white",
@@ -178,7 +178,7 @@ export const buttonTheme = {
         "teal": "border border-teal-300 bg-white text-teal-900 focus:ring-4 focus:ring-teal-300 enabled:hover:bg-teal-100 dark:border-teal-600 dark:bg-teal-600 dark:text-white dark:focus:ring-teal-700 dark:enabled:hover:border-teal-700 dark:enabled:hover:bg-teal-700",
         "yellow": "border border-yellow-300 bg-white text-yellow-900 focus:ring-4 focus:ring-yellow-300 enabled:hover:bg-yellow-100 dark:border-yellow-600 dark:bg-yellow-600 dark:text-white dark:focus:ring-yellow-700 dark:enabled:hover:border-yellow-700 dark:enabled:hover:bg-yellow-700"
     },
-    "disabled": "cursor-not-allowed opacity-50",
+    "disabled": "cursor-not-allowed opacity-50 bg-gray-300",
     "isProcessing": "cursor-wait",
     "spinnerSlot": "absolute top-0 flex h-full items-center",
     "spinnerLeftPosition": {

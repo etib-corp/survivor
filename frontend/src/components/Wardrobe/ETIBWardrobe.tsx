@@ -8,6 +8,7 @@ import Clothe from "../../types/Clothe";
 import ClotheService from "../../services/ClotheService";
 import axios from "axios";
 import { get } from "http";
+import { buttonOutlineTheme, buttonTheme } from "../../themes";
 
 function getClotheInBase64(clothe: Clothe | null) {
     if (!clothe) {
@@ -105,7 +106,7 @@ export default function ETIBWardrobe() {
                     </p>
                 </div>
                 <div className="mt-3 md:mt-auto mb-auto flex space-x-4">
-                    <Button href="#customizer" color="light">
+                    <Button href="#customizer" theme={buttonOutlineTheme} color="default">
                         Let's start !
                     </Button>
                     <Button onClick={() => {
@@ -114,7 +115,9 @@ export default function ETIBWardrobe() {
                         downloadImage(selectedBottom);
                         downloadImage(selectedShoes);
                     }}
-                        className="bg-blueT" disabled={!(selectedHat && selectedTop && selectedBottom && selectedShoes)}>
+                        theme={buttonTheme}
+                        color="default"
+                        disabled={!(selectedHat || selectedTop || selectedBottom || selectedShoes)}>
                         Export
                     </Button>
                 </div>
@@ -123,7 +126,7 @@ export default function ETIBWardrobe() {
                 <div className="flex flex-col bg-white rounded-md space-y-4 w-[30%]">
                     <div className="flex flex-col">
                         <Avatar img={getURL(selectedHat)} size="xl" />
-                        <Button className="h-10 my-auto mx-auto w-[25%]" color="light" onClick={() => { setFilter(hats); setType(0); }}>
+                        <Button className="h-10 my-auto mx-auto w-[25%]" theme={buttonOutlineTheme} color="default" onClick={() => { setFilter(hats); setType(0); }}>
                             <Label>
                                 Hat
                             </Label>
@@ -132,7 +135,7 @@ export default function ETIBWardrobe() {
                     </div>
                     <div className="flex flex-col">
                         <Avatar img={getURL(selectedTop)} size="xl" />
-                        <Button className="h-10 my-auto mx-auto w-[25%]" color="light" onClick={() => { setFilter(topClothes); setType(1); }}>
+                        <Button className="h-10 my-auto mx-auto w-[25%]" theme={buttonOutlineTheme} color="default" onClick={() => { setFilter(topClothes); setType(1); }}>
                             <Label>
                                 Top
                             </Label>
@@ -141,7 +144,7 @@ export default function ETIBWardrobe() {
                     </div>
                     <div className="flex flex-col">
                         <Avatar img={getURL(selectedBottom)} size="xl" />
-                        <Button className="h-10 my-auto mx-auto w-[25%]" color="light" onClick={() => { setFilter(bottomClothes); setType(2); }}>
+                        <Button className="h-10 my-auto mx-auto w-[25%]" theme={buttonOutlineTheme} color="default" onClick={() => { setFilter(bottomClothes); setType(2); }}>
                             <Label>
                                 Bottom
                             </Label>
@@ -150,7 +153,7 @@ export default function ETIBWardrobe() {
                     </div>
                     <div className="flex flex-col">
                         <Avatar img={getURL(selectedShoes)} size="xl" />
-                        <Button className="h-10 my-auto mx-auto w-[25%]" color="light" onClick={() => { setFilter(shoes); setType(3); }}>
+                        <Button className="h-10 my-auto mx-auto w-[25%]" theme={buttonOutlineTheme} color="default" onClick={() => { setFilter(shoes); setType(3); }}>
                             <Label>
                                 Shoes
                             </Label>
@@ -158,8 +161,8 @@ export default function ETIBWardrobe() {
                         </Button>
                     </div>
                 </div>
-                <div className="flex flex-col bg-white border mr-8 w-[30%] rounded-md my-auto">
-                    <div className="text-xl border p-4">
+                <div className="flex flex-col border mr-8 w-[30%] rounded-md my-auto bg-pinkB">
+                    <div className="text-xl border p-4 bg-pinkB">
                         Choose your clothes
                     </div>
                     <div className="flex flex-wrap space-y-4 p-4 overflow-auto h-96">
