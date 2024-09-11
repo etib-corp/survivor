@@ -117,12 +117,12 @@ function Tips() {
                             </div>
                         </form>
                     ) : (
-                        <div className="flex items-end justify-end">
+                        <div className="flex flex-row items-end justify-end">
                             <Button className="border border-gray-400" onClick={() => setId(-2)}>Add Tip</Button>
                         </div>
                     )
                 }
-                <div className="flex items-end justify-end">
+                <div className="flex items-start justify-start">
                     <ButtonGroup outline>
                         <Button className="bg-white border border-gray-400" disabled={language === 0} onClick={() => setLanguage(0)}>
                             <img width={25} height={25} src="/fr.png"></img>
@@ -146,19 +146,23 @@ function Tips() {
                                     <p>
                                         {tip.title[language]}
                                     </p>
-                                    <div className="flex items-end justify-end">
+                                    <div className="flex items-start justify-start">
                                         <ButtonGroup>
-                                            <Button className="bg-blueT" onClick={() => setId(tip.id)}>Edit</Button>
-                                            <Button className="bg-blueT" onClick={() => {
+                                            <Button className="bg-pinkT" onClick={() => setId(tip.id)}>
+                                                Edit
+                                            </Button>
+                                            <Button className="bg-pinkT" onClick={() => {
                                                 TipService.deleteID(tip.id)
                                                 window.location.reload()
-                                            }}>Delete</Button>
+                                            }}>
+                                                Delete
+                                            </Button>
                                         </ButtonGroup>
                                     </div>
                                 </Accordion.Title>
-
                                 <Accordion.Content>
-                                    <p>{tip.tip[language]}</p></Accordion.Content>
+                                    <p>{tip.tip[language]}</p>
+                                </Accordion.Content>
                             </Accordion.Panel>
                         ))}
                     </Accordion>
