@@ -44,7 +44,10 @@ function Elearning() {
             const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
             const parsedUserInfo = JSON.parse(decryptedUserInfo);
 
-            if (parsedUserInfo.roles[0] !== "ROLE_CUSTOMER") {
+            if (!["ROLE_ADMIN", "ROLE_COACH", "ROLE_CUSTOMER"].includes(parsedUserInfo.roles[0])) {
+                navigate("/Wardrobe");
+            }
+            if (["ROLE_ADMIN", "ROLE_COACH"].includes(parsedUserInfo.roles[0])) {
                 setPrivileges(true);
             }
         } catch (error) {
