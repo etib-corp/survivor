@@ -23,8 +23,18 @@ class QuestionController extends AbstractController
         if (!isset($quizData['title'])) {
             return new JsonResponse(['status' => 'error', 'message' => 'Title is missing for the quiz'], 400);
         }
+        if (!isset($quizData['image'])) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Image is missing for the quiz'], 400);
+        }
         $quiz = new Quiz();
         $quiz->setTitle($quizData['title']);
+        if (!file_exists('images/quizzes')) {
+            mkdir('images/quizzes', 0777, true);
+        }
+        $image = $quizData['image'];
+        $file = fopen('images/quizzes/'.$quiz->getId().'.png', 'wb');
+        fwrite($file, $image);
+        fclose($file);
         foreach ($quizData['questions'] as $questionIndex => $questionData) {
             if (!isset($questionData['question'])) {
                 return new JsonResponse(['status' => 'error', 'message' => 'Question is missing in the question '.$questionIndex], 400);
@@ -80,6 +90,7 @@ class QuestionController extends AbstractController
         $quizData = [
             'id' => $quiz->getId(),
             'title' => $quiz->getTitle(),
+            'image' => base64_encode(file_get_contents('images/quizzes/'.$quiz->getId().'.png')),
             'questions' => [],
         ];
         foreach ($quiz->getQuestions() as $question) {

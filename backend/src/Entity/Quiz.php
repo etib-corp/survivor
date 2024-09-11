@@ -26,6 +26,9 @@ class Quiz
     #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'quiz', orphanRemoval: true)]
     private Collection $questions;
 
+    #[ORM\Column(length: 1024)]
+    private ?string $image = null;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -74,6 +77,18 @@ class Quiz
                 $question->setQuiz(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }
