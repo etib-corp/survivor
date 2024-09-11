@@ -4,10 +4,17 @@ import { Button, Label, TextInput } from "flowbite-react";
 
 import { useAuth } from "../AuthContext";
 import axios from "axios";
+import { pink } from "@mui/material/colors";
 
 export function SignIn() {
     const { login } = useAuth();
     const navigate = useNavigate();
+
+    const theme = {
+        colors: {
+            pink: "focus:ring-4 focus:ring-gray-700",
+        },
+    };
 
     function handleSubmit(event: any) {
         event.preventDefault();
@@ -22,8 +29,8 @@ export function SignIn() {
             const token = response.data.token;
             const data = response.data.data;
             login(token);
-            localStorage.setItem("authToken", token);// Store the token in local storage
-            localStorage.setItem("userData", JSON.stringify(data));// Store the user data in local storage
+            localStorage.setItem("authToken", token);
+            localStorage.setItem("userData", JSON.stringify(data));
             console.log(data);
             navigate("/Home");
         }).catch((e) => {
@@ -37,7 +44,7 @@ export function SignIn() {
                 <div className="mb-2 block">
                     <Label htmlFor="email2" value="Your email" />
                 </div>
-                <TextInput id="email2" type="email" placeholder="name@soulconnection.com" required shadow className="focus:ring-1 focus:ring-gray-700" />
+                <TextInput id="email2" type="email" placeholder="name@soulconnection.com" required className="enabled:border-pinkT" />
             </div>
             <div>
                 <div className="mb-2 block">
@@ -47,7 +54,7 @@ export function SignIn() {
             </div>
             <div>
             </div>
-            <Button className="bg-blueT enabled:hover:bg-blue-500 focus:ring-1 focus:ring-gray-700" type="submit">Sign In</Button>
+            <Button className="bg-pinkT enabled:hover:bg-gray-300 focus:ring-1 focus:ring-gray-700" type="submit">Sign In</Button>
         </form>
     );
 }

@@ -63,7 +63,7 @@ const CustomersOverview: React.FC<{ customers: any }> = ({ customers }) => {
         })
     }, [selected]);
     return (
-        <div className="flex flex-col bg-white border mx-[5%] md:mx-4 w-[90%] md:w-[55%] rounded-md">
+        <div className="flex flex-col border mx-[5%] md:mx-4 w-[90%] md:w-[55%] rounded-md bg-pinkB">
             <div className="grid grid-cols-1 md:flex md:flex-row justify-between mx-4 mb-6">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold py-3">
@@ -120,14 +120,14 @@ const CustomersOverview: React.FC<{ customers: any }> = ({ customers }) => {
                         Meetings/Customers (Avg)
                     </p>
                     <p className="text-3xl mb-1">
-                        {average}
+                        {average.toFixed(2)}
                     </p>
                 </div>
             </div>
             <LineChart
                 xAxis={[{ data: calendar, scaleType: "band" }]}
                 series={[
-                    { data: meetings, showMark: false, curve: "linear", area: true, label: "Meetings per day" },
+                    { data: meetings, showMark: false, curve: "linear", area: true, label: "Meetings per day", color: "#feaab0" },
                 ]}
                 margin={{ top: 100, bottom: 100, left: 100, right:100 }}
                 height={300}

@@ -27,9 +27,12 @@ export default function MeetingTopSources() {
                     data.push(encounter.source);
                 }
             });
+
             const wordCount: { [key: string]: number } = {};
+            let maxValue = 0;
 
             data.forEach(word => {
+                maxValue = wordCount[word] > maxValue ? wordCount[word] : maxValue;
                 if (wordCount[word]) {
                     wordCount[word]++;
                 } else {
@@ -40,13 +43,14 @@ export default function MeetingTopSources() {
             const sources = Object.keys(wordCount).map((word, index) => ({
                 id: index,
                 value: wordCount[word],
-                label: word
+                label: word,
+                color: `rgba(254, 176, 174, ${wordCount[word] / (maxValue)})`
             }));
             setSerie(sources);
         });
     }, [selected]);
     return (
-        <div className="flex flex-col bg-white border mx-[5%] md:mx-4 w-[90%] md:w-[45%] rounded-md">
+        <div className="flex flex-col bg-pinkB border mx-[5%] md:mx-4 w-[90%] md:w-[45%] rounded-md">
             <div className="grid grid-cols-1 md:flex md:flex-row justify-between mx-4">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold py-3">
@@ -89,11 +93,10 @@ export default function MeetingTopSources() {
                     }}
                     series={[
                         {
-                            arcLabel: (item) => `${item.label}`,
                             arcLabelMinAngle: 35,
                             arcLabelRadius: '60%',
                             data: serie,
-                            innerRadius: 50
+                            innerRadius: 50,
                         },
                     ]}
                     height={400}

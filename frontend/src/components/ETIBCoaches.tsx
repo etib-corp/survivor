@@ -12,6 +12,8 @@ import { IoFilterOutline } from "react-icons/io5";
 import { HiAnnotation, HiPhone, HiTrash, HiUser } from 'react-icons/hi';
 import { Slider } from '@mui/material';
 
+import { buttonOutlineTheme, buttonTheme, dateTheme, tableTheme, textInputTheme } from '../themes';
+
 const marks = [
   {
     value: 0,
@@ -94,8 +96,8 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
   };
 
   return (
-    <div className='flex flex-col mx-4 border rounded-md mt-4 space-y-4'>
-      <div className='border p-4 rounded-md'>
+    <div className='flex flex-col mx-4 border rounded-md mt-4 space-y-4 bg-pinkB'>
+      <div className='border p-4 rounded-md bg-pinkB'>
         <Breadcrumb>
           <Breadcrumb.Item icon={HiUser} onClick={() => setProgress(0)} href='#'>
             Personal
@@ -121,13 +123,13 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
                 <Label htmlFor='name'>
                   Name
                 </Label>
-                <TextInput id='name' type='text' placeholder="Kevin" {...register("name", { required: true })} />
+                <TextInput theme={textInputTheme} id='name' type='text' placeholder="Kevin" {...register("name", { required: true })} />
               </div>
               <div className='flex flex-col w-[50%]'>
                 <Label htmlFor='surname'>
                   Surname
                 </Label>
-                <TextInput id='surname' type="text" placeholder="Cazal" {...register("surname", { required: true })} />
+                <TextInput theme={textInputTheme} id='surname' type="text" placeholder="Cazal" {...register("surname", { required: true })} />
               </div>
             </div>
             <div className='flex w-full space-x-8'>
@@ -137,6 +139,7 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
                 </Label>
                 <Datepicker
                   id='birth'
+                  theme={dateTheme}
                   onSelectedDateChanged={handleDateChange}
                 />
               </div>
@@ -161,7 +164,7 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
             </div>
             <div className='flex w-full space-x-8'>
               <span className='flex w-1/2 justify-end my-auto ml-auto'>
-                <Button className='' onClick={() => setProgress(1)}>
+                <Button theme={buttonTheme} color={"default"} onClick={() => setProgress(1)}>
                   Next
                 </Button>
               </span>
@@ -174,10 +177,10 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
             <div className='flex w-full space-x-8'>
               <div className='flex flex-col w-[50%]'>
                 <Label>Email</Label>
-                <TextInput type='email' placeholder="kevin.cazal@cazalkevin.re" {...register("email", { required: true })} />
+                <TextInput theme={textInputTheme} type='email' placeholder="kevin.cazal@cazalkevin.re" {...register("email", { required: true })} />
               </div>
               <span className='flex w-1/2 justify-end my-auto ml-auto'>
-                <Button className='' onClick={() => setProgress(2)}>
+                <Button theme={buttonTheme} color="default" onClick={() => setProgress(2)}>
                   Next
                 </Button>
               </span>
@@ -190,10 +193,10 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
             <div className='flex w-full space-x-8'>
               <div className='flex flex-col w-[50%]'>
                 <Label>Password</Label>
-                <TextInput type='password' placeholder="H4ck3rZ" {...register("password", { required: true })} />
+                <TextInput theme={textInputTheme} type='password' placeholder="H4ck3rZ" {...register("password", { required: true })} />
               </div>
               <span className='flex w-1/2 justify-end my-auto ml-auto'>
-                <Button className='' type='submit'>
+                <Button theme={buttonTheme} color="default" type='submit'>
                   Submit
                 </Button>
               </span>
@@ -267,11 +270,11 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
             </div>
             <div className="mt-3 md:mt-auto mb-auto">
               <div className="flex flex-row space-x-4 justify-center md:justify-normal">
-                <Button className="bg-transparent text-gray-700 border-gray-700 focus:ring-2 focus:ring-gray-300 enabled:hover:bg-gray-100" onClick={exportToCSV}>
+                <Button theme={buttonOutlineTheme} color="default" onClick={exportToCSV}>
                   <LuDownloadCloud className="mr-2 h-5 w-5" />
                   Export
                 </Button>
-                <Button className="bg-blueT focus:ring-2 focus:ring-gray-300 enabled:hover:bg-blue-500" onClick={() => (setAddCoach(!addCoach))}>
+                <Button theme={buttonTheme} color="default" onClick={() => (setAddCoach(!addCoach))}>
                   <GoPlus className="h-5 w-5" />
                 </Button>
               </div>
@@ -289,7 +292,7 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                     <input
                       id="table-search"
                       type="text"
-                      className="w-48 text-sm text-gray-500 border-gray-300 focus:ring-gray-300 focus:ring-1 pl-10"
+                      className="w-48 text-sm text-gray-500 enabled:border-gray-300 enabled:focus:ring-pinkT focus:ring-1 pl-10"
                       placeholder="Search..."
                       value={inputSearch}
                       onChange={(e) => setInputSearch(e.target.value)}
@@ -301,7 +304,7 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                   </Button>
                 </div>
               </div>
-              <Table hoverable className="bg-transparent">
+              <Table hoverable className="bg-transparent" theme={tableTheme}>
                 <Table.Head className="border bg-transparent">
                   <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
                     Coach
@@ -333,7 +336,7 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                     <Table.Row className="border">
                       <Table.Cell className="text-blueT font-semibold flex flex-row">
                         <Avatar img={process.env.REACT_APP_PICTURES_URL + "/employees/" + coache.id + ".png"} className="mr-2" />
-                        <span className="my-auto">
+                        <span className="my-auto text-pinkT">
                           {coache.name + " " + coache.surname}
                         </span>
                       </Table.Cell>
@@ -348,7 +351,7 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                       </Table.Cell>
                       <Table.Cell className="flex justify-end">
                         <Dropdown label="action" renderTrigger={() =>
-                          <Button className="bg-transparent text-gray-700">
+                          <Button className="bg-transparent text-gray-700 hover:text-pinkT enabled:hover:bg-transparent focus:ring-2 focus:ring-pinkB">
                             <VscEllipsis className="h-5 w-5" />
                           </Button>
                         }>

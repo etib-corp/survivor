@@ -1,10 +1,14 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import ETIBNavBar from "../../components/ETIBNavBar";
+import axios from "axios";
+
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
+
 import { Button, TextInput } from "flowbite-react";
-import axios from "axios";
+
+import ETIBNavBar from "../../components/ETIBNavBar";
+
+import { buttonOutlineTheme, buttonTheme, textInputTheme } from "../../themes";
 
 function VideoAdd() {
     const [props, setProps] = useState({ page: "elearning" });
@@ -35,18 +39,22 @@ function VideoAdd() {
     return (
         <div className="overflow-x-hidden">
             <ETIBNavBar properties={props} OnChangeView={setProps} />
-            <div className="flex flex-col">
-                <div className="flex items-center justify-between p-5">
-                    <h1 className="text-4xl font-bold">Add Quiz</h1>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" onClick={() => navigate('/Elearning')}>
+            <div className="flex flex-col space-y-8 pb-40">
+                <div className="grid grid-cols-1 md:flex md:flex-row justify-between md:mt-8 ml-4 mr-4">
+                    <h1 className="text-4xl font-bold">
+                        Add Video
+                    </h1>
+                    <Button theme={buttonTheme} color="default" onClick={() => navigate('/Elearning')}>
                         Back to Elearning
-                    </button>
+                    </Button>
                 </div>
                 <form className="flex flex-col p-5 mx-[10vh] space-y-4" onSubmit={handleSubmit(onSubmit)}>
-                    <TextInput key={"VideoTitle"} type="text" placeholder="Title..." {...register("title", { required: true })} />
-                    <TextInput key={"VideoDescription"} type="text" placeholder="Description..." {...register("description", { required: true })} />
-                    <TextInput key={"VideoURL"} type="text" placeholder="https://youtube.com/" {...register("url", { required: true })} />
-                    <Button className="float-end" type="submit">Submit</Button>
+                    <TextInput theme={textInputTheme} key={"VideoTitle"} type="text" placeholder="Title..." {...register("title", { required: true })} />
+                    <TextInput theme={textInputTheme} key={"VideoDescription"} type="text" placeholder="Description..." {...register("description", { required: true })} />
+                    <TextInput theme={textInputTheme} key={"VideoURL"} type="text" placeholder="https://youtube.com/" {...register("url", { required: true })} />
+                    <Button theme={buttonOutlineTheme} color="default" type="submit" className='hover:text-white enabled:hover:bg-pinkT'>
+                        Submit
+                    </Button>
                 </form>
             </div>
 
