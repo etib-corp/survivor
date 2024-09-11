@@ -1,10 +1,12 @@
-import { HiArrowDown, HiArrowUp, HiOutlineQuestionMarkCircle } from "react-icons/hi";
-
-import { Tooltip } from "flowbite-react";
-import { BarChart } from "@mui/x-charts";
 import { useEffect, useState } from "react";
-import Event from "../../types/Event";
+
+import { ButtonGroup, Button } from "flowbite-react";
+
+import { BarChart } from "@mui/x-charts";
+
 import EventService from "../../services/EventService";
+
+import Event from "../../types/Event";
 
 function getDay(day: number) {
     let date = new Date();
@@ -73,6 +75,7 @@ function handleDaily(data: Event[]) {
 
 export default function Events() {
     const [events, setEvents] = useState<Event[]>([]);
+    const [selected, setSelected] = useState(30);
     const [nbrEventsMonthly, setNbrEventsMonthly] = useState(0);
     const [nbrEventsWeekly, setNbrEventsWeekly] = useState(0);
     const [nbrEventsDaily, setNbrEventsDaily] = useState("0");
@@ -81,7 +84,7 @@ export default function Events() {
     useEffect(() => {
         EventService.getAll().then((response : any) => {
             let data = [];
-            let yAxis = new Array(7).fill(0);
+            let yAxis = new Array(selected).fill(0);
 
             if (Array.isArray(response.data['hydra:member'])) {
                 data = response.data['hydra:member'];
@@ -91,19 +94,18 @@ export default function Events() {
                     let diffTime = Math.abs(new Date().getTime() - date.getTime());
                     let diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
-                    if (diffDays < 7) {
+                    if (diffDays < selected) {
                         yAxis[diffDays] += 1;
                     }
                 });
                 setEventWeek(yAxis.reverse());
-
                 setNbrEventsWeekly(handleWeekly(data));
                 setNbrEventsMonthly(handleMonthly(data));
                 setNbrEventsDaily(handleDaily(data));
                 setEvents(data);
             }
         });
-    }, []);
+    }, [selected]);
 
     return (
         <div className="flex flex-col bg-white border mx-[5%] md:mx-4 w-[90%] md:w-[45%] rounded-md">
@@ -116,10 +118,21 @@ export default function Events() {
                         Our events and their status.
                     </p>
                 </div>
-                <div className="mt-auto mb-auto mr-4">
-                    <Tooltip content="This year">
-                        <HiOutlineQuestionMarkCircle className="text-2xl text-gray-400" />
-                    </Tooltip>
+                <div className="mt-4 md:mt-auto mb-auto flex justify-center md:justify-normal">
+                    <ButtonGroup outline>
+                        <Button className="bg-transparent text-gray-700 border-gray-700" disabled={selected === 7} onClick={() => setSelected(7)}>
+                            7D
+                        </Button>
+                        <Button className="bg-transparent text-gray-700 border-gray-700 disabled:text-black" disabled={selected === 30} onClick={() => setSelected(30)}>
+                            1M
+                        </Button>
+                        <Button className="bg-transparent text-gray-700 border-gray-700" disabled={selected === 90} onClick={() => setSelected(90)}>
+                            3M
+                        </Button>
+                        <Button className="bg-transparent text-gray-700 border-gray-700" disabled={selected === 365} onClick={() => setSelected(365)}>
+                            1Y
+                        </Button>
+                    </ButtonGroup>
                 </div>
             </div>
             <div className="grid grid-cols-1 space-y-8 md:space-y-0 md:flex md:flex-row ml-4 mr-4 justify-between w-[70%]">
@@ -130,10 +143,6 @@ export default function Events() {
                     <p className="text-3xl mb-1">
                         {nbrEventsMonthly}
                     </p>
-                    {/* <p className="flex text-green-300">
-                        <HiArrowUp className="mt-auto mb-auto" />
-                        4.63%
-                    </p> */}
                 </div>
                 <div className="flex flex-col">
                     <p className="mb-2 text-2xl md:text-base">
@@ -142,10 +151,6 @@ export default function Events() {
                     <p className="text-3xl mb-1">
                         {nbrEventsWeekly}
                     </p>
-                    {/* <p className="flex text-red-500">
-                        <HiArrowDown className="mt-auto mb-auto" />
-                        1.92%
-                    </p> */}
                 </div>
                 <div className="flex flex-col">
                     <p className="mb-2 text-2xl md:text-base">
@@ -154,14 +159,10 @@ export default function Events() {
                     <p className="text-3xl mb-1">
                         {nbrEventsDaily}
                     </p>
-                    {/* <p className="flex text-green-300">
-                        <HiArrowUp className="mt-auto mb-auto" />
-                        3.45%
-                    </p> */}
                 </div>
             </div>
             <BarChart
-                xAxis={[{ scaleType: 'band', data: getCalendar(7) }]}
+                xAxis={[{ scaleType: 'band', data: getCalendar(selected) }]}
                 series={[{ data: EventWeek }]}
                 height={300}
             />
