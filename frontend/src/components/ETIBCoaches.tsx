@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import axios from 'axios';
 
 import { Avatar, Breadcrumb, Button, Datepicker, Label, Table, TextInput } from "flowbite-react";
 
@@ -28,15 +30,67 @@ const marks = [
 const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
   const [progress, setProgress] = useState(0);
   const [sliderValue, setSliderValue] = useState(20);
+  const [birth, setBirth] = useState<Date>(new Date());
+  const [gender, setGender] = useState("male");
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<any>();
 
   const handleSliderChange = (event: any, newValue: number | number[]) => {
     setSliderValue(newValue as number);
+    if (newValue as number < 50) {
+      setGender("male");
+    } else if (newValue as number === 50) {
+      setGender("non-binary");
+    } else {
+      setGender("female");
+    }
   };
 
   const getSliderBackground = (value: number) => {
     const red = Math.round((255 * value) / 100);
     const blue = Math.round((255 * (100 - value)) / 100);
     return `rgb(${red}, 0, ${blue})`;
+  };
+
+  async function pushData(response: any) {
+    const data: any = {
+      "email": response.email,
+      "password": response.password,
+      "plainPassword": response.password,
+      "roles": [
+        "ROLE_COACH"
+      ],
+      "name": response.name,
+      "surname": response.surname,
+      "birth_date": birth.toISOString(),
+      "gender": gender,
+      "work": "Coach",
+      "events": [],
+      "birthDate": birth.toISOString(),
+    };
+
+    try {
+      await axios.post(process.env.REACT_APP_API_URL + "/employees", data);
+      callback();
+      reset();
+    } catch (error: any) {
+      if (error.response.status === 422) {
+        alert("This coach already exists.");
+      } else {
+        alert("An error occured.");
+      }
+    }
+  }
+  const onSubmit: SubmitHandler<any> = (data) => pushData(data);
+
+  const handleDateChange = (e: any) => {
+    setBirth(new Date(e));
   };
 
   return (
@@ -58,7 +112,7 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
           )}
         </Breadcrumb>
       </div>
-      <form className='p-4'>
+      <form onSubmit={handleSubmit(onSubmit)} className='p-4'>
         {
           progress === 0 &&
           <div className='flex flex-col space-y-8'>
@@ -67,13 +121,13 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
                 <Label htmlFor='name'>
                   Name
                 </Label>
-                <TextInput id='name' type='text' placeholder="Kevin" required />
+                <TextInput id='name' type='text' placeholder="Kevin" {...register("name", { required: true })} />
               </div>
               <div className='flex flex-col w-[50%]'>
                 <Label htmlFor='surname'>
                   Surname
                 </Label>
-                <TextInput id='surname' type="text" placeholder="Cazal" required />
+                <TextInput id='surname' type="text" placeholder="Cazal" {...register("surname", { required: true })} />
               </div>
             </div>
             <div className='flex w-full space-x-8'>
@@ -81,7 +135,10 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
                 <Label htmlFor='birth'>
                   Birth Date
                 </Label>
-                <Datepicker id='birth' required />
+                <Datepicker
+                  id='birth'
+                  onSelectedDateChanged={handleDateChange}
+                />
               </div>
               <div className='flex flex-col w-[50%]'>
                 <span className='w-[95%] mx-auto'>
@@ -103,14 +160,8 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
               </div>
             </div>
             <div className='flex w-full space-x-8'>
-              <div className='flex flex-col w-[50%]'>
-                <Label htmlFor='work'>
-                  Last Work
-                </Label>
-                <TextInput id='work' type="text" placeholder="Mattress Tester" required />
-              </div>
               <span className='flex w-1/2 justify-end my-auto ml-auto'>
-                <Button className='' type='submit' onClick={() => setProgress(1)}>
+                <Button className='' onClick={() => setProgress(1)}>
                   Next
                 </Button>
               </span>
@@ -123,10 +174,10 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
             <div className='flex w-full space-x-8'>
               <div className='flex flex-col w-[50%]'>
                 <Label>Email</Label>
-                <TextInput type='email' placeholder="kevin.cazal@cazalkevin.re" required />
+                <TextInput type='email' placeholder="kevin.cazal@cazalkevin.re" {...register("email", { required: true })} />
               </div>
               <span className='flex w-1/2 justify-end my-auto ml-auto'>
-                <Button className='' type='submit' onClick={() => setProgress(2)}>
+                <Button className='' onClick={() => setProgress(2)}>
                   Next
                 </Button>
               </span>
@@ -139,11 +190,11 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
             <div className='flex w-full space-x-8'>
               <div className='flex flex-col w-[50%]'>
                 <Label>Password</Label>
-                <TextInput type='password' placeholder="H4ck3rZ" required />
+                <TextInput type='password' placeholder="H4ck3rZ" {...register("password", { required: true })} />
               </div>
               <span className='flex w-1/2 justify-end my-auto ml-auto'>
-                <Button className='' type='submit' onClick={callback}>
-                  Next
+                <Button className='' type='submit'>
+                  Submit
                 </Button>
               </span>
             </div>
@@ -185,7 +236,7 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
     document.body.removeChild(a);
   };
 
-  function handleSortMode () {
+  function handleSortMode() {
     if (sortMode === "asc") {
       setSortMode("desc");
     } else {

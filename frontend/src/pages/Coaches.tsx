@@ -24,8 +24,7 @@ function Account() {
         }).catch((e) => {
             console.log(e);
         });
-
-    }, []);
+    }, [employees]);
 
     const userInfo: any = localStorage.getItem("userData") || "";
 
