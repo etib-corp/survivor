@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from "react-hook-form"
 import { Button, Card, Radio, TextInput } from 'flowbite-react';
 import axios from 'axios';
-import { Table } from "flowbite-react";
+import { Table, FileInput } from "flowbite-react";
 
 function QuizAdd() {
     const [props, setProps] = useState({ page: "quiz" });
@@ -23,9 +23,16 @@ function QuizAdd() {
     } = useForm<any>()
 
     const onSubmit: SubmitHandler<any> = (data) => {
-        axios.post(`${process.env.REACT_APP_API_URL}/questions/new`, data);
-        reset();
-        navigate('/Quiz');
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            let base64data: any = reader.result;
+            base64data = base64data?.toString().split(',')[1];
+            data.image = base64data;
+            axios.post(`${process.env.REACT_APP_API_URL}/questions/new`, data);
+            reset();
+            navigate('/Quiz');
+        }
+        reader.readAsDataURL(data.image[0]);
     }
 
     function deleteAnswer(value: number, index: number, indexQ: number) {
@@ -61,6 +68,8 @@ function QuizAdd() {
                 </div>
                 <form className="flex flex-col p-5 mx-[10vh] space-y-4" onSubmit={handleSubmit(onSubmit)}>
                     <TextInput key={"QuizInput"} type="text" placeholder="Quiz Title" {...register("title", { required: true })} />
+                    {/* use the component file input and only the format image can be upload */}
+                    <FileInput {...register("image", { required: true })} accept="image/*" />
                     {nbrQuestions.map((j, indexJ) => (
                         <Card>
                             <TextInput key={indexJ} type="text" placeholder="Question" {...register(`questions[${indexJ}].question`, { required: true })} />
