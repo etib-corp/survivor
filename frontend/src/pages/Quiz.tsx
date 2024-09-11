@@ -39,73 +39,13 @@ function Quiz() {
 
     }, []);
 
-    const quixxxx = {
-        'id': 9,
-        'name': 'Quiz 9',
-        'difficulty': 'easy',
-        'img': 'https://via.placeholder.com/' + (width / 4),
-        "questions": [
-            {
-                "id": 1,
-                "question": "What is your name?",
-                "answers": [
-                    {
-                        "id": 1,
-                        "answer": "John",
-                        "correct": false
-                    },
-                    {
-                        "id": 2,
-                        "answer": "Kbo",
-                        "correct": true
-                    },
-                    {
-                        "id": 3,
-                        "answer": "Smith",
-                        "correct": false
-                    },
-                    {
-                        "id": 4,
-                        "answer": "Doe",
-                        "correct": false
-                    }
-                ]
-            },
-            {
-                "id": 2,
-                "question": "Are you a human?",
-                "answers": [
-                    {
-                        "id": 1,
-                        "answer": "Yes",
-                        "correct": true
-                    },
-                    {
-                        "id": 2,
-                        "answer": "No",
-                        "correct": false
-                    },
-                    {
-                        "id": 3,
-                        "answer": "Maybe",
-                        "correct": false
-                    },
-                    {
-                        "id": 4,
-                        "answer": "I don't know",
-                        "correct": false
-                    }
-                ]
-            },
-        ]
-    }
-
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get('q');
         if (myParam !== null) {
             QuizService.get(parseInt(myParam)).then((response: any) => {
-                let data = response.data['hydra:member'];
+                let data = response.data;
+                setQuizItem(data);
             });
         }
     }, [searchParams]);
@@ -160,7 +100,7 @@ function Quiz() {
                 </div> :
                 <div className="">
                     <div className="p-5 mx-[10vh]">
-                        <h1 className="text-4xl font-bold">{quizItem.name} kbo</h1>
+                        <h1 className="text-4xl font-bold">{quizItem.title}</h1>
                         <Button className="float-end" onClick={() => {
                             params.delete('q');
                             window.location.href = '/Quiz';
@@ -168,7 +108,7 @@ function Quiz() {
                         }>Back</Button>
                     </div>
                     <div className="flex items-center justify-center">
-                        <ETIBQuestion QuizItem={quixxxx} />
+                        <ETIBQuestion QuizItem={quizItem} />
                     </div>
                 </div>
             }

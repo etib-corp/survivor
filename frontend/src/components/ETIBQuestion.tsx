@@ -21,7 +21,7 @@ const ETIBQuestion: React.FC<{ QuizItem: any }> = ({ QuizItem }) => {
         <div className="m-0 p-0 box-border">
             <div className="flex justify-center items-center flex-col ">
 
-                <h1 className="text-black my-5 mx-0">{QuizItem.name}</h1>
+                <h1 className="text-black my-5 mx-0">{QuizItem.title}</h1>
 
                 <div className="max-w-[600px] w-full py-0 px-4" id="questionArea" hidden={!not_finish}>
                     {
@@ -53,7 +53,7 @@ const ETIBQuestion: React.FC<{ QuizItem: any }> = ({ QuizItem }) => {
                     <p className="text-white">Finish!</p>
                     <hr />
                     <div className="text-white text-3xl font-bold mb-3">{Math.floor(score / QuizItem.questions.length * 100) }% Correct</div>
-                    <div className="text-base text-white mb-3">va baiser mtn</div>
+                    {/* <div className="text-base text-white mb-3">va baiser mtn</div> */}
                 </div>
             </div>
         </div>

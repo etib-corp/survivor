@@ -7,7 +7,7 @@ const getAll = () => {
 };
 
 const get = (id: number) => {
-    return http.get<Quiz>(`/quizzes/${id}`);
+    return http.get<Quiz>(`/quiz/${id}`);
 };
 
 const deleteID = (id: number) => {
