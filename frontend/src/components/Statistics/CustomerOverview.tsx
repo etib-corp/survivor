@@ -75,16 +75,16 @@ const CustomersOverview: React.FC<{ customers: any }> = ({ customers }) => {
                 </div>
                 <div className="mt-4 md:mt-auto mb-auto flex justify-center md:justify-normal">
                     <ButtonGroup outline>
-                        <Button className="bg-transparent text-gray-700 border-gray-700" disabled={selected === 7} onClick={() => setSelected(7)}>
+                        <Button className="bg-transparent text-gray-700 border-gray-700 enabled:hover:bg-white" disabled={selected === 7} onClick={() => setSelected(7)}>
                             7D
                         </Button>
-                        <Button className="bg-transparent text-gray-700 border-gray-700 disabled:text-black" disabled={selected === 30} onClick={() => setSelected(30)}>
+                        <Button className="bg-transparent text-gray-700 border-gray-700 enabled:hover:bg-white" disabled={selected === 30} onClick={() => setSelected(30)}>
                             1M
                         </Button>
-                        <Button className="bg-transparent text-gray-700 border-gray-700" disabled={selected === 90} onClick={() => setSelected(90)}>
+                        <Button className="bg-transparent text-gray-700 border-gray-700 enabled:hover:bg-white" disabled={selected === 90} onClick={() => setSelected(90)}>
                             3M
                         </Button>
-                        <Button className="bg-transparent text-gray-700 border-gray-700" disabled={selected === 365} onClick={() => setSelected(365)}>
+                        <Button className="bg-transparent text-gray-700 border-gray-700 enabled:hover:bg-white" disabled={selected === 365} onClick={() => setSelected(365)}>
                             1Y
                         </Button>
                     </ButtonGroup>

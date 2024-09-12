@@ -32,7 +32,7 @@ async function downloadImage(clothe: Clothe | null) {
     try {
         const url = getClotheInBase64(clothe);
         const response = await axios.get(url);
-        const base64 = response.data; // Assuming the response contains the base64 string directly
+        const base64 = response.data;
         const blob = await fetch(`data:image/png;base64,${base64.clothe}`).then(res => res.blob());
         const objectUrl = window.URL.createObjectURL(blob);
         const a = document.createElement('a');

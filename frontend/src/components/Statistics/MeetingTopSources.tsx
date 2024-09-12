@@ -63,7 +63,7 @@ export default function MeetingTopSources() {
                             label=""
                             dismissOnClick={false}
                             renderTrigger={() =>
-                                <Button className="bg-transparent text-gray-700 border-gray-700 rounded-md mt-4">
+                                <Button className="bg-transparent text-gray-700 border-gray-700 enabled:hover:bg-white focus:ring-0 rounded-md mt-4">
                                     Last {selected} Days
                                     <HiChevronDown className="ml-2 h-5 w-5" />
                                 </Button>
