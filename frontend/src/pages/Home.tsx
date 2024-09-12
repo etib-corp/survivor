@@ -1,19 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Button } from "flowbite-react";
-
-import Profiles from "./Profiles";
 import ETIBNavBar from "../components/ETIBNavBar";
 import Statistics from "./Statistics";
-import CustomerDetails from "../components/Customers/CustomerDetails";
-import { meetings } from "../data";
 
-function Home () {
+import CryptoJS from "crypto-js";
+
+function Home() {
+    const navigate = useNavigate();
     const [props, setProps] = useState({ page: "dashboard" });
+
+    const userInfo: any = localStorage.getItem("userData") || "";
+
+    useEffect(() => {
+        try {
+            const bytes = CryptoJS.AES.decrypt(userInfo, process.env.REACT_APP_SECRET_KEY || "");
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
+
+            console.log(parsedUserInfo);
+
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            } if (parsedUserInfo.roles[0] === "ROLE_COACH") {
+                navigate("/Customers");
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
+    }, []);
 
     return (
         <div className="overflow-x-hidden">
-            <ETIBNavBar properties={props} OnChangeView={setProps}/>
+            <ETIBNavBar properties={props} OnChangeView={setProps} />
             <Statistics />
         </div>
     );

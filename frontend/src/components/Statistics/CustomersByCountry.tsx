@@ -1,128 +1,109 @@
-import { HiChevronDown } from "react-icons/hi";
+import axios from 'axios';
 
-import { Button, Dropdown } from "flowbite-react";
+import { useEffect, useState } from 'react'
 import { ComposableMap, Geographies, Geography } from "react-simple-maps"
+import { Tooltip } from 'react-tooltip';
 
-export default function CustomersByCountry () {
-    interface CountryData {
-        country: string;
-        customers: number;
-        percentage: number;
-    };
+import CustomerService from "../../services/CustomerService";
 
-    const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
-    const props: CountryData[] = [
-        {
-            country: "United States",
-            customers: 301,
-            percentage: 30.1
-        },
-        {
-            country: "Germany",
-            customers: 201,
-            percentage: 20.1
-        },
-        {
-            country: "United Kingdom",
-            customers: 101,
-            percentage: 10.1
-        },
-        {
-            country: "France",
-            customers: 51,
-            percentage: 5.1
-        },
-        {
-            country: "Canada",
-            customers: 41,
-            percentage: 4.1
-        }
-    ];
+import Customer from "../../types/Customer";
+import { Spinner } from 'flowbite-react';
 
-    const List: React.FC<{ properties: CountryData[]}> = ({ properties}) => {
-        return (
-            <div>
-                {properties.map((property) => {
-                    return (
-                        <div className="flex flex-row justify-between px-4 mb-4">
-                            <div className="flex flex-row w-[70%]">
-                                <p className="text-lg">
-                                    {property.country}
-                                </p>
-                            </div>
-                            <div className="flex flex-row justify-between w-[30%]">
-                                <p className="text-lg">
-                                    {property.customers}
-                                </p>
-                                <p className="text-lg text-gray-400">
-                                    {property.percentage}%
-                                </p>
-                            </div>
-                        </div>
-                    )
-                })}
-            </div>
-        )
-    }
+export default function CustomersByCountry() {
+    const geoUrl = "https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements-version-simplifiee.geojson";
+    const [customers, setCustomers] = useState<Customer[]>([]);
+    const [depts, setDepts] = useState<number[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        CustomerService.getAll().then((response: any) => {
+            if (Array.isArray(response.data['hydra:member'])) {
+                setCustomers(response.data['hydra:member']);
+            } else {
+                console.log("Expected an array of customers but got:", response.data);
+            }
+        }).catch((e) => {
+            console.log(e);
+        });
+    }, []);
+
+    useEffect(() => {
+        setLoading(false);
+        let tmpDepts = new Array(96).fill(0);
+
+        customers.map((customer) => {
+            axios.get(process.env.REACT_APP_API_URL + "/customer/dept/" + customer.id).then((response) => {
+                const dept = response.data.dept.slice(0, 2) as number;
+
+                if (tmpDepts[dept - 1] === 0) {
+                    tmpDepts[dept - 1] = 1;
+                } else {
+                    tmpDepts[dept - 1] += 1;
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        });
+        setDepts(tmpDepts);
+        setLoading(false);
+    }, [customers]);
 
     return (
-        <div className="flex flex-col bg-white border mx-[5%] md:mx-4 w-[90%] md:w-[55%] rounded-md">
+        <div className="flex flex-col bg-pinkB border mx-[5%] md:mx-4 w-[90%] md:w-[55%] rounded-md">
             <div className="grid grid-cols-1 md:flex md:flex-row justify-between px-4 mb-8">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold py-3">
-                        Customers by Country
+                        Customers in France
                     </h1>
                 </div>
-                <div className="mt-auto mb-auto">
-                    <div className="flex flex-row space-x-4 justify-center md:justify-normal">
-                        <Dropdown
-                        label=""
-                        dismissOnClick={false}
-                        renderTrigger={() =>
-                            <Button className="bg-transparent text-gray-700 border-gray-700 rounded-md mt-4">
-                                30 Days
-                                <HiChevronDown className="ml-2 h-5 w-5"/>
-                            </Button>
-                        }>
-                            <Dropdown.Item>Dashboard</Dropdown.Item>
-                            <Dropdown.Item>Settings</Dropdown.Item>
-                            <Dropdown.Item>Earnings</Dropdown.Item>
-                            <Dropdown.Item>Sign out</Dropdown.Item>
-                        </Dropdown>
-                    </div>
+                <div className='p-4'>
+                    {
+                        loading === true &&
+                        <Spinner className="w-8 h-8" />
+                    }
                 </div>
             </div>
-            <div className="w-[90%] md:w-[30%] mx-auto">
-                <ComposableMap>
+            <div className="w-[90%] mx-auto">
+                <ComposableMap
+                    projection="geoMercator"
+                    projectionConfig={{
+                        center: [2, 46.5],
+                        rotate: [0, 0, 0],
+                        scale: 2200
+                    }}
+                >
                     <Geographies geography={geoUrl}>
                         {({ geographies }) =>
-                        geographies.map((geo) => {
-                            return (
-                                <Geography
-                                    key={geo.rsmKey}
-                                    geography={geo}
-                                    fill={geo.properties.name !== "Antarctica" ? "gray" : "transparent"}
-                                    stroke="transparent"
-                                    strokeWidth={0.5}
-                                    onClick={() => { console.log(geo)}}
-                                    style={{
-                                        default: {
-                                            outline: "none",
-                                        },
-                                        pressed: {
-                                            outline: "none",
-                                        },
-                                        hover: {
-                                            outline: "none",
-                                        }
-                                    }}
-                                />
-                            )
-                        })}
+                            geographies.map((geo) => {
+                                return (
+                                    <Geography
+                                        data-tooltip-id="my-tooltip"
+                                        data-tooltip-content={`${geo.properties.nom} - ${depts[parseInt(geo.properties.code) - 1]}`}
+                                        key={geo.rsmKey}
+                                        geography={geo}
+                                        stroke="gray"
+                                        strokeWidth={0.5}
+                                        onClick={() => { console.log(geo) }}
+                                        style={{
+                                            default: {
+                                                outline: "none",
+                                                fill: (depts[parseInt(geo.properties.code) - 1] > 0 ? `rgba(254, 170, 176, ${depts[parseInt(geo.properties.code) - 1] / 6})` : "whitesmoke")
+                                            },
+                                            pressed: {
+                                                outline: "none",
+                                            },
+                                            hover: {
+                                                outline: "none",
+                                                fill: "white"
+                                            }
+                                        }}
+                                    />
+                                )
+                            })}
                     </Geographies>
                 </ComposableMap>
             </div>
-            <List properties={props}></List>
+            <Tooltip id='my-tooltip' />
         </div>
     )
 }

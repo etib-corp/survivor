@@ -48,7 +48,7 @@ const PaymentsTable: React.FC<{ payments: any }> = ({ payments }) => {
                             <PaymentsMethod method={payment.method} />
                         </Table.Cell>
                         <Table.Cell>
-                            -${payment.amount}
+                            ${payment.amount}
                         </Table.Cell>
                         <Table.Cell>
                             {payment.comment}

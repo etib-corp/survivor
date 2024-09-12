@@ -1,8 +1,12 @@
+import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 
 import { Button, Label, TextInput } from "flowbite-react";
 
 import { useAuth } from "../AuthContext";
+
+import CryptoJS from "crypto-js";
 
 export function SignIn() {
     const { login } = useAuth();
@@ -12,8 +16,25 @@ export function SignIn() {
         event.preventDefault();
         const email = event.target.email2.value;
         const password = event.target.password2.value;
-        login("dummyToken");
-        navigate("/Home");
+
+        if (email === "" || password === "") {
+            return;
+        }
+
+        axios.post(process.env.REACT_APP_API_URL + "/login", { email, password }).then((response) => {
+            const token = response.data.token;
+            const data = response.data.data;
+
+            const jsonString = JSON.stringify(data);
+            const encryptedData = CryptoJS.AES.encrypt(jsonString, process.env.REACT_APP_SECRET_KEY || "").toString();
+
+            login(token);
+            localStorage.setItem("authToken", token);
+            localStorage.setItem("userData", encryptedData);
+            navigate("/Home");
+        }).catch((e) => {
+            alert("Invalid email or password");
+        });
     }
 
     return (
@@ -22,17 +43,17 @@ export function SignIn() {
                 <div className="mb-2 block">
                     <Label htmlFor="email2" value="Your email" />
                 </div>
-                <TextInput id="email2" type="email" placeholder="name@soulconnection.com" required shadow className="focus:ring-1 focus:ring-gray-700" />
+                <TextInput id="email2" type="email" placeholder="name@soulconnection.com" required className="enabled:border-pinkT" />
             </div>
             <div>
                 <div className="mb-2 block">
                     <Label htmlFor="password2" value="Your password" />
                 </div>
-                <TextInput id="password2" type="password" required shadow className="focus:ring-1 focus:ring-gray-700"/>
+                <TextInput id="password2" type="password" required shadow className="focus:ring-1 focus:ring-gray-700" />
             </div>
             <div>
             </div>
-            <Button className="bg-blueT enabled:hover:bg-blue-500 focus:ring-1 focus:ring-gray-700" type="submit">Sign In</Button>
+            <Button className="bg-pinkT enabled:hover:bg-gray-300 focus:ring-1 focus:ring-gray-700" type="submit">Sign In</Button>
         </form>
     );
 }

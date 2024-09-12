@@ -1,9 +1,15 @@
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import ETIBCoaches from "../components/ETIBCoaches";
 import ETIBNavBar from "../components/ETIBNavBar";
-import { useEffect, useState } from "react";
+
 import EmployeeService from "../services/EmployeeService";
 
-function Account () {
+import CryptoJS from "crypto-js";
+
+function Account() {
+    const navigate = useNavigate();
     const [employees, setEmployees] = useState([]);
     const [props, setProps] = useState({ page: "coaches" });
 
@@ -20,12 +26,31 @@ function Account () {
         }).catch((e) => {
             console.log(e);
         });
+    }, [employees]);
 
+    const userInfo: any = localStorage.getItem("userData") || "";
+
+    useEffect(() => {
+        try {
+            const bytes = CryptoJS.AES.decrypt(userInfo, process.env.REACT_APP_SECRET_KEY || "");
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
+
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            } if (parsedUserInfo.roles[0] === "ROLE_COACH") {
+                navigate("/Customers");
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
     }, []);
+
+
     return (
         <div className="overflow-x-hidden">
-            <ETIBNavBar properties={props} OnChangeView={setProps}/>
-            <ETIBCoaches coaches={employees}/>
+            <ETIBNavBar properties={props} OnChangeView={setProps} />
+            <ETIBCoaches coaches={employees} />
         </div>
     )
 }
