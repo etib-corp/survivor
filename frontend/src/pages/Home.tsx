@@ -18,8 +18,6 @@ function Home() {
             const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
             const parsedUserInfo = JSON.parse(decryptedUserInfo);
 
-            console.log(parsedUserInfo);
-
             if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
                 navigate("/Wardrobe");
             } if (parsedUserInfo.roles[0] === "ROLE_COACH") {

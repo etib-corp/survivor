@@ -7,6 +7,7 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { useAuth } from "../AuthContext";
 
 import CryptoJS from "crypto-js";
+import { useEffect } from "react";
 
 export function SignIn() {
     const { login } = useAuth();
