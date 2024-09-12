@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import ETIBNavBar from "../components/ETIBNavBar";
 import Statistics from "./Statistics";
 
+import CryptoJS from "crypto-js";
+
 function Home() {
     const navigate = useNavigate();
     const [props, setProps] = useState({ page: "dashboard" });
@@ -12,7 +14,11 @@ function Home() {
 
     useEffect(() => {
         try {
-            const parsedUserInfo = JSON.parse(userInfo);
+            const bytes = CryptoJS.AES.decrypt(userInfo, process.env.REACT_APP_SECRET_KEY || "");
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
+
+            console.log(parsedUserInfo);
 
             if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
                 navigate("/Wardrobe");

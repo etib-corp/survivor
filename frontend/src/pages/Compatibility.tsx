@@ -8,6 +8,8 @@ import Customer from '../types/Customer';
 
 import CustomerService from '../services/CustomerService';
 
+import CryptoJS from "crypto-js";
+
 export default function Compatibility() {
     const navigate = useNavigate();
     const [properties, setProperties] = useState({ page: "compatibility" });
@@ -17,7 +19,10 @@ export default function Compatibility() {
 
     useEffect(() => {
         try {
-            const parsedUserInfo = JSON.parse(userInfo);
+            const bytes = CryptoJS.AES.decrypt(userInfo, process.env.REACT_APP_SECRET_KEY || "");
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
+
             if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
                 navigate("/Wardrobe");
             }

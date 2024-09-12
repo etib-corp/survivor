@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { Button, TextInput, Label, ListGroup, ListGroupItem, Spinner } from "flowbite-react";
+import { Button, TextInput, Label, ListGroup, ListGroupItem, Spinner, List } from "flowbite-react";
 
 import GaugeComponent from 'react-gauge-component';
 
 import { HiChevronDown, HiPlus } from "react-icons/hi";
 import { Icon } from "@mui/material";
+import { ListItemTheme, buttonTheme, textInputTheme } from "../../themes";
 
 const CustomersCompatibility: React.FC<{ properties: any }> = ({ properties }) => { 
     const [inputSearch1, setInputSearch1] = useState("");
@@ -85,21 +86,21 @@ const CustomersCompatibility: React.FC<{ properties: any }> = ({ properties }) =
 
     return (
         <div className="flex flex-col items-center justify-center my-10 md:my-0 md:h-[100vh]">
-            <div className="underline decoration-blueT underline-offset-8 sm:text-2xl text-sm pb-[11%]">
+            <div className="underline decoration-pinkT underline-offset-8 sm:text-2xl text-sm pb-[11%]">
                 Check Customers compatibility
             </div>
             <div className="grid gap-x-5 md:gap-x-0 grid-cols-1 md:grid-cols-7 pb-[10vh] gap-y-10">
                 <div className="flex flex-col justify-center items-center md:col-start-3 md:col-end-4">
-                    <Button color="light" onClick={() => { setField1(!field1) }}>
+                    <Button theme={buttonTheme} color="default" onClick={() => { setField1(!field1) }}>
                         <Label>
                             {inputValue1 !== "" ? inputValue1 : "Select a customer"}
                         </Label>
-                        <HiChevronDown className="h-5 w-5" />
+                        <HiChevronDown className="ml-2 h-5 w-5" />
                     </Button>
                     {field1 &&
                         <div className="absolute mt-60 sm:w-44 w-40">
-                            <TextInput onChange={handleSearch1} value={inputSearch1} placeholder="Search..."/>
-                            <ListGroup className="overflow-auto h-36 w-[100%]">
+                            <TextInput theme={textInputTheme} onChange={handleSearch1} value={inputSearch1} placeholder="Search..."/>
+                            <ListGroup className="overflow-auto h-36 w-[100%]" theme={ListItemTheme}>
                                 {properties.map((customer: any) => (
                                     ((customer.name + " " + customer.surname).includes(inputSearch1) || inputSearch1 === "") &&
                                     <ListGroupItem
@@ -124,16 +125,16 @@ const CustomersCompatibility: React.FC<{ properties: any }> = ({ properties }) =
                 </div>
                 <div className="flex justify-center items-center md:col-start-5 md:cols-end-6">
                     <div className="flex flex-col justify-center items-center md:col-start-3 md:col-end-4">
-                        <Button color="light" onClick={() => { setField2(!field2) }}>
+                        <Button theme={buttonTheme} color="default" onClick={() => { setField2(!field2) }}>
                             <Label>
                                 {inputValue2 !== "" ? inputValue2 : "Select a customer"}
                             </Label>
-                            <HiChevronDown className="h-5 w-5" />
+                            <HiChevronDown className="ml-2 h-5 w-5" />
                         </Button>
                         {field2 &&
                             <div className="absolute mt-60 sm:w-44 w-40">
-                                <TextInput onChange={handleSearch2} value={inputSearch2} placeholder="Search..." />
-                                <ListGroup className="overflow-auto h-36 w-[100%]">
+                                <TextInput theme={textInputTheme} className="focus:ring-pinkT" onChange={handleSearch2} value={inputSearch2} placeholder="Search..." />
+                                <ListGroup className="overflow-auto h-36 w-[100%]" theme={ListItemTheme}>
                                     {properties.map((customer: any) => (
                                         ((customer.name + " " + customer.surname).includes(inputSearch2) || inputSearch2 === "") &&
                                         <ListGroupItem

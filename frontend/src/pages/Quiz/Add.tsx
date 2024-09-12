@@ -6,6 +6,9 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { Button, Card, Radio, TextInput } from 'flowbite-react';
 import axios from 'axios';
 import { Table, FileInput } from "flowbite-react";
+import { buttonOutlineTheme, buttonTheme, fileInputTheme, tableTheme, textInputTheme } from '../../themes';
+
+import CryptoJS from "crypto-js";
 
 function QuizAdd() {
     const [props, setProps] = useState({ page: "quiz" });
@@ -23,6 +26,24 @@ function QuizAdd() {
         formState: { errors },
     } = useForm<any>({ defaultValues: { questions: [{ answers: [{ correct: false }, { correct: false }] }] } })
 
+    const userInfo: any = localStorage.getItem("userData") || "";
+
+    useEffect(() => {
+        try {
+            const bytes = CryptoJS.AES.decrypt(userInfo, process.env.REACT_APP_SECRET_KEY || "");
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
+
+            console.log(parsedUserInfo);
+
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
+    }, []);
+
     const onSubmit: SubmitHandler<any> = (data) => {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -31,7 +52,7 @@ function QuizAdd() {
             data.image = base64data;
             axios.post(`${process.env.REACT_APP_API_URL}/questions/new`, data);
             reset();
-            navigate('/Quiz');
+            navigate('/Elearning');
         }
         reader.readAsDataURL(data.image[0]);
     }
@@ -65,22 +86,22 @@ function QuizAdd() {
     return (
         <div className="overflow-x-hidden">
             <ETIBNavBar properties={props} OnChangeView={setProps} />
-            <div className="flex flex-col">
-                <div className="flex items-center justify-between p-5">
+            <div className="flex flex-col space-y-8 pb-40">
+                <div className="grid grid-cols-1 md:flex md:flex-row justify-between md:mt-8 ml-4 mr-4">
                     <h1 className="text-4xl font-bold">
                         Add Quiz
                     </h1>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" onClick={() => navigate('/Quiz')}>
-                        Back to Quiz
-                    </button>
+                    <Button theme={buttonTheme} color="default" onClick={() => navigate('/Elearning')}>
+                        Back to Elearning
+                    </Button>
                 </div>
-                <form className="flex flex-col p-5 mx-[10vh] space-y-4" onSubmit={handleSubmit(onSubmit)}>
-                    <TextInput key={"QuizInput"} type="text" placeholder="Quiz Title" {...register("title", { required: true })} />
+                <form className="flex flex-col bg-pinkB p-4 mx-[10vh] space-y-4 border rounded-md" onSubmit={handleSubmit(onSubmit)}>
+                    <TextInput theme={textInputTheme} key={"QuizInput"} type="text" placeholder="Quiz Title" {...register("title", { required: true })} />
                     <FileInput {...register("image", { required: true })} accept="image/*" />
                     {Array.from({ length: nbrQuestions }).map((j: any, indexJ: number) => (
                         <Card key={genereKey()}>
-                            <TextInput type="text" placeholder="Question" {...register(`questions[${indexJ}].question`, { required: true })} />
-                            <Table striped>
+                            <TextInput theme={textInputTheme} type="text" placeholder="Question" {...register(`questions[${indexJ}].question`, { required: true })} />
+                            <Table theme={tableTheme} striped>
                                 <Table.Head>
                                     <Table.HeadCell>Answers</Table.HeadCell>
                                     <Table.HeadCell className=''>Select Correct Answer</Table.HeadCell>
@@ -93,11 +114,11 @@ function QuizAdd() {
                                         console.log(i),
                                         <Table.Row key={genereKey()}>
                                             <Table.Cell className=''>
-                                                <TextInput type="text" placeholder={`Type your answer `} {...register(`questions[${indexJ}].answers[${index}].answer`, { required: true })} />
+                                                <TextInput theme={textInputTheme} key={i} type="text" placeholder={`Type your answer `} {...register(`questions[${indexJ}].answers[${index}].answer`, { required: true })} />
                                                 {errors.answers && <span>This field is required</span>}
                                             </Table.Cell>
                                             <Table.Cell className=''>
-                                                <Radio className='bg-red-900' {...register(`questions[${indexJ}].answers[${index}].correct`)} name={`answer${indexJ}`} defaultChecked={i.correct} onChange={(e: any) => {
+                                                <Radio className='bg-pinkT' {...register(`questions[${indexJ}].answers[${index}].correct`)} name={`answer${indexJ}`} value={"true"} onChange={(e: any) => {
                                                     getValues().questions[indexJ].answers.forEach((answer: any) => {
                                                         answer.correct = false;
                                                     });
@@ -105,22 +126,24 @@ function QuizAdd() {
                                                 }} />
                                             </Table.Cell>
                                             <Table.Cell className='flex justify-end'>
-                                                <Button disabled={dataQuestion.questions[indexJ].answers.length === 2} onClick={() => deleteAnswer(index, indexJ)}>Remove Answer</Button>
+                                                <Button theme={buttonTheme} color="default" disabled={dataQuestion.questions[indexJ].answers.length === 2} onClick={() => deleteAnswer(index, indexJ)}>Remove Answer</Button>
                                             </Table.Cell>
                                         </Table.Row>
                                     ))}
-                                    <Button disabled={dataQuestion.questions[indexJ].answers.length === 4} onClick={() => addAnswer(indexJ)}>Add Answer</Button>
+                                    <Button theme={buttonOutlineTheme} color="default" disabled={dataQuestion.questions[indexJ].answers.length === 4} onClick={() => addAnswer(indexJ)}>Add Answer</Button>
                                 </Table.Body>
                             </Table>
-                            <Button disabled={nbrQuestions === 1} onClick={() => deleteQuestion(indexJ)}> Remove Question</Button>
+                            <Button theme={buttonTheme} color="default" disabled={nbrQuestions === 1} onClick={() => deleteQuestion(indexJ)}> Remove Question</Button>
                         </Card>
                     ))}
-                    <Button disabled={nbrQuestions == 20} onClick={() => {
+                    <Button theme={buttonOutlineTheme} color="default" disabled={nbrQuestions == 20} onClick={() => {
                         setNbrQuestions(nbrQuestions + 1);
                         dataQuestion.questions.push({ answers: [{ correct: false }, { correct: false }] });
                         console.log(dataQuestion);
-                    }}>Add Question</Button>
-                    <Button className="float-end" type="submit">Submit</Button>
+                    }}>
+                        Add Question
+                    </Button>
+                    <Button theme={buttonTheme} color="default" className="float-end" type="submit">Submit</Button>
                 </form>
             </div>
         </div>

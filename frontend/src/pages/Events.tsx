@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
-import ETIBNavBar from "../components/ETIBNavBar";
+import { useNavigate } from "react-router-dom";
+
 import { Button } from "flowbite-react";
 
 import { FiPlus } from "react-icons/fi";
+
+import ETIBNavBar from "../components/ETIBNavBar";
 import ETIBCalendar from "../components/ETIBCalendar";
+
 import EventService from "../services/EventService";
-import { useNavigate } from "react-router-dom";
+
+import { buttonTheme } from "../themes";
+
+import CryptoJS from "crypto-js";
 
 function Events() {
     const navigate = useNavigate();
@@ -26,7 +33,10 @@ function Events() {
 
     useEffect(() => {
         try {
-            const parsedUserInfo = JSON.parse(userInfo);
+            const bytes = CryptoJS.AES.decrypt(userInfo, process.env.REACT_APP_SECRET_KEY || "");
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
+
             if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
                 navigate("/Wardrobe");
             }
@@ -43,8 +53,8 @@ function Events() {
                     <h1 className="text-4xl font-bold py-1 mt-3">
                         Events
                     </h1>
-                    <Button className="bg-blue-700 hover:bg-blue-900 text-white font-bold h-10 rounded-md mt-5">
-                        <FiPlus className="mr-5" size={20} />Add Event
+                    <Button theme={buttonTheme} color="default" className="mt-auto">
+                        <FiPlus className="mr-2" size={20} />Add Event
                     </Button>
                 </div>
             </div>

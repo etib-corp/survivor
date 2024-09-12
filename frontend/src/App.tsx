@@ -15,6 +15,7 @@ import AuthProvider from './components/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes';
 import Error from './pages/404Error';
 import QuizAdd from './pages/Quiz/Add';
+import VideoAdd from './pages/Video/Add';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/Events" element={<Events />}></Route>
                 <Route path="/Quiz" element={<Quiz />}></Route>
                 <Route path="/Quiz/Add" element={<QuizAdd />}></Route>
+                <Route path="/Video/Add" element={<VideoAdd />}></Route>
                 <Route path="/Elearning" element={<Elearning />}></Route>
               </Route>
             </Routes>

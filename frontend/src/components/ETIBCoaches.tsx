@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import axios from 'axios';
 
-import { Avatar, Breadcrumb, Button, Datepicker, Label, Table, TextInput } from "flowbite-react";
+import { Avatar, Breadcrumb, Button, Datepicker, Dropdown, Label, Table, TextInput } from "flowbite-react";
 
 import { LuDownloadCloud } from "react-icons/lu";
 import { GoPlus } from "react-icons/go";
 import { VscEllipsis } from "react-icons/vsc";
 import { CiSearch } from "react-icons/ci";
 import { IoFilterOutline } from "react-icons/io5";
-import { HiAnnotation, HiPhone, HiUser } from 'react-icons/hi';
+import { HiAnnotation, HiPhone, HiTrash, HiUser } from 'react-icons/hi';
 import { Slider } from '@mui/material';
+
+import { buttonOutlineTheme, buttonTheme, dateTheme, tableTheme, textInputTheme } from '../themes';
 
 const marks = [
   {
@@ -28,9 +32,26 @@ const marks = [
 const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
   const [progress, setProgress] = useState(0);
   const [sliderValue, setSliderValue] = useState(20);
+  const [birth, setBirth] = useState<Date>(new Date());
+  const [gender, setGender] = useState("male");
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<any>();
 
   const handleSliderChange = (event: any, newValue: number | number[]) => {
     setSliderValue(newValue as number);
+    if (newValue as number < 50) {
+      setGender("male");
+    } else if (newValue as number === 50) {
+      setGender("non-binary");
+    } else {
+      setGender("female");
+    }
   };
 
   const getSliderBackground = (value: number) => {
@@ -39,9 +60,44 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
     return `rgb(${red}, 0, ${blue})`;
   };
 
+  async function pushData(response: any) {
+    const data: any = {
+      "email": response.email,
+      "password": response.password,
+      "plainPassword": response.password,
+      "roles": [
+        "ROLE_COACH"
+      ],
+      "name": response.name,
+      "surname": response.surname,
+      "birth_date": birth.toISOString(),
+      "gender": gender,
+      "work": "Coach",
+      "events": [],
+      "birthDate": birth.toISOString(),
+    };
+
+    try {
+      await axios.post(process.env.REACT_APP_API_URL + "/employees", data);
+      callback();
+      reset();
+    } catch (error: any) {
+      if (error.response.status === 422) {
+        alert("This coach already exists.");
+      } else {
+        alert("An error occured.");
+      }
+    }
+  }
+  const onSubmit: SubmitHandler<any> = (data) => pushData(data);
+
+  const handleDateChange = (e: any) => {
+    setBirth(new Date(e));
+  };
+
   return (
-    <div className='flex flex-col mx-4 border rounded-md mt-4 space-y-4'>
-      <div className='border p-4 rounded-md'>
+    <div className='flex flex-col mx-4 border rounded-md mt-4 space-y-4 bg-pinkB'>
+      <div className='border p-4 rounded-md bg-pinkB'>
         <Breadcrumb>
           <Breadcrumb.Item icon={HiUser} onClick={() => setProgress(0)} href='#'>
             Personal
@@ -58,7 +114,7 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
           )}
         </Breadcrumb>
       </div>
-      <form className='p-4'>
+      <form onSubmit={handleSubmit(onSubmit)} className='p-4'>
         {
           progress === 0 &&
           <div className='flex flex-col space-y-8'>
@@ -67,13 +123,13 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
                 <Label htmlFor='name'>
                   Name
                 </Label>
-                <TextInput id='name' type='text' placeholder="Kevin" required />
+                <TextInput theme={textInputTheme} id='name' type='text' placeholder="Kevin" {...register("name", { required: true })} />
               </div>
               <div className='flex flex-col w-[50%]'>
                 <Label htmlFor='surname'>
                   Surname
                 </Label>
-                <TextInput id='surname' type="text" placeholder="Cazal" required />
+                <TextInput theme={textInputTheme} id='surname' type="text" placeholder="Cazal" {...register("surname", { required: true })} />
               </div>
             </div>
             <div className='flex w-full space-x-8'>
@@ -81,7 +137,11 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
                 <Label htmlFor='birth'>
                   Birth Date
                 </Label>
-                <Datepicker id='birth' required />
+                <Datepicker
+                  id='birth'
+                  theme={dateTheme}
+                  onSelectedDateChanged={handleDateChange}
+                />
               </div>
               <div className='flex flex-col w-[50%]'>
                 <span className='w-[95%] mx-auto'>
@@ -103,14 +163,8 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
               </div>
             </div>
             <div className='flex w-full space-x-8'>
-              <div className='flex flex-col w-[50%]'>
-                <Label htmlFor='work'>
-                  Last Work
-                </Label>
-                <TextInput id='work' type="text" placeholder="Mattress Tester" required />
-              </div>
               <span className='flex w-1/2 justify-end my-auto ml-auto'>
-                <Button className='' type='submit' onClick={() => setProgress(1)}>
+                <Button theme={buttonTheme} color={"default"} onClick={() => setProgress(1)}>
                   Next
                 </Button>
               </span>
@@ -123,10 +177,10 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
             <div className='flex w-full space-x-8'>
               <div className='flex flex-col w-[50%]'>
                 <Label>Email</Label>
-                <TextInput type='email' placeholder="kevin.cazal@cazalkevin.re" required />
+                <TextInput theme={textInputTheme} type='email' placeholder="kevin.cazal@cazalkevin.re" {...register("email", { required: true })} />
               </div>
               <span className='flex w-1/2 justify-end my-auto ml-auto'>
-                <Button className='' type='submit' onClick={() => setProgress(2)}>
+                <Button theme={buttonTheme} color="default" onClick={() => setProgress(2)}>
                   Next
                 </Button>
               </span>
@@ -139,11 +193,11 @@ const CoachForm: React.FC<({ callback: () => void })> = ({ callback }) => {
             <div className='flex w-full space-x-8'>
               <div className='flex flex-col w-[50%]'>
                 <Label>Password</Label>
-                <TextInput type='password' placeholder="H4ck3rZ" required />
+                <TextInput theme={textInputTheme} type='password' placeholder="H4ck3rZ" {...register("password", { required: true })} />
               </div>
               <span className='flex w-1/2 justify-end my-auto ml-auto'>
-                <Button className='' type='submit' onClick={callback}>
-                  Next
+                <Button theme={buttonTheme} color="default" type='submit'>
+                  Submit
                 </Button>
               </span>
             </div>
@@ -185,11 +239,19 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
     document.body.removeChild(a);
   };
 
-  function handleSortMode () {
+  function handleSortMode() {
     if (sortMode === "asc") {
       setSortMode("desc");
     } else {
       setSortMode("asc");
+    }
+  }
+
+  async function removeCoach(id: number) {
+    try {
+      await axios.delete(process.env.REACT_APP_API_URL + "/employees/" + id);
+    } catch (error: any) {
+      alert("An error occured.");
     }
   }
 
@@ -208,11 +270,11 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
             </div>
             <div className="mt-3 md:mt-auto mb-auto">
               <div className="flex flex-row space-x-4 justify-center md:justify-normal">
-                <Button className="bg-transparent text-gray-700 border-gray-700 focus:ring-2 focus:ring-gray-300 enabled:hover:bg-gray-100" onClick={exportToCSV}>
+                <Button theme={buttonOutlineTheme} color="default" onClick={exportToCSV}>
                   <LuDownloadCloud className="mr-2 h-5 w-5" />
                   Export
                 </Button>
-                <Button className="bg-blueT focus:ring-2 focus:ring-gray-300 enabled:hover:bg-blue-500" onClick={() => (setAddCoach(!addCoach))}>
+                <Button theme={buttonTheme} color="default" onClick={() => (setAddCoach(!addCoach))}>
                   <GoPlus className="h-5 w-5" />
                 </Button>
               </div>
@@ -230,7 +292,7 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                     <input
                       id="table-search"
                       type="text"
-                      className="w-48 text-sm text-gray-500 border-gray-300 focus:ring-gray-300 focus:ring-1 pl-10"
+                      className="w-48 text-sm text-gray-500 enabled:border-gray-300 enabled:focus:ring-pinkT focus:ring-1 pl-10"
                       placeholder="Search..."
                       value={inputSearch}
                       onChange={(e) => setInputSearch(e.target.value)}
@@ -242,7 +304,7 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                   </Button>
                 </div>
               </div>
-              <Table hoverable className="bg-transparent">
+              <Table hoverable className="bg-transparent" theme={tableTheme}>
                 <Table.Head className="border bg-transparent">
                   <Table.HeadCell className="bg-transparent" style={{ textTransform: 'none' }}>
                     Coach
@@ -269,28 +331,34 @@ const ETIBCoaches: React.FC<{ coaches: any }> = ({ coaches }) => {
                       return b.name.localeCompare(a.name)
                     }
                     return 0;
-                  }).map((coaches: any) => (
-                    (coaches.name + " " + coaches.surname).toLowerCase().includes(inputSearch.toLowerCase()) &&
+                  }).map((coache: any) => (
+                    (coache.name + " " + coache.surname).toLowerCase().includes(inputSearch.toLowerCase()) &&
                     <Table.Row className="border">
                       <Table.Cell className="text-blueT font-semibold flex flex-row">
-                        <Avatar img={process.env.REACT_APP_PICTURES_URL + "/employees/" + coaches.id + ".png"} className="mr-2" />
-                        <span className="my-auto">
-                          {coaches.name + " " + coaches.surname}
+                        <Avatar img={process.env.REACT_APP_PICTURES_URL + "/employees/" + coache.id + ".png"} className="mr-2" />
+                        <span className="my-auto text-pinkT">
+                          {coache.name + " " + coache.surname}
                         </span>
                       </Table.Cell>
                       <Table.Cell className="cursor-pointer">
-                        <a href={"mailto:" + coaches.email}>{coaches.email}</a>
+                        <a href={"mailto:" + coache.email}>{coache.email}</a>
                       </Table.Cell>
                       <Table.Cell>
-                        {coaches.phone}
+                        {coache.phone}
                       </Table.Cell>
                       <Table.Cell>
-                        {coaches.number_of_customers}
+                        {coache.number_of_customers}
                       </Table.Cell>
                       <Table.Cell className="flex justify-end">
-                        <Button className="bg-transparent text-gray-700">
-                          <VscEllipsis className="h-5 w-5" />
-                        </Button>
+                        <Dropdown label="action" renderTrigger={() =>
+                          <Button className="bg-transparent text-gray-700 hover:text-pinkT enabled:hover:bg-transparent focus:ring-2 focus:ring-pinkB">
+                            <VscEllipsis className="h-5 w-5" />
+                          </Button>
+                        }>
+                          <Dropdown.Item icon={HiTrash} className='text-red-600' onClick={() => removeCoach(coache.id)}>
+                            Remove
+                          </Dropdown.Item>
+                        </Dropdown>
                       </Table.Cell>
                     </Table.Row>
                   ))}

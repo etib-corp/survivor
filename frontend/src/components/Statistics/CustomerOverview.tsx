@@ -63,7 +63,7 @@ const CustomersOverview: React.FC<{ customers: any }> = ({ customers }) => {
         })
     }, [selected]);
     return (
-        <div className="flex flex-col bg-white border mx-[5%] md:mx-4 w-[90%] md:w-[55%] rounded-md">
+        <div className="flex flex-col border mx-[5%] md:mx-4 w-[90%] md:w-[55%] rounded-md bg-pinkB">
             <div className="grid grid-cols-1 md:flex md:flex-row justify-between mx-4 mb-6">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold py-3">
@@ -75,16 +75,16 @@ const CustomersOverview: React.FC<{ customers: any }> = ({ customers }) => {
                 </div>
                 <div className="mt-4 md:mt-auto mb-auto flex justify-center md:justify-normal">
                     <ButtonGroup outline>
-                        <Button className="bg-transparent text-gray-700 border-gray-700" disabled={selected === 7} onClick={() => setSelected(7)}>
+                        <Button className="bg-transparent text-gray-700 border-gray-700 enabled:hover:bg-white" disabled={selected === 7} onClick={() => setSelected(7)}>
                             7D
                         </Button>
-                        <Button className="bg-transparent text-gray-700 border-gray-700 disabled:text-black" disabled={selected === 30} onClick={() => setSelected(30)}>
+                        <Button className="bg-transparent text-gray-700 border-gray-700 enabled:hover:bg-white" disabled={selected === 30} onClick={() => setSelected(30)}>
                             1M
                         </Button>
-                        <Button className="bg-transparent text-gray-700 border-gray-700" disabled={selected === 90} onClick={() => setSelected(90)}>
+                        <Button className="bg-transparent text-gray-700 border-gray-700 enabled:hover:bg-white" disabled={selected === 90} onClick={() => setSelected(90)}>
                             3M
                         </Button>
-                        <Button className="bg-transparent text-gray-700 border-gray-700" disabled={selected === 365} onClick={() => setSelected(365)}>
+                        <Button className="bg-transparent text-gray-700 border-gray-700 enabled:hover:bg-white" disabled={selected === 365} onClick={() => setSelected(365)}>
                             1Y
                         </Button>
                     </ButtonGroup>
@@ -120,14 +120,14 @@ const CustomersOverview: React.FC<{ customers: any }> = ({ customers }) => {
                         Meetings/Customers (Avg)
                     </p>
                     <p className="text-3xl mb-1">
-                        {average}
+                        {average.toFixed(2)}
                     </p>
                 </div>
             </div>
             <LineChart
                 xAxis={[{ data: calendar, scaleType: "band" }]}
                 series={[
-                    { data: meetings, showMark: false, curve: "linear", area: true, label: "Meetings per day" },
+                    { data: meetings, showMark: false, curve: "linear", area: true, label: "Meetings per day", color: "#feaab0" },
                 ]}
                 margin={{ top: 100, bottom: 100, left: 100, right:100 }}
                 height={300}

@@ -1,5 +1,8 @@
+import Question from "./Question"
+
 export default interface Quiz {
-    id: number,
+    id?: number | null,
     title: string,
-    questions: Array<string>
+    image: string,
+    questions: Question[]
 }

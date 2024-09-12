@@ -10,6 +10,8 @@ import PaymentService from "../services/PaymentService";
 import Customer from "../types/Customer";
 import Payment from "../types/Payment";
 
+import CryptoJS from "crypto-js";
+
 function Customers() {
     const navigate = useNavigate();
     const [props, setProps] = useState({ page: "customers" });
@@ -20,7 +22,10 @@ function Customers() {
 
     useEffect(() => {
         try {
-            const parsedUserInfo = JSON.parse(userInfo);
+            const bytes = CryptoJS.AES.decrypt(userInfo, process.env.REACT_APP_SECRET_KEY || "");
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
+
             if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
                 navigate("/Wardrobe");
             }
@@ -39,7 +44,7 @@ function Customers() {
         }).catch((e) => {
             console.log(e);
         });
-    }, []);
+    }, [customers]);
 
     useEffect(() => {
         PaymentService.getAll().then((response: any) => {

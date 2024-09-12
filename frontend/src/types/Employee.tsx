@@ -6,5 +6,6 @@ export default interface Employee {
     birth_date: string,
     gender: string,
     work: string,
-    events: Array<string>
+    events: Array<string>,
+    plainPassword: string,
 }
