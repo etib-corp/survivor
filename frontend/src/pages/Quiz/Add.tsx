@@ -9,8 +9,8 @@ import { Table, FileInput } from "flowbite-react";
 
 function QuizAdd() {
     const [props, setProps] = useState({ page: "quiz" });
-    const [nbrAnswers, setNbrAnswers] = useState([1, 2]);
-    const [nbrQuestions, setNbrQuestions] = useState([1]);
+    const [nbrQuestions, setNbrQuestions] = useState(1);
+    const [dataQuestion, setDataQuestion] = useState<any>({ questions: [{ answers: [{ correct: false }, { correct: false }] }] })
     const navigate = useNavigate();
 
     const {
@@ -19,8 +19,9 @@ function QuizAdd() {
         watch,
         getValues,
         reset,
+        setValue,
         formState: { errors },
-    } = useForm<any>()
+    } = useForm<any>({ defaultValues: { questions: [{ answers: [{ correct: false }, { correct: false }] }] } })
 
     const onSubmit: SubmitHandler<any> = (data) => {
         const reader = new FileReader();
@@ -35,25 +36,30 @@ function QuizAdd() {
         reader.readAsDataURL(data.image[0]);
     }
 
-    function deleteAnswer(value: number, index: number, indexQ: number) {
-        if (nbrAnswers.length === 2) return;
+    function deleteAnswer(index: number, indexQ: number) {
         const data = getValues();
         data.questions[indexQ].answers.splice(index, 1);
-        setNbrAnswers(nbrAnswers.filter((i) => i !== value));
+        setDataQuestion(data);
         console.log(data);
     }
 
-    function addAnswer() {
-        if (nbrAnswers.length === 4) return;
-        setNbrAnswers([...nbrAnswers, nbrAnswers[nbrAnswers.length - 1] + 1]);
+    function addAnswer(index: number) {
+        let data = getValues();
+        console.log(data);
+        data.questions[index].answers.push({ correct: false });
+        setDataQuestion(data);
     }
 
     function deleteQuestion(index: number) {
-        if (nbrQuestions.length === 1) return;
+        if (nbrQuestions === 1) return;
         const data = getValues();
         data.questions.splice(index, 1);
-        setNbrQuestions(nbrQuestions.filter((i) => i !== index));
-        console.log(data);
+        setNbrQuestions(nbrQuestions - 1);
+        setDataQuestion(data)
+    }
+
+    function genereKey() {
+        return Math.random() * 1000;
     }
 
     return (
@@ -61,18 +67,19 @@ function QuizAdd() {
             <ETIBNavBar properties={props} OnChangeView={setProps} />
             <div className="flex flex-col">
                 <div className="flex items-center justify-between p-5">
-                    <h1 className="text-4xl font-bold">Add Quiz</h1>
+                    <h1 className="text-4xl font-bold">
+                        Add Quiz
+                    </h1>
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" onClick={() => navigate('/Quiz')}>
                         Back to Quiz
                     </button>
                 </div>
                 <form className="flex flex-col p-5 mx-[10vh] space-y-4" onSubmit={handleSubmit(onSubmit)}>
                     <TextInput key={"QuizInput"} type="text" placeholder="Quiz Title" {...register("title", { required: true })} />
-                    {/* use the component file input and only the format image can be upload */}
                     <FileInput {...register("image", { required: true })} accept="image/*" />
-                    {nbrQuestions.map((j, indexJ) => (
-                        <Card>
-                            <TextInput key={indexJ} type="text" placeholder="Question" {...register(`questions[${indexJ}].question`, { required: true })} />
+                    {Array.from({ length: nbrQuestions }).map((j: any, indexJ: number) => (
+                        <Card key={genereKey()}>
+                            <TextInput type="text" placeholder="Question" {...register(`questions[${indexJ}].question`, { required: true })} />
                             <Table striped>
                                 <Table.Head>
                                     <Table.HeadCell>Answers</Table.HeadCell>
@@ -82,14 +89,15 @@ function QuizAdd() {
                                     </Table.HeadCell>
                                 </Table.Head>
                                 <Table.Body>
-                                    {nbrAnswers.map((i, index) => (
-                                        <Table.Row>
+                                    {dataQuestion.questions[indexJ].answers?.map((i: any, index: number) => (
+                                        console.log(i),
+                                        <Table.Row key={genereKey()}>
                                             <Table.Cell className=''>
-                                                <TextInput key={i} type="text" placeholder={`Type your answer `} {...register(`questions[${indexJ}].answers[${index}].answer`, { required: true })} />
+                                                <TextInput type="text" placeholder={`Type your answer `} {...register(`questions[${indexJ}].answers[${index}].answer`, { required: true })} />
                                                 {errors.answers && <span>This field is required</span>}
                                             </Table.Cell>
                                             <Table.Cell className=''>
-                                                <Radio className='bg-red-900' {...register(`questions[${indexJ}].answers[${index}].correct`)} name={`answer${j}`} value={"true"} onChange={(e: any) => {
+                                                <Radio className='bg-red-900' {...register(`questions[${indexJ}].answers[${index}].correct`)} name={`answer${indexJ}`} defaultChecked={i.correct} onChange={(e: any) => {
                                                     getValues().questions[indexJ].answers.forEach((answer: any) => {
                                                         answer.correct = false;
                                                     });
@@ -97,19 +105,20 @@ function QuizAdd() {
                                                 }} />
                                             </Table.Cell>
                                             <Table.Cell className='flex justify-end'>
-                                                <Button disabled={nbrAnswers.length == 2} onClick={() => deleteAnswer(i, index, indexJ)}>Remove Answer</Button>
+                                                <Button disabled={dataQuestion.questions[indexJ].answers.length === 2} onClick={() => deleteAnswer(index, indexJ)}>Remove Answer</Button>
                                             </Table.Cell>
                                         </Table.Row>
                                     ))}
-                                    <Button disabled={nbrAnswers.length == 4} onClick={() => addAnswer()}>Add Answer</Button>
+                                    <Button disabled={dataQuestion.questions[indexJ].answers.length === 4} onClick={() => addAnswer(indexJ)}>Add Answer</Button>
                                 </Table.Body>
                             </Table>
-                            <Button disabled={nbrQuestions.length == 1} onClick={() => deleteQuestion(indexJ)}> Remove Question</Button>
+                            <Button disabled={nbrQuestions === 1} onClick={() => deleteQuestion(indexJ)}> Remove Question</Button>
                         </Card>
                     ))}
-                    <Button disabled={nbrQuestions.length == 20} onClick={() => {
-                        setNbrQuestions([...nbrQuestions, nbrQuestions[nbrQuestions.length - 1] + 1]);
-                        console.log(nbrQuestions);
+                    <Button disabled={nbrQuestions == 20} onClick={() => {
+                        setNbrQuestions(nbrQuestions + 1);
+                        dataQuestion.questions.push({ answers: [{ correct: false }, { correct: false }] });
+                        console.log(dataQuestion);
                     }}>Add Question</Button>
                     <Button className="float-end" type="submit">Submit</Button>
                 </form>
@@ -119,4 +128,3 @@ function QuizAdd() {
 }
 
 export default QuizAdd;
-
