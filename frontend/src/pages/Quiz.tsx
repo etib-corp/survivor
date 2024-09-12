@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import ETIBNavBar from "../components/ETIBNavBar";
-import { log } from "console";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "flowbite-react";
 import ETIBQuestion from "../components/ETIBQuestion";
@@ -12,13 +11,10 @@ import { HiArrowLeft } from "react-icons/hi";
 
 function Quiz() {
     const [props, setProps] = useState({ page: "elearning" })
-    const width = window.innerWidth;
     const params = new URLSearchParams();
     const [searchParams, setSearchParams] = useSearchParams();
     const [quizItem, setQuizItem] = useState<any>(null);
     const navigate = useNavigate();
-    const [privileges, setPrivileges] = useState<Boolean>(false);
-    const [quizzes, setQuizzes] = useState<any>([]);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -33,14 +29,6 @@ function Quiz() {
         }
     }, [searchParams]);
 
-    function deleteQuiz(id: number) {
-        console.log(id);
-        QuizService.deleteID(id).then((response) => {
-            console.log(response);
-            window.location.reload();
-        });
-    }
-
     return (
         <div className="overflow-x-hidden h-screen">
             <ETIBNavBar properties={props} OnChangeView={setProps} />
@@ -51,12 +39,6 @@ function Quiz() {
                             <h1 className="text-4xl font-bold py-3">
                                 Quiz
                             </h1>
-                            {privileges &&
-                                <Button className="float-end" onClick={() => {
-                                    navigate('/Quiz/Add');
-                                }
-                                }>Add QUIZ</Button>
-                            }
                         </div>
                     </div>
                     :

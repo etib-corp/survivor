@@ -26,8 +26,7 @@ export function SignIn() {
             const data = response.data.data;
 
             const jsonString = JSON.stringify(data);
-            const secretKey = 'etib';
-            const encryptedData = CryptoJS.AES.encrypt(jsonString, secretKey).toString();
+            const encryptedData = CryptoJS.AES.encrypt(jsonString, process.env.REACT_APP_SECRET_KEY || "").toString();
 
             login(token);
             localStorage.setItem("authToken", token);

@@ -26,9 +26,8 @@ const ETIBNavBar: React.FC<{ properties: any, OnChangeView: (viewName: any) => v
 
   if (userInfo) {
     try {
-      const secretKey = 'etib';
 
-      const bytes = CryptoJS.AES.decrypt(userInfo, secretKey);
+      const bytes = CryptoJS.AES.decrypt(userInfo, process.env.REACT_APP_SECRET_KEY || "");
       const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
 
       const parsedUserInfo = JSON.parse(decryptedUserInfo);
