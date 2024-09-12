@@ -8,6 +8,8 @@ import axios from 'axios';
 import { Table, FileInput } from "flowbite-react";
 import { buttonOutlineTheme, buttonTheme, fileInputTheme, tableTheme, textInputTheme } from '../../themes';
 
+import CryptoJS from "crypto-js";
+
 function QuizAdd() {
     const [props, setProps] = useState({ page: "elearning" });
     const [nbrAnswers, setNbrAnswers] = useState([1, 2]);
@@ -22,6 +24,24 @@ function QuizAdd() {
         reset,
         formState: { errors },
     } = useForm<any>()
+
+    const userInfo: any = localStorage.getItem("userData") || "";
+
+    useEffect(() => {
+        try {
+            const bytes = CryptoJS.AES.decrypt(userInfo, process.env.REACT_APP_SECRET_KEY || "");
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
+
+            console.log(parsedUserInfo);
+
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
+    }, []);
 
     const onSubmit: SubmitHandler<any> = (data) => {
         const reader = new FileReader();

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -9,6 +9,8 @@ import { Button, TextInput } from "flowbite-react";
 import ETIBNavBar from "../../components/ETIBNavBar";
 
 import { buttonOutlineTheme, buttonTheme, textInputTheme } from "../../themes";
+
+import CryptoJS from "crypto-js";
 
 function VideoAdd() {
     const [props, setProps] = useState({ page: "elearning" });
@@ -35,6 +37,24 @@ function VideoAdd() {
         reset();
         navigate('/Elearning');
     }
+
+    const userInfo: any = localStorage.getItem("userData") || "";
+
+    useEffect(() => {
+        try {
+            const bytes = CryptoJS.AES.decrypt(userInfo, process.env.REACT_APP_SECRET_KEY || "");
+            const decryptedUserInfo = bytes.toString(CryptoJS.enc.Utf8);
+            const parsedUserInfo = JSON.parse(decryptedUserInfo);
+
+            console.log(parsedUserInfo);
+
+            if (parsedUserInfo.roles[0] === "ROLE_CUSTOMER") {
+                navigate("/Wardrobe");
+            }
+        } catch (error) {
+            console.error("Parsing error:", error);
+        }
+    }, []);
 
     return (
         <div className="overflow-x-hidden">

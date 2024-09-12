@@ -40,14 +40,6 @@ export default function Statistics () {
                         Welcome!
                     </p>
                 </div>
-                <div className="mt-3 md:mt-auto mb-auto">
-                    <div className="flex flex-row space-x-4 justify-center md:justify-normal">
-                        <Button theme={buttonTheme} color="default">
-                            <MdOutlineAnalytics className="mr-2 h-5 w-5"/>
-                            Reports
-                        </Button>
-                    </div>
-                </div>
             </div>
             <div className="hidden md:block ">
                 <div className="flex flex-row justify-between mb-4">
