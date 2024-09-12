@@ -66,7 +66,6 @@ class SyncController extends AbstractController
         $this->syncClothes($entityManager);
         $this->syncPayments($entityManager);
         $this->syncEncounters($entityManager);
-        $this->syncTips($entityManager);
         $this->syncEvents($entityManager);
         return new JsonResponse(['message' => 'All synced'], Response::HTTP_OK);
     }
@@ -127,6 +126,7 @@ class SyncController extends AbstractController
                 $customerEntity->setAstrologicalSign($customerResponse['astrological_sign']);
                 $customerEntity->setPhoneNumber($customerResponse['phone_number']);
                 $customerEntity->setAddress($customerResponse['address']);
+                $customerEntity->setRoles(['ROLE_CUSTOMER']);
                 $this->syncImage('/api/customers/'.$customer['id'].'/image', 'images/customers', $customerEntity->getId().'.png');
             } else {
                 $customerEntity->setName($customerResponse['name']);
@@ -138,6 +138,7 @@ class SyncController extends AbstractController
                 $customerEntity->setAstrologicalSign($customerResponse['astrological_sign']);
                 $customerEntity->setPhoneNumber($customerResponse['phone_number']);
                 $customerEntity->setAddress($customerResponse['address']);
+                $customerEntity->setRoles(['ROLE_CUSTOMER']);
                 $this->syncImage('/api/customers/'.$customer['id'].'/image', 'images/customers', $customerEntity->getId().'.png');
 
             }
@@ -209,6 +210,11 @@ class SyncController extends AbstractController
                 $employeeEntity->setBirthDate($birthDate);
                 $employeeEntity->setGender($employeeResponse['gender']);
                 $employeeEntity->setWork($employeeResponse['work']);
+                if (in_array($employeeResponse['work'], ['Coach', 'coach'])) {
+                    $employeeEntity->setRoles(['ROLE_COACH']);
+                } else {
+                    $employeeEntity->setRoles(['ROLE_ADMIN']);
+                }
                 $this->syncImage('/api/employees/'.$employee['id'].'/image', 'images/employees', $employeeEntity->getId().'.png');
             } else {
                 $employeeEntity->setName($employeeResponse['name']);
@@ -371,7 +377,7 @@ class SyncController extends AbstractController
         return new JsonResponse(['message' => 'Events synced'], Response::HTTP_OK);
     }
 
-    #[Route('/sync/image', name: 'app_image_sync')]
+    // #[Route('/sync/image', name: 'app_image_sync')]
     public function synctest(EntityManagerInterface $entityManager): Response
     {
         $response = $this->syncImage('/api/customers/1/image', 'images', 'google.png');
