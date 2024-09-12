@@ -54,7 +54,7 @@ function Events() {
                         Events
                     </h1>
                     <Button theme={buttonTheme} color="default" className="mt-auto">
-                        <FiPlus className="mr-5" size={20} />Add Event
+                        <FiPlus className="mr-2" size={20} />Add Event
                     </Button>
                 </div>
             </div>

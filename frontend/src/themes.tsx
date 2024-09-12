@@ -159,7 +159,7 @@ export const buttonTheme = {
     "base": "group relative flex items-stretch justify-center p-0.5 text-center font-medium transition-[color,background-color,border-color,text-decoration-color,fill,stroke,box-shadow] focus:z-10 focus:outline-none",
     "fullSized": "w-full",
     "color": {
-        "default": "bg-pinkT focus:ring-2 focus:ring-gray-300 enabled:hover:bg-pinkB text-white disabled:bg-gray-300",
+        "default": "bg-pinkT focus:ring-1 focus:ring-gray-300 enabled:hover:bg-white enabled:hover:text-pinkT enabled:hover:ring-1 enabled:hover:ring-pinkT text-white disabled:bg-gray-300",
         "dark": "border border-transparent bg-gray-800 text-white focus:ring-4 focus:ring-gray-300 enabled:hover:bg-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:focus:ring-gray-800 dark:enabled:hover:bg-gray-700",
         "failure": "border border-transparent bg-red-700 text-white focus:ring-4 focus:ring-red-300 enabled:hover:bg-red-800 dark:bg-red-600 dark:focus:ring-red-900 dark:enabled:hover:bg-red-700",
         "gray": ":ring-cyan-700 border border-gray-200 bg-white text-gray-900 focus:text-cyan-700 focus:ring-4 enabled:hover:bg-gray-100 enabled:hover:text-cyan-700 dark:border-gray-600 dark:bg-transparent dark:text-gray-400 dark:enabled:hover:bg-gray-700 dark:enabled:hover:text-white",

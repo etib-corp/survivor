@@ -151,7 +151,7 @@ function Tips() {
                                 ) : (
                                     <div className="flex flex-row">
                                         <Button theme={buttonTheme} className="py-1" color="default" onClick={() => setId(-2)}>
-                                            <HiPlus className="h-5 w-5 mr-5" />
+                                            <HiPlus className="h-5 w-5 mr-2" />
                                             Add Tip
                                         </Button>
                                     </div>
